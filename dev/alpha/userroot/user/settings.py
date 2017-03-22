@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'uaer.uaer.apps.ClientConfig',
+    'user.user.apps.UserConfig',
 ]
 
 MIDDLEWARE = [
@@ -97,8 +97,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'user_db',
-        'USER': 'jonathan',
-        'PASSWORD': 'jonathan',
+        'USER': 'root',
+        'PASSWORD': 'root',
         'HOST': '',
         'PORT': '',
     }
