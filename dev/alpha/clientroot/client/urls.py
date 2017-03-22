@@ -23,7 +23,9 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 router.register(r'items', views.ItemViewSet)
 router.register(r'menus', views.MenuViewSet)
+router.register(r'clients', views.ClientViewSet)
 router.register(r'menuitems', views.RNN_MenuItemViewSet)
+router.register(r'clientmenus', views.RNN_ClientMenuViewSet)
 
 # The API URLs are now determined automatically by the router.
 # Additionally, we include the login URLs for the browsable API.
