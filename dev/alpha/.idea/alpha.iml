@@ -5,7 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/clientroot" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/userroot" isTestSource="false" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Python 3.5.1 virtualenv at C:\Users\Keuvin\Documents\Unicorn\GIT\unicorn\dev\alpha\env" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TestRunnerService">
