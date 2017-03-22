@@ -1,17 +1,5 @@
 from django.db import models
 
-# Create your models here.
-class Client(models.Model):
-    created = models.DateTimeField(auto_now_add=True)
-    name = models.CharField(max_length=100, blank=True, default='')
-    #code = models.TextField()
-    #linenos = models.BooleanField(default=False)
-    #language = models.CharField(choices=LANGUAGE_CHOICES, default='python', max_length=100)
-    #style = models.CharField(choices=STYLE_CHOICES, default='friendly', max_length=100)
-
-    class Meta:
-        ordering = ('created',)
-
 class Item(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=100, blank=True, default='')
@@ -25,8 +13,8 @@ class Item(models.Model):
 class Menu(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=100, blank=True, default='')
-    # items = models.CharField(max_length=100, blank=True, default='item42')
-    items = models.ManyToManyField(Item, through='RNN_MenuItem')
+
+    items = models.ManyToManyField(Item, through='RNN_MenuItem', blank=True)
 
     def __str__(self):
         return self.name
@@ -34,10 +22,24 @@ class Menu(models.Model):
     class Meta:
         ordering = ('created',)
 
+class Client(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    name = models.CharField(max_length=100, blank=True, default='')
+
+    menus = models.ManyToManyField(Menu, through='RNN_ClientMenu', blank=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ('created',)
+
+
+
 class RNN_MenuItem(models.Model):
     #created = models.DateTimeField(auto_now_add=True)
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, blank=True)
     #status = models.CharField(max_length=100, blank=True, default='')
     price = models.IntegerField()
 
@@ -46,5 +48,18 @@ class RNN_MenuItem(models.Model):
         #ordering = ('created',)
 
     def __str__(self):
-        return self.menu.name + '_' + self.item.name
+        return self.menu.name #+ '_' + self.item.name
 
+class RNN_ClientMenu(models.Model):
+    #created = models.DateTimeField(auto_now_add=True)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE, blank=True)
+    #status = models.CharField(max_length=100, blank=True, default='')
+    status = models.CharField(max_length=100, blank=True, default='')
+
+    class Meta:
+        pass
+        #ordering = ('created',)
+
+    def __str__(self):
+        return self.client.name #+ '_' + self.item.name
