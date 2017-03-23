@@ -5,3 +5,5 @@ virtualenv env
 env\Scripts\pip install -r requirement.txt
 
 set /p DUMMY=Hit ENTER to continue...
+
+REM add auto DB migrations
