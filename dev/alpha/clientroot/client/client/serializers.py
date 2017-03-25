@@ -10,14 +10,6 @@ class ClientSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'id', #'highlight', 'owner',
                   'name') # , 'code', 'linenos', 'language', 'style')
 
-# class RNN_MenuItemSerializer(serializers.HyperlinkedModelSerializer):
-#     item_name = serializers.ReadOnlyField(source='item.name')
-#     menu_name = serializers.ReadOnlyField(source='menu.name')
-#
-#     class Meta:
-#         model = RNN_MenuItem
-#         fields = ('item_name', 'menu_name', 'price', )
-
 class RNN_MenuItemSerializer(serializers.HyperlinkedModelSerializer):
     # item_name = serializers.ReadOnlyField(source='item.name')
     # menu_name = serializers.ReadOnlyField(source='menu.name')
