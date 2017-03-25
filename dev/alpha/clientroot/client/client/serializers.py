@@ -11,8 +11,7 @@ class RNN_MenuItemSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = RNN_MenuItem
-        fields = ('url', 'id', #'highlight', 'owner',
-                 'item_id', 'menu_id', 'price', )
+        fields = ('url', 'id',  'item_id', 'menu_id', 'price', )
 
     def create(self, validated_data):
         item_id = validated_data['item_id'].id
