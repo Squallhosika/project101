@@ -1,0 +1,152 @@
+cd Documents/Unicorn/GIT/dev\ test/docker
+
+
+###################################
+##	MACHINES
+###################################
+https://docs.docker.com/machine/get-started/
+
+List machines with ip
+docker-machine ls
+
+Create a machine called manager
+docker-machine create --driver virtualbox manager
+
+Connect to VM via ssh
+docker-machine ssh manager
+
+https://www.ibm.com/developerworks/community/blogs/jfp/entry/Using_Docker_Machine_On_Windows?lang=en
+https://docs.docker.com/machine/reference/env/
+Get Env to import in shell
+docker-machine env
+eval "$(docker-machine env machinemane)
+
+
+####################################
+##	IMAGES
+####################################
+https://docs.docker.com/engine/reference/builder/#usage
+https://techoverflow.net/2013/10/22/docker-remove-all-images-and-containers/
+
+List all images 
+docker images
+
+
+Remove all images (might need to stop/remove containers using images first)
+docker rmi $(docker images -a --format {{".ID"}}
+or
+docker rmi $(docker images -a -q)
+
+
+####################################
+##	CONTAINERS
+####################################
+
+https://techoverflow.net/2013/10/22/docker-remove-all-images-and-containers/
+
+Remove all containers
+docker rm $(docker ps -a --format "{{.ID}}")
+
+https://docs.docker.com/engine/reference/commandline/ps/#formatting
+List (all) containers
+docker ps 
+docker ps -a
+
+
+docker stop containername
+docker rm containername
+docker run -p 0:8000 -t -i kevin/client
+
+
+http://stackoverflow.com/questions/30209776/docker-container-will-automatically-stop-after-docker-run-d
+Keep container alive
+docker run -d imagename tail -f /dev/null
+
+###################################
+##	NETWORKS / VOLUMES
+###################################
+https://deis.com/blog/2016/connecting-docker-containers-1/
+https://docs.docker.com/engine/tutorials/dockervolumes/#backup-restore-or-migrate-data-volumes
+https://docs.docker.com/compose/networking/
+http://tech.donghao.org/2014/09/24/running-django-in-docker/
+
+docker network ls
+ifconfig
+
+
+
+###################################
+##	COMPOSE
+###################################
+https://docs.docker.com/compose/overview/
+https://docs.docker.com/compose/reference/overview/
+http://cookiecutter-django.readthedocs.io/en/latest/developing-locally-docker.html
+
+docker-compose run web django-admin.py startproject composeexample .
+docker-compose up
+
+
+
+###################################
+##	DJANGO
+###################################
+https://docs.docker.com/compose/django/#connect-the-database
+https://realpython.com/blog/python/django-development-with-docker-compose-and-machine/
+https://runnable.com/docker/python/dockerize-your-django-application
+http://ruddra.com/2016/08/14/docker-django-nginx-postgres/
+https://semaphoreci.com/community/tutorials/dockerizing-a-python-django-web-application
+http://michal.karzynski.pl/blog/2015/04/19/packaging-django-applications-as-docker-container-images/
+
+
+MySQL
+http://stackoverflow.com/questions/33795923/how-to-connect-to-mysql-running-on-docker-from-the-host-machine
+https://howchoo.com/g/y2y1mtkznda/getting-started-with-docker-compose-and-django
+http://stackoverflow.com/questions/31035887/linking-django-and-mysql-containers-using-docker-compose
+http://capside.com/labs/deploying-full-django-stack-with-docker-compose/
+https://codequs.com/p/HJo2PAkgc/django-application-inside-a-docker-container/
+
+
+###################################
+##	SWARM
+###################################
+https://docs.docker.com/engine/swarm/services/#specify-the-image-version-the-service-should-use
+https://docs.docker.com/engine/swarm/
+https://docs.docker.com/engine/getstarted-voting-app/#preview-of-voting-app-stack-and-how-it-works
+https://blog.hypriot.com/post/swarm-machines-or-having-fun-with-docker-machine-and-the-new-docker-swarm-orchestration/
+https://docs.docker.com/engine/swarm/stack-deploy/#test-the-app-with-compose
+
+Create swarm
+docker swarm init --advertise-addr <MANAGER-IP>
+
+Get join toker for worker (need ssh on manager)
+docker swarm join-token worker
+docker swarm join-token --quiet worker (get only toker)
+
+
+See all nodes
+docker node ls
+docker info
+
+Create service based on image
+docker service create kevin/client
+
+
+
+
+
+Access cmd from container
+docker exec -it containername bash
+
+Build image from current folder with name
+docker build -t kevin/client ./
+
+Run container from image / detached
+docker run --publish=8001:8000 kevin/client
+docker run -d --publish=8002:8000 kevin/client
+
+
+docker-machine scp -r ./ manager:/home/docker/
+
+
+
+
