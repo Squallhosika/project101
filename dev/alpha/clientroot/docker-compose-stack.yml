@@ -1,15 +1,14 @@
  version: '3'
  services:
    db:
-     image: mysql
-     environment:
-        - MYSQL_ROOT_PASSWORD=root
-        - MYSQL_USER=root
-        - MYSQL_PASSWORD=root
-        - MYSQL_DATABASE=clientdb
+     image: 127.0.0.1:5000/clientroot_db
+     build:
+      context: .
+      dockerfile: Dockerfile-mysql
 
    web:
-     image: clientroot_web
+     image: 127.0.0.1:5000/clientroot_web
+     build: .
      command: python manage.py runserver 0.0.0.0:8000
      volumes:
        - .:/code

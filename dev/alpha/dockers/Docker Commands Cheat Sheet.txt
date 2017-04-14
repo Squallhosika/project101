@@ -1,5 +1,5 @@
 cd Documents/Unicorn/GIT/dev\ test/docker
-
+cd Documents/Unicorn/GIT/unicorn/dev/alpha/clientroot
 
 ###################################
 ##	MACHINES
@@ -45,6 +45,7 @@ docker rmi $(docker images -a -q)
 https://techoverflow.net/2013/10/22/docker-remove-all-images-and-containers/
 
 Remove all containers
+docker stop $(docker ps -a --format "{{.ID}}")
 docker rm $(docker ps -a --format "{{.ID}}")
 
 https://docs.docker.com/engine/reference/commandline/ps/#formatting
@@ -146,7 +147,13 @@ docker run -d --publish=8002:8000 kevin/client
 
 
 docker-machine scp -r ./ manager:/home/docker/
+docker service create --name registry --publish 5000:5000 registry:2
+docker stack deploy -c docker-compose-stack.yml web
+docker-machine scp -r docker-compose-stack.yml manager:/home/docker/
+docker stack rm my_dab
 
 
+docker exec -it clientroot_db_1 bash
+mysql -uroot -proot
 
 
