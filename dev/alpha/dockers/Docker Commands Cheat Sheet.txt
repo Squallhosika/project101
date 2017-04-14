@@ -147,6 +147,38 @@ docker run -d --publish=8002:8000 kevin/client
 
 docker-machine scp -r ./ manager:/home/docker/
 
+###################################
+##	SWARM : Deploy a swarm
+###################################
 
+docker-machine create manager1
+docker-machine create worker1
+docker-machine create worker2
+eval "$(docker-machine env manager1)"
+docker-machine ssh manager1
+docker swarm init --advertise-addr <ID of manager1>
+# copy the message Join
+exit
 
-
+docker-machine ssh worker2
+# paste the docker join command line 
+ docker swarm join \ ...
+ exit
+ 
+ docker-machine ssh worker1
+# paste the docker join command line 
+ docker swarm join \ ...
+ exit
+ 
+ 
+ docker service create --name registry --publish 5000:5000 registry:2
+ 
+ docker-machine scp -r ./ manager1:/home/docker/
+ docker-machine scp -r ./ worker1:/home/docker/
+ docker-machine scp -r ./ worker2:/home/docker/
+ 
+ docker-compose build
+ docker-compose push
+ 
+ docker-machine ssh manager1
+ docker stack deploy --compose-file docker-compose.yml stackclient
