@@ -161,7 +161,87 @@ mysql -uroot -proot
 ##	STACK DEPLOY
 ###################################
 
+
+##  CREATE NODES
+
 $ cd Documents/Unicorn/GIT/unicorn/dev/alpha/clientroot
+$ docker-machine create --driver virtualbox manager
+$ docker-machine create --driver virtualbox worker1
+$ docker-machine create --driver virtualbox worker2
+$ docker-machine ls
+NAME      ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER        ERRORS
+default   *        virtualbox   Running   tcp://192.168.99.100:2376           v1.12.5
+manager   -        virtualbox   Running   tcp://192.168.99.109:2376           v17.04.0-ce
+worker1   -        virtualbox   Running   tcp://192.168.99.110:2376           v17.04.0-ce
+worker2   -        virtualbox   Running   tcp://192.168.99.111:2376           v17.04.0-ce
+
+
+##  CREATE SWARM
+
+$ docker-machine ssh manager
+docker@manager:~$ docker swarm init --advertise-addr <ID of manager leader>
+# copy the message Join
+docker@manager:~$ exit
+
+$ docker-machine ssh worker1
+# paste the docker join command line
+ docker swarm join \ ...
+ docker@manager:~$ exit
+
+$ docker-machine ssh worker2
+# paste the docker join command line
+ docker swarm join \ ...
+docker@manager:~$ exit
+
+
+##  PREPARE SWARM FOR COMPOSE
+
+$ docker-machine scp -r ./ manager:/home/docker/
+$ docker-machine scp -r ./ worker1:/home/docker/
+$ docker-machine scp -r ./ worker2:/home/docker/
+
+$ eval $(docker-machine env manager)
+$ docker service create --name registry --publish 5000:5000 registry:2
+($ docker service rm registry)
+$ docker-compose build
+OR
+$ docker build -t 127.0.0.1:5000/clientroot_db --file "DockerFile-mysql" .
+$ docker build -t 127.0.0.1:5000/clientroot_web --file "DockerFile" .
+
+$ docker-compose push
+OR
+$ docker push 127.0.0.1:5000/clientroot_web
+$ docker push 127.0.0.1:5000/clientroot_db
+
+##  DEPLOY SERVICE
+
+$ docker-machine ssh manager
+docker@manager:~$ docker stack deploy -c docker-compose-stack.yml client
+docker@manager:~$ docker stack ps client
+
+
+docker@manager:~$ docker service ls
+docker@manager:~$ docker service ps --no-trunc <SERVICE-ID>
+docker@manager:~$ docker stack rm client
+
+
+
+
+$ docker-machine scp -r DockerFile manager:/home/docker/
+$ docker-machine scp -r docker-entrypoint.sh manager:/home/docker/
+$ docker build -t 127.0.0.1:5000/clientroot_web --file "DockerFile" .
+$ docker images
+$ docker run <image-id>
+
+docker-machine scp -r client/settings.py manager:/home/docker/client/
+
+
+
+
+
+
+
+
 $ docker-machine ls
 NAME      ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER        ERRORS
 default   *        virtualbox   Running   tcp://192.168.99.100:2376           v1.12.5
@@ -311,7 +391,7 @@ docker@manager:~$ docker ps -a
 
 
 TEST
-$ docker build -t kevin/db --file "DockerFile-mysql" .
+$ docker build -t 127.0.0.1:5000/clientroot_db --file "DockerFile-mysql" .
 Sending build context to Docker daemon 67.58 kB
 Step 1 : FROM mysql
  ---> 9546ca122d3a

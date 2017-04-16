@@ -5,11 +5,17 @@
      build:
       context: .
       dockerfile: Dockerfile-mysql
+     ports:
+      - 3306
+     volumes:
+       - .:/code
 
    web:
      image: 127.0.0.1:5000/clientroot_web
-     build: .
-     command: python manage.py runserver 0.0.0.0:8000
+     command: bash ./docker-entrypoint.sh
+     build:
+      context: .
+      dockerfile: Dockerfile
      volumes:
        - .:/code
      ports:
@@ -18,3 +24,5 @@
        - db
      deploy:
        replicas: 2
+       restart_policy:
+        condition: on-failure
