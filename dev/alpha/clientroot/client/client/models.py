@@ -25,9 +25,9 @@ class Menu(models.Model):
 class Client(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=100, blank=True, default='')
-
+    position = models.IntegerField()
     menus = models.ManyToManyField(Menu, through='RNN_ClientMenu', blank=True)
-
+    active = models.BooleanField(default=False)
     def __str__(self):
         return self.name
 
