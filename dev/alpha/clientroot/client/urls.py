@@ -31,5 +31,8 @@ router.register(r'clientmenus', views.RNN_ClientMenuViewSet)
 # Additionally, we include the login URLs for the browsable API.
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include(router.urls))
+    url(r'^', include(router.urls)),
+    url('client/clientaroundme', views.client_around_me),
+    url('client/createprofile', views.createprofile),
+    url('client/deleteprofile', views.delete_profile)
 ]

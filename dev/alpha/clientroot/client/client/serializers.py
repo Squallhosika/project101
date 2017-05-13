@@ -118,3 +118,8 @@ class ItemSerializer(serializers.HyperlinkedModelSerializer):
         model = Item
         fields = ('url', 'id', #'highlight', 'owner',
                   'name') # , 'code', 'linenos', 'language', 'style')
+
+class BarmanSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Barman
+        fields = ('url', 'id', 'name', 'client', 'active')

@@ -26,7 +26,7 @@ class RNN_MenuItemViewSet(viewsets.ModelViewSet):
     serializer_class = RNN_MenuItemSerializer
 
 @api_view(['GET'])
-def get_client_around_me(request):
+def client_around_me(request):
     data = JSONParser().parse(request)
     try:
         close_clients = Client.objects.get(position=data['position'])
@@ -105,12 +105,46 @@ def search_item(request):
         serializer = ItemSerializer(item)
         return Response(serializer.data)
 
-@api_view()
-def create_item(): pass
-def update_item(): pass
-def create_barman(): pass
-def update_barman(): pass
-def update_barman_status(): pass
+@api_view(['POST'])
+def create_item(request):
+    if request.method == 'POST':
+        serializer = ItemSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT'])
+def update_item(request):
+    pass
+
+@api_view(['POST'])
+def create_barman(request):
+    if request.method == 'POST':
+        serializer = BarmanSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT'])
+def update_barman(request):
+    pass
+
+@api_view(['PUT'])
+def update_barman_status(request):
+    data = JSONParser().parse(request)
+    try:
+        barman = Barman.objects.get(id=data['id'])
+    except Barman.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'PUT':
+        barman.active = data['active']
+        barman.save()
+        serializer = BarmanSerializer(barman)
+        return Response(serializer.data)
+
 def create_shift(): pass
 def addTo_shift(): pass
 def remove_to_shift(): pass

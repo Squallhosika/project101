@@ -34,7 +34,14 @@ class Client(models.Model):
     class Meta:
         ordering = ('created',)
 
+class Barman(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    name = models.CharField(max_length=100, blank=True, default='')
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    active = models.BooleanField(default=False)
 
+    class Meta:
+        ordering = ('created',)
 
 class RNN_MenuItem(models.Model):
     #created = models.DateTimeField(auto_now_add=True)
