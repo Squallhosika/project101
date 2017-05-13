@@ -25,6 +25,21 @@ class Order(models.Model):
     class Meta:
         ordering = ('created',)
 
+class Queue(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    client_id = models.IntegerField()
+    status = models.CharField(max_length=100, blank=True, default='')
+
+    def __str__(self):
+        return str(self.id)
+
+class Position(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    # TODO change Foreign to OneToOneField or put primary_key = true on ForeignKey Order
+    # order = models.OneToOneField(Order, on_delete=models.CASCADE, primary_key=True)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    queue = models.ForeignKey(Queue, on_delete=models.CASCADE)
+    position = models.IntegerField(default=-1)
 
 class RNN_OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)

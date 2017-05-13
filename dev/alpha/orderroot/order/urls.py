@@ -27,8 +27,12 @@ router = DefaultRouter()
 router.register(r'order/items', views.ItemViewSet)
 router.register(r'order/orders', views.OrderViewSet)
 router.register(r'order/orderitems', views.RNN_OrderItemViewSet)
+router.register(r'order/queues', views.QueueViewSet)
+router.register(r'order/positions', views.PositionViewSet)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include(router.urls)),
+    url('order/createorder', views.create_order),
+    url('order/placeorder', views.place_order)
 ]

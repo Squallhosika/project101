@@ -23,6 +23,7 @@ class RNN_OrderItemSerializer(serializers.HyperlinkedModelSerializer):
         rnn = RNN_OrderItem.objects.create(item=item, order=order, price=price, quantity=quantity)
         return rnn
 
+
 class OrderSerializer(serializers.HyperlinkedModelSerializer):
     items = RNN_OrderItemSerializer(source='rnn_orderitem_set', many=True, read_only=False)
 
@@ -47,3 +48,20 @@ class ItemSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Item
         fields = ('url', 'id', 'name')
+
+class QueueSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Queue
+        fields = ('url', 'id', 'client_id', 'status')
+
+class PositionSerializer(serializers.HyperlinkedModelSerializer):
+
+    oqs = Order.objects.all()
+    qqs = Queue.objects.all()
+    order_id = serializers.PrimaryKeyRelatedField(many=False, queryset=oqs)
+    queue_id = serializers.PrimaryKeyRelatedField(many=False, queryset=qqs)
+
+    class Meta:
+        model = Position
+        fields = ('url', 'id', 'order_id', 'queue_id', 'position')
