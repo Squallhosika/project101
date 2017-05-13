@@ -1,0 +1,19 @@
+def createProfil(name, location, details, opening_hours): pass
+def updateProfil(): pass
+def deleteProfil(): pass
+def updateStatus(): pass
+def createMenu(): pass
+def updateMenu(): pass
+def searchItem(): pass
+def createItem(): pass
+def updateItem(): pass
+def getQueue(): pass
+def getNextToServe(): pass
+def getQueueUpdate(): pass
+def createBarman(): pass
+def updateBarman(): pass
+def updateBarmanStatus(): pass
+def createShift(): pass
+def addToShift(): pass
+def removeToShift(): pass
+def updateWorkFlow(): pass
