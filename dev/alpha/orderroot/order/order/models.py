@@ -33,7 +33,8 @@ class Queue(models.Model):
     def __str__(self):
         return str(self.id)
 
-class Position(models.Model):
+
+class OrderInQueue(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     # TODO change Foreign to OneToOneField or put primary_key = true on ForeignKey Order
     # order = models.OneToOneField(Order, on_delete=models.CASCADE, primary_key=True)
@@ -42,6 +43,7 @@ class Position(models.Model):
     position = models.IntegerField(default=-1)
 
 class RNN_OrderItem(models.Model):
+    # TODO order X item should be a primary key it is not the case today
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     item = models.ForeignKey(Item, on_delete=models.CASCADE, blank=True)
     price = models.FloatField(default=0.0)

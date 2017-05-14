@@ -55,7 +55,7 @@ class QueueSerializer(serializers.HyperlinkedModelSerializer):
         model = Queue
         fields = ('url', 'id', 'client_id', 'status')
 
-class PositionSerializer(serializers.HyperlinkedModelSerializer):
+class OrderInQueueSerializer(serializers.HyperlinkedModelSerializer):
 
     oqs = Order.objects.all()
     qqs = Queue.objects.all()
@@ -63,5 +63,5 @@ class PositionSerializer(serializers.HyperlinkedModelSerializer):
     queue_id = serializers.PrimaryKeyRelatedField(many=False, queryset=qqs)
 
     class Meta:
-        model = Position
+        model = OrderInQueue
         fields = ('url', 'id', 'order_id', 'queue_id', 'position')
