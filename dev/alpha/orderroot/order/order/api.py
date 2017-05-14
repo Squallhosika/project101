@@ -1,0 +1,14 @@
+def get_estimated_time(): pass
+def create_order(): pass
+def update_order(): pass
+def cancel_order(): pass
+def get_queue_position(): pass
+def create_queue(): pass
+def update_queue(): pass
+def get_position(): pass
+def remove_order(): pass
+def manage_work_flow(): pass
+def update_work_flow(): pass
+def get_queue(): pass
+def get_next_to_serve(): pass
+def get_queue_update(): pass

@@ -1,0 +1,21 @@
+ version: '3'
+ services:
+   db:
+     image: postgres
+     environment:
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+        - POSTGRES_DB=client_db
+
+   web:
+     image: 127.0.0.1:5000/clientroot_web
+     build: .
+     command: python manage.py runserver 0.0.0.0:8000
+     volumes:
+       - .:/code
+     ports:
+       - "8000:8000"
+     depends_on:
+       - db
+     deploy:
+       replicas: 2

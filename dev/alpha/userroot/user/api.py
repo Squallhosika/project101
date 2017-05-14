@@ -1,0 +1,15 @@
+def getClientAroundMe(): pass
+def getClientByName(): pass
+def getClientMenu(): pass
+def getEstimatedTime(): pass
+def createOrder(): pass
+def updateOrder(): pass
+def cancelOder(): pass
+def getQueuePosition(): pass
+def createProfile(): pass
+def updateProfile(): pass
+def createPayementDetails(): pass
+def updatePayementDetails(): pass
+def selectPayementMethod(): pass
+def updateWorkFlow(): pass
+def ratingClient(): pass

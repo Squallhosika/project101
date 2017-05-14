@@ -11,7 +11,8 @@ class RNN_MenuItemSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = RNN_MenuItem
-        fields = ('url', 'id',  'item_id', 'menu_id', 'price', )
+        fields = ('url', 'id', #'highlight', 'owner',
+                 'item_id', 'menu_id', 'price', )
 
     def create(self, validated_data):
         item_id = validated_data['item_id'].id
@@ -118,8 +119,3 @@ class ItemSerializer(serializers.HyperlinkedModelSerializer):
         model = Item
         fields = ('url', 'id', #'highlight', 'owner',
                   'name') # , 'code', 'linenos', 'language', 'style')
-
-class BarmanSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Barman
-        fields = ('url', 'id', 'name', 'client', 'active')
