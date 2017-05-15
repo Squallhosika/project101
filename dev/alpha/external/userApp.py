@@ -6,8 +6,9 @@ API_USER_URL = 'http://127.0.0.1:8000/'
 def call_function(method_name, service_name, function_name, params=None):
     url = get_url(service_name, function_name)
 
-    if method_name == 'GET':        req = requests.get(url, params=params)
+    if method_name == 'GET':        req = requests.get(url, data=params)
     elif method_name == 'POST':     req = requests.post(url, data=params)
+    elif method_name == 'PUT':      req = requests.put(url, data=params)
     elif method_name == 'DELETE':   req = requests.delete(url, data=params)
 
     return req
@@ -22,13 +23,25 @@ def get_url(service_name, function_name):
 
 
 
+
+
 if __name__ == '__main__':
 
     service_name = 'client'
-    function_name = 'clientaround'
-    req0 = call_function('GET', service_name, function_name)
+    function_name = 'itemmenus'
+    # params = {'item_id': 9, 'menu_id': 1, 'price': 1}
+    # params = {'id': 2, 'name': 'menu2'}
+    params = {'menu_id': 2}
+
+    req0 = call_function('GET', service_name, function_name, params)
+    # req0 = call_function('POST', service_name, function_name, params)
+    # req0 = call_function('PUT', service_name, function_name, params)
+    # req0 = call_function('DELETE', service_name, function_name, params)
     print(req0.status_code)
     print(req0.json())
+
+    # req1 = call_function('GET', service_name, 'clients')
+    # print(req1.json())
 
     # params = {'name': 'item4'}
     # req1 = call_function('POST', service_name, function_name, params)
