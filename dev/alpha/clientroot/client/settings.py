@@ -92,14 +92,25 @@ def get_env_variable(var_name):
         error_msg = "Set the %s environment variable" % var_name
         raise ImproperlyConfigured(error_msg)
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'client_db',
+#         'USER': 'root',
+#         'PASSWORD': 'root',
+#         'HOST': 'db',
+#         'PORT': '3306',
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'client_db',
         'USER': 'root',
         'PASSWORD': 'root',
-        'HOST': 'db',
-        'PORT': '3306',
+        'HOST': '',
+        'PORT': '',
     }
 }
 
@@ -140,3 +151,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    )
+}
