@@ -28,7 +28,6 @@ class RNN_MenuItemViewSet(viewsets.ModelViewSet):
     serializer_class = RNN_MenuItemSerializer
 
 
-
 class ShiftViewSet(viewsets.ModelViewSet):
     queryset = Shift.objects.all()
     serializer_class = ShiftSerializer
@@ -36,6 +35,11 @@ class ShiftViewSet(viewsets.ModelViewSet):
 class EmployeeViewSet(viewsets.ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
+
+class RNN_ShiftEmployeeViewSet(viewsets.ModelViewSet):
+    queryset = RNN_ShiftEmployee.objects.all()
+    serializer_class = RNN_ShiftEmployeeSerializer
+
 
 @api_view(['GET'])
 def client_around(request):
@@ -79,11 +83,21 @@ def create_item(request):
 @api_view(['POST'])
 def create_shift(request):
     if request.method == 'POST':
-        serializer = ClientSerializer(data=request.data, context={'request': request})
+        serializer = ShiftSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def create_employee(request):
+    if request.method == 'POST':
+        serializer = EmployeeSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 @api_view(['PUT'])
@@ -131,6 +145,37 @@ def update_item(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['PUT'])
+def update_shift(request):
+    try:
+        id = request.data.get('id')
+        shift = Shift.objects.get(pk=id)
+    except Shift.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'PUT':
+        serializer = ItemSerializer(shift, data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT'])
+def update_employee(request):
+    try:
+        id = request.data.get('id')
+        employee = Employee.objects.get(pk=id)
+    except Employee.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'PUT':
+        serializer = ItemSerializer(employee, data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 @api_view(['DELETE'])
 def delete_client(request):
@@ -171,7 +216,31 @@ def delete_item(request):
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['DELETE'])
+def delete_shift(request):
+    try:
+        id = request.data.get('id')
+        shift = Shift.objects.get(pk=id)
+    except Shift.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
+    if request.method == 'DELETE':
+        shift.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_employee(request):
+    try:
+        id = request.data.get('id')
+        employee = Employee.objects.get(pk=id)
+    except Employee.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'DELETE':
+        employee.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 
@@ -184,6 +253,65 @@ def add_menu_to_client(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def add_item_to_menu(request):
+    if request.method == 'POST':
+        # return Response(status=status.HTTP_400_BAD_REQUEST)
+        serializer = RNN_MenuItemSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def add_employee_to_shift(request):
+    if request.method == 'POST':
+        # return Response(status=status.HTTP_400_BAD_REQUEST)
+        serializer = RNN_ShiftEmployeeSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+@api_view(['GET'])
+def get_menus_from_client(request):
+    try:
+        client_id = request.data.get('client_id')
+        client_menu = RNN_ClientMenu.objects.filter(client_id=client_id)
+    except RNN_ClientMenu.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = RNN_ClientMenuSerializer(client_menu, context={'request': request}, many=True)
+        return Response(serializer.data)
+
+@api_view(['GET'])
+def get_items_from_menu(request):
+    try:
+        menu_id = request.data.get('menu_id')
+        menu_item = RNN_MenuItem.objects.filter(menu_id=menu_id)
+    except RNN_MenuItem.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = RNN_MenuItemSerializer(menu_item, context={'request': request}, many=True)
+        return Response(serializer.data)
+
+@api_view(['GET'])
+def get_employees_from_shift(request):
+    try:
+        shift_id = request.data.get('shift_id')
+        shift_employee = RNN_ShiftEmployee.objects.filter(shift_id=shift_id)
+    except RNN_ShiftEmployee.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = RNN_ShiftEmployeeSerializer(shift_employee, context={'request': request}, many=True)
+        return Response(serializer.data)
+
 
 @api_view(['DELETE'])
 def remove_menu_from_client(request):
@@ -198,28 +326,6 @@ def remove_menu_from_client(request):
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
-def add_item_to_menu(request):
-    if request.method == 'POST':
-        # return Response(status=status.HTTP_400_BAD_REQUEST)
-        serializer = RNN_MenuItemSerializer(data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-@api_view(['GET'])
-def get_items_from_menu(request):
-    try:
-        menu_id = request.data.get('menu_id')
-        menu_item = RNN_MenuItem.objects.filter(menu_id=menu_id)
-    except RNN_MenuItem.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        serializer = RNN_MenuItemSerializer(menu_item, context={'request': request}, many=True)
-        return Response(serializer.data)
-
 @api_view(['DELETE'])
 def remove_item_from_menu(request):
     try:
@@ -233,3 +339,15 @@ def remove_item_from_menu(request):
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['DELETE'])
+def remove_employee_from_shift(request):
+    try:
+        pk = request.data.get('id')
+        shift_employee = RNN_ShiftEmployee.objects.get(pk=pk)
+    except RNN_ShiftEmployee.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'DELETE':
+        shift_employee.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
