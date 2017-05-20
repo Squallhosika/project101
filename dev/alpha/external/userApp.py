@@ -28,17 +28,18 @@ def get_url(service_name, function_name):
 if __name__ == '__main__':
 
     service_name = 'client'
-    function_name = 'itemmenus'
+    function_name = 'removemenuclient'
     # params = {'item_id': 9, 'menu_id': 1, 'price': 1}
     # params = {'id': 2, 'name': 'menu2'}
-    params = {'menu_id': 2}
+    # params = {'menu_id': 2}
+    params = {'id': 3}
 
-    req0 = call_function('GET', service_name, function_name, params)
+    # req0 = call_function('GET', service_name, function_name, params)
     # req0 = call_function('POST', service_name, function_name, params)
     # req0 = call_function('PUT', service_name, function_name, params)
-    # req0 = call_function('DELETE', service_name, function_name, params)
+    req0 = call_function('DELETE', service_name, function_name, params)
     print(req0.status_code)
-    print(req0.json())
+    # print(req0.json())
 
     # req1 = call_function('GET', service_name, 'clients')
     # print(req1.json())

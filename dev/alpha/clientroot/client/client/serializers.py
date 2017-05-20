@@ -68,7 +68,6 @@ class ClientSerializer(serializers.HyperlinkedModelSerializer):
             client = Client.objects.create(name=validated_data['name'])
         return client
 
-
 class MenuSerializer(serializers.HyperlinkedModelSerializer):
     # items = RNN_MenuItemSerializer(source='rnn_menuitem_set', many=True, read_only=False)
 
@@ -90,5 +89,54 @@ class ItemSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Item
+        fields = ('url', 'id',
+                  'name')
+
+
+
+class RNN_ShiftEmployeeSerializer(serializers.HyperlinkedModelSerializer):
+    eqs = Employee.objects.all()
+    sqs = Shift.objects.all()
+
+    employee_id = serializers.PrimaryKeyRelatedField(many=False, queryset=eqs)
+    shift_id = serializers.PrimaryKeyRelatedField(many=False, queryset=sqs)
+
+    class Meta:
+        model = RNN_ShiftEmployee
+        fields = ('url', 'id',
+                 'employee_id', 'shift_id', 'status', )
+
+    def create(self, validated_data):
+        employee_id = validated_data['employee_id'].id
+        shift_id = validated_data['menu_id'].id
+
+        employee = Employee.objects.get(pk=employee_id)
+        shift = Shift.objects.get(pk=shift_id)
+        status = validated_data['status']
+
+        rnn = RNN_MenuItem.objects.create(employee=employee, shift=shift, status=status)
+        return rnn
+
+
+class ShiftSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Menu
+        fields = ('url', 'id',
+                  'name', )
+
+    def create(self, validated_data):
+        if 'name' not in self.validated_data:
+            menu = Menu.objects.create(name=validated_data['name'])
+        else:
+            menu = Menu.objects.create(name=validated_data['name'])
+            # menu = Menu.objects.create(name=name, items=items_list) #, item=item.id)
+
+        return menu
+
+class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Employee
         fields = ('url', 'id',
                   'name')

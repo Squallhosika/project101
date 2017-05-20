@@ -29,6 +29,14 @@ class RNN_MenuItemViewSet(viewsets.ModelViewSet):
 
 
 
+class ShiftViewSet(viewsets.ModelViewSet):
+    queryset = Shift.objects.all()
+    serializer_class = ShiftSerializer
+
+class EmployeeViewSet(viewsets.ModelViewSet):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer
+
 @api_view(['GET'])
 def client_around(request):
     try:
@@ -50,7 +58,6 @@ def create_client(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 @api_view(['POST'])
 def create_menu(request):
     if request.method == 'POST':
@@ -60,7 +67,6 @@ def create_menu(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 @api_view(['POST'])
 def create_item(request):
     if request.method == 'POST':
@@ -69,6 +75,16 @@ def create_item(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def create_shift(request):
+    if request.method == 'POST':
+        serializer = ClientSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['PUT'])
 def update_client(request):
@@ -100,7 +116,6 @@ def update_menu(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 @api_view(['PUT'])
 def update_item(request):
     try:
@@ -116,6 +131,50 @@ def update_item(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+@api_view(['DELETE'])
+def delete_client(request):
+    try:
+        pk = request.data.get('id')
+        client = Client.objects.get(pk=pk)
+    except Client.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'DELETE':
+        client.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_menu(request):
+    try:
+        pk = request.data.get('id')
+        menu = Menu.objects.get(pk=pk)
+    except Menu.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'DELETE':
+        menu.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_item(request):
+    try:
+        id = request.data.get('id')
+        item = Item.objects.get(pk=id)
+    except Item.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'DELETE':
+        item.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
 @api_view(['POST'])
 def add_menu_to_client(request):
     if request.method == 'POST':
@@ -128,7 +187,16 @@ def add_menu_to_client(request):
 
 @api_view(['DELETE'])
 def remove_menu_from_client(request):
-    pass
+    try:
+        pk = request.data.get('id')
+        client_menu = RNN_ClientMenu.objects.get(pk=pk)
+    except RNN_ClientMenu.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'DELETE':
+        client_menu.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def add_item_to_menu(request):

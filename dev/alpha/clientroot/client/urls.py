@@ -42,5 +42,6 @@ urlpatterns = [
     url(r'^client/removeitemmenu/', views.remove_item_from_menu),
     url(r'^client/itemmenus/', views.get_items_from_menu),
     url(r'^client/addmenuclient/', views.add_menu_to_client),
+    url(r'^client/removemenuclient/', views.remove_menu_from_client),
     url(r'^', include(router.urls))
 ]
