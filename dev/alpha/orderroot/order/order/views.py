@@ -22,7 +22,7 @@ class RNN_OrderItemViewSet(viewsets.ModelViewSet):
 
 
 class QueueViewSet(viewsets.ModelViewSet):
-    queryset = Queue.objects.all()
+    queryset = OrderFlow.objects.all()
     serializer_class = QueueSerializer
 
 
@@ -94,8 +94,8 @@ def place_order(request):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     try:
-        queue = Queue.objects.get(id=data['queue_id'])
-    except Queue.DoesNotExist:
+        queue = OrderFlow.objects.get(id=data['queue_id'])
+    except OrderFlow.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'POST':
@@ -161,8 +161,8 @@ def create_queue(request):
 def delete_queue(request):
     data = JSONParser().parse(request)
     try:
-        queue = Queue.objects.get(id=data['id'])
-    except Queue.DoesNotExist:
+        queue = OrderFlow.objects.get(id=data['id'])
+    except OrderFlow.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'DELETE':
@@ -174,8 +174,8 @@ def delete_queue(request):
 def orders_in_queue(request):
     data = JSONParser().parse(request)
     try:
-        queue = Queue.objects.get(id=data['queue_id'])
-    except Queue.DoesNotExist:
+        queue = OrderFlow.objects.get(id=data['queue_id'])
+    except OrderFlow.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     orders = OrderInQueue.obects.filter(queue=queue)
 
@@ -206,8 +206,8 @@ def order_status(request):
 def next_to_serve(request):
     data = JSONParser().parse(request)
     try:
-        queue = Queue.objects.get(id=data['queue_id'])
-    except Queue.DoesNotExist:
+        queue = OrderFlow.objects.get(id=data['queue_id'])
+    except OrderFlow.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     order_in_queue = OrderInQueue.obects.filter(queue=queue, position=1)
 

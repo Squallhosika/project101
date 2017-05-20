@@ -25,10 +25,14 @@ class Order(models.Model):
     class Meta:
         ordering = ('created',)
 
-class Queue(models.Model):
+
+class OrderFlow(models.Model):
     created = models.DateTimeField(auto_now_add=True)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
     client_id = models.IntegerField()
+    barman_id = models.IntegerField(default=-1)
     status = models.CharField(max_length=100, blank=True, default='')
+    position = models.IntegerField(default=-1)
 
     def __str__(self):
         return str(self.id)
@@ -39,8 +43,9 @@ class OrderInQueue(models.Model):
     # TODO change Foreign to OneToOneField or put primary_key = true on ForeignKey Order
     # order = models.OneToOneField(Order, on_delete=models.CASCADE, primary_key=True)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    queue = models.ForeignKey(Queue, on_delete=models.CASCADE)
+    queue = models.ForeignKey(OrderFlow, on_delete=models.CASCADE)
     position = models.IntegerField(default=-1)
+
 
 class RNN_OrderItem(models.Model):
     # TODO order X item should be a primary key it is not the case today

@@ -25,23 +25,10 @@ class RNN_OrderItemSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class OrderSerializer(serializers.HyperlinkedModelSerializer):
-    items = RNN_OrderItemSerializer(source='rnn_orderitem_set', many=True, read_only=False)
 
     class Meta:
         model = Order
-        fields = ('url', 'id', 'client_id', 'user_id', 'status', 'items')
-
-    def create(self, validated_data):
-        client_id = validated_data['client_id']
-        user_id = validated_data['user_id']
-        items_list = self.initial_data['items']
-        c = len(items_list)
-        if c == 0:
-            order = Order.objects.create(client_id=client_id, user_id=user_id)
-        else:
-            order = Order.objects.create(client_id=client_id, user_id=user_id, items=items_list)
-
-        return order
+        fields = ('url', 'id', 'client_id', 'user_id', 'status')
 
 class ItemSerializer(serializers.HyperlinkedModelSerializer):
 
@@ -52,13 +39,13 @@ class ItemSerializer(serializers.HyperlinkedModelSerializer):
 class QueueSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
-        model = Queue
+        model = OrderFlow
         fields = ('url', 'id', 'client_id', 'status')
 
 class OrderInQueueSerializer(serializers.HyperlinkedModelSerializer):
 
     oqs = Order.objects.all()
-    qqs = Queue.objects.all()
+    qqs = OrderFlow.objects.all()
     order_id = serializers.PrimaryKeyRelatedField(many=False, queryset=oqs)
     queue_id = serializers.PrimaryKeyRelatedField(many=False, queryset=qqs)
 
