@@ -2,16 +2,16 @@ from rest_framework import serializers
 from client.client.models import * #Client
 
 class RNN_MenuItemSerializer(serializers.HyperlinkedModelSerializer):
-    # item_name = serializers.ReadOnlyField(source='item.name')
-    # menu_name = serializers.ReadOnlyField(source='menu.name')
     iqs = Item.objects.all()
     mqs = Menu.objects.all()
+
     item_id = serializers.PrimaryKeyRelatedField(many=False, queryset=iqs) #source='item_set',
     menu_id = serializers.PrimaryKeyRelatedField(many=False, queryset=mqs) #source='menu_set'
 
     class Meta:
         model = RNN_MenuItem
-        fields = ('url', 'id',  'item_id', 'menu_id', 'price', )
+        fields = ('url', 'id', #'highlight', 'owner',
+                 'item_id', 'menu_id', 'price', )
 
     def create(self, validated_data):
         item_id = validated_data['item_id'].id
@@ -25,10 +25,9 @@ class RNN_MenuItemSerializer(serializers.HyperlinkedModelSerializer):
         return rnn
 
 class RNN_ClientMenuSerializer(serializers.HyperlinkedModelSerializer):
-    # item_name = serializers.ReadOnlyField(source='item.name')
-    # menu_name = serializers.ReadOnlyField(source='menu.name')
     mqs = Menu.objects.all()
     cqs = Client.objects.all()
+
     menu_id = serializers.PrimaryKeyRelatedField(many=False, queryset=mqs) #source='menu_set'
     client_id = serializers.PrimaryKeyRelatedField(many=False, queryset=cqs) #source='item_set',
 
@@ -38,6 +37,8 @@ class RNN_ClientMenuSerializer(serializers.HyperlinkedModelSerializer):
                  'menu_id', 'client_id', 'status', )
 
     def create(self, validated_data):
+
+        # if 'menus_id' not in self.initial_data:
 
         menu_id = validated_data['menu_id'].id
         client_id = validated_data['client_id'].id
@@ -51,75 +52,91 @@ class RNN_ClientMenuSerializer(serializers.HyperlinkedModelSerializer):
 
 
 
-
 class ClientSerializer(serializers.HyperlinkedModelSerializer):
-    #owner = serializers.ReadOnlyField(source='owner.username')
+    # menus = RNN_ClientMenuSerializer(source='rnn_clientmenu_set', many=True, read_only=False)
 
-    # items = serializers.HyperlinkedIdentityField(
-    #     many=True,
-    #     read_only=True,
-    #     view_name='item-detail'
-    # )
-    menus = RNN_ClientMenuSerializer(source='rnn_clientmenu_set', many=True, read_only=False)
     class Meta:
         model = Client
-        fields = ('url', 'id',  #'highlight', 'owner',
-                  'menus', 'name', ) # , 'code', 'linenos', 'language', 'style')
+        fields = ('url', 'id',
+                  'name', 'location', ) # 'menus', )
 
     def create(self, validated_data):
-        name = validated_data['name']
-        # itemL = self.data['items']
-        menus_list = self.initial_data['menus']
-        c = len(menus_list)
-        if c==0:
-            client = Client.objects.create(name=name)
-
+        if 'name' in self.validated_data:
+            client = Client.objects.create(name=validated_data['name'])
         else:
-            # for item in items_list:
-            client = Client.objects.create(name=name, items=menus_list) #, item=item.id)
-
-
+            # client = Client.objects.create(name=validated_data['name'], items=validated_data['menus'])
+            client = Client.objects.create(name=validated_data['name'])
         return client
 
 class MenuSerializer(serializers.HyperlinkedModelSerializer):
-    #owner = serializers.ReadOnlyField(source='owner.username')
+    # items = RNN_MenuItemSerializer(source='rnn_menuitem_set', many=True, read_only=False)
 
-    # items = serializers.HyperlinkedIdentityField(
-    #     many=True,
-    #     read_only=True,
-    #     view_name='item-detail'
-    # )
-    items = RNN_MenuItemSerializer(source='rnn_menuitem_set', many=True, read_only=False)
     class Meta:
         model = Menu
-        fields = ('url', 'id',  #'highlight', 'owner',
-                  'items', 'name', ) # , 'code', 'linenos', 'language', 'style')
+        fields = ('url', 'id',
+                  'name', )
 
     def create(self, validated_data):
-        name = validated_data['name']
-        # itemL = self.data['items']
-        items_list = self.initial_data['items']
-        c = len(items_list)
-        if c==0:
-            menu = Menu.objects.create(name=name)
-
+        if 'name' not in self.validated_data:
+            menu = Menu.objects.create(name=validated_data['name'])
         else:
-            # for item in items_list:
-            menu = Menu.objects.create(name=name, items=items_list) #, item=item.id)
-
+            menu = Menu.objects.create(name=validated_data['name'])
+            # menu = Menu.objects.create(name=name, items=items_list) #, item=item.id)
 
         return menu
 
 class ItemSerializer(serializers.HyperlinkedModelSerializer):
-    #owner = serializers.ReadOnlyField(source='owner.username')
-    #highlight = serializers.HyperlinkedIdentityField(view_name='client-highlight', format='html')
 
     class Meta:
         model = Item
-        fields = ('url', 'id', #'highlight', 'owner',
-                  'name') # , 'code', 'linenos', 'language', 'style')
+        fields = ('url', 'id',
+                  'name')
 
-class BarmanSerializer(serializers.HyperlinkedModelSerializer):
+
+
+class RNN_ShiftEmployeeSerializer(serializers.HyperlinkedModelSerializer):
+    eqs = Employee.objects.all()
+    sqs = Shift.objects.all()
+
+    employee_id = serializers.PrimaryKeyRelatedField(many=False, queryset=eqs)
+    shift_id = serializers.PrimaryKeyRelatedField(many=False, queryset=sqs)
+
     class Meta:
-        model = Barman
-        fields = ('url', 'id', 'name', 'client', 'active')
+        model = RNN_ShiftEmployee
+        fields = ('url', 'id',
+                 'employee_id', 'shift_id', 'status', )
+
+    def create(self, validated_data):
+        employee_id = validated_data['employee_id'].id
+        shift_id = validated_data['menu_id'].id
+
+        employee = Employee.objects.get(pk=employee_id)
+        shift = Shift.objects.get(pk=shift_id)
+        status = validated_data['status']
+
+        rnn = RNN_MenuItem.objects.create(employee=employee, shift=shift, status=status)
+        return rnn
+
+
+class ShiftSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Menu
+        fields = ('url', 'id',
+                  'name', )
+
+    def create(self, validated_data):
+        if 'name' not in self.validated_data:
+            menu = Menu.objects.create(name=validated_data['name'])
+        else:
+            menu = Menu.objects.create(name=validated_data['name'])
+            # menu = Menu.objects.create(name=name, items=items_list) #, item=item.id)
+
+        return menu
+
+class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Employee
+        fields = ('url', 'id',
+                  'name')

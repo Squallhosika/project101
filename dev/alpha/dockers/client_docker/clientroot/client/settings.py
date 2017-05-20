@@ -25,7 +25,7 @@ SECRET_KEY = 'l5u$p#lpj4ric0l-2+d%%w(x-rg_5f%htm=5s3#ot*y)p3*59_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]','192.168.99.100','192.168.99.101'] #['localhost', '127.0.0.1', '[::1]']
+ALLOWED_HOSTS = [] #['localhost', '127.0.0.1', '[::1]']
 
 
 # Application definition
@@ -92,17 +92,6 @@ def get_env_variable(var_name):
         error_msg = "Set the %s environment variable" % var_name
         raise ImproperlyConfigured(error_msg)
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'client_db',
-#         'USER': 'root',
-#         'PASSWORD': 'root',
-#         'HOST': 'db',
-#         'PORT': '3306',
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -151,9 +140,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
-
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.AllowAny',
-    )
-}

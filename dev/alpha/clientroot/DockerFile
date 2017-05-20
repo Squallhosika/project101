@@ -5,3 +5,5 @@ WORKDIR /code
 ADD requirements.txt /code/
 RUN pip install -r requirements.txt
 ADD . /code/
+#RUN sed -i 's/\r//' docker-entrypoint.sh
+#ENTRYPOINT ["bash", "docker-entrypoint.sh"]

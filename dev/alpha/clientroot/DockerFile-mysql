@@ -1,0 +1,11 @@
+FROM mysql
+
+ENV MYSQL_ROOT_PASSWORD root
+ENV MYSQL_DATABASE client_db
+ENV MYSQL_USER kevin
+ENV MYSQL_PASSWORD 123
+
+RUN mkdir /code
+
+ADD init.sql /docker-entrypoint-initdb.d
+WORKDIR /code

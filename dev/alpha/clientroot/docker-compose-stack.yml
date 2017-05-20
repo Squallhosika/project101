@@ -1,16 +1,21 @@
  version: '3'
  services:
    db:
-     image: mysql
-     environment:
-        - MYSQL_ROOT_PASSWORD=root
-        - MYSQL_USER=root
-        - MYSQL_PASSWORD=root
-        - MYSQL_DATABASE=clientdb
+     image: 127.0.0.1:5000/clientroot_db
+     build:
+      context: .
+      dockerfile: Dockerfile-mysql
+     ports:
+      - 3306
+     volumes:
+       - .:/code
 
    web:
-     image: clientroot_web
-     command: python manage.py runserver 0.0.0.0:8000
+     image: 127.0.0.1:5000/clientroot_web
+     command: bash ./docker-entrypoint.sh
+     build:
+      context: .
+      dockerfile: Dockerfile
      volumes:
        - .:/code
      ports:
@@ -19,3 +24,5 @@
        - db
      deploy:
        replicas: 2
+       restart_policy:
+        condition: on-failure
