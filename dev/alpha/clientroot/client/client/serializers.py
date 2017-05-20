@@ -50,8 +50,6 @@ class RNN_ClientMenuSerializer(serializers.HyperlinkedModelSerializer):
         rnn = RNN_ClientMenu.objects.create(menu=menu, client=client, status=status)
         return rnn
 
-
-
 class ClientSerializer(serializers.HyperlinkedModelSerializer):
     # menus = RNN_ClientMenuSerializer(source='rnn_clientmenu_set', many=True, read_only=False)
 
@@ -108,28 +106,27 @@ class RNN_ShiftEmployeeSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         employee_id = validated_data['employee_id'].id
-        shift_id = validated_data['menu_id'].id
+        shift_id = validated_data['shift_id'].id
 
         employee = Employee.objects.get(pk=employee_id)
         shift = Shift.objects.get(pk=shift_id)
         status = validated_data['status']
 
-        rnn = RNN_MenuItem.objects.create(employee=employee, shift=shift, status=status)
+        rnn = RNN_ShiftEmployee.objects.create(employee=employee, shift=shift, status=status)
         return rnn
-
 
 class ShiftSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
-        model = Menu
+        model = Shift
         fields = ('url', 'id',
                   'name', )
 
     def create(self, validated_data):
         if 'name' not in self.validated_data:
-            menu = Menu.objects.create(name=validated_data['name'])
+            menu = Shift.objects.create(name=validated_data['name'])
         else:
-            menu = Menu.objects.create(name=validated_data['name'])
+            menu = Shift.objects.create(name=validated_data['name'])
             # menu = Menu.objects.create(name=name, items=items_list) #, item=item.id)
 
         return menu
