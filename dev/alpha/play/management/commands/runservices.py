@@ -25,5 +25,5 @@ class Command(BaseCommand):
         cmd1 = 'start cmd /k ' + UNIC_ROOT + '\clientroot\manage.py runserver 127.0.0.1:8000'
         cmd2 = 'start cmd /k ' + UNIC_ROOT + '\orderroot\manage.py runserver 127.0.0.1:8001'
         os.system(str(cmd1))
-        # os.system(str(cmd2))
+        os.system(str(cmd2))
         sys.stdout.write(self.service)
