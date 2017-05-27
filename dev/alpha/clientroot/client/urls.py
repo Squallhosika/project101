@@ -35,6 +35,8 @@ router.register(r'client/shiftemployees', views.RNN_ShiftEmployeeViewSet)
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^client/clientaround/', views.client_around),
+    url(r'^client/getmenu/', views.get_active_menu),
+    url(r'^client/getitems/', views.get_items_from_menu),
     url(r'^client/createclient/', views.create_client),
     url(r'^client/createmenu/', views.create_menu),
     url(r'^client/createitem/', views.create_item),

@@ -52,6 +52,21 @@ def client_around(request):
         serializer = ClientSerializer(close_clients, context={'request': request}, many=True)
         return Response(serializer.data)
 
+@api_view(['GET'])
+def get_active_menu(request):
+    try:
+        client_id = request.data.get('client_id')
+        active_menu = RNN_ClientMenu.objects.filter(client_id=client_id)
+    except Client.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = RNN_ClientMenuSerializer(active_menu, context={'request': request}, many=True)
+        return Response(serializer.data)
+
+
+
+
 
 @api_view(['POST'])
 def create_client(request):
