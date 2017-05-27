@@ -1,7 +1,41 @@
 from rest_framework import serializers
 from order.order.models import *
 
+
+class ItemSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Item
+        fields = ('url', 'id', 'name')
+
+
+class OrderSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Order
+        fields = ('url', 'id', 'client_id', 'user_id')
+
+
+class OrderFlowSerializer(serializers.HyperlinkedModelSerializer):
+
+    oqs = Order.objects.all()
+    order_id = serializers.PrimaryKeyRelatedField(many=False, queryset=oqs)
+
+    class Meta:
+        model = OrderFlow
+        fields = ('url', 'id', 'order_id', 'client_id', 'employee_id', 'status', 'rank')
+
+
+class QueueSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Queue
+        fields = ('url', 'id', 'client_id', 'position', 'last_rank')
+
+
 class RNN_OrderItemSerializer(serializers.HyperlinkedModelSerializer):
+
+    # TODO Check this part do we load all the objects:
     iqs = Item.objects.all()
     oqs = Order.objects.all()
     item_id = serializers.PrimaryKeyRelatedField(many=False, queryset=iqs)
@@ -22,33 +56,3 @@ class RNN_OrderItemSerializer(serializers.HyperlinkedModelSerializer):
 
         rnn = RNN_OrderItem.objects.create(item=item, order=order, price=price, quantity=quantity)
         return rnn
-
-
-class OrderSerializer(serializers.HyperlinkedModelSerializer):
-
-    class Meta:
-        model = Order
-        fields = ('url', 'id', 'client_id', 'user_id', 'status')
-
-class ItemSerializer(serializers.HyperlinkedModelSerializer):
-
-    class Meta:
-        model = Item
-        fields = ('url', 'id', 'name')
-
-class QueueSerializer(serializers.HyperlinkedModelSerializer):
-
-    class Meta:
-        model = OrderFlow
-        fields = ('url', 'id', 'client_id', 'status')
-
-class OrderInQueueSerializer(serializers.HyperlinkedModelSerializer):
-
-    oqs = Order.objects.all()
-    qqs = OrderFlow.objects.all()
-    order_id = serializers.PrimaryKeyRelatedField(many=False, queryset=oqs)
-    queue_id = serializers.PrimaryKeyRelatedField(many=False, queryset=qqs)
-
-    class Meta:
-        model = OrderInQueue
-        fields = ('url', 'id', 'order_id', 'queue_id', 'position')

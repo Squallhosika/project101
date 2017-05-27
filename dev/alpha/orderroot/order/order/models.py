@@ -16,7 +16,6 @@ class Order(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     client_id = models.IntegerField()
     user_id = models.IntegerField()
-    status = models.CharField(max_length=100, blank=True, default='')
     items = models.ManyToManyField(Item, through='RNN_OrderItem', blank=True)
 
     def __str__(self):
@@ -30,21 +29,23 @@ class OrderFlow(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     client_id = models.IntegerField()
-    barman_id = models.IntegerField(default=-1)
+    employee_id = models.IntegerField(default=-1)
     status = models.CharField(max_length=100, blank=True, default='')
-    position = models.IntegerField(default=-1)
+    rank = models.IntegerField(default=-1)
 
     def __str__(self):
         return str(self.id)
 
 
-class OrderInQueue(models.Model):
+# TODO we assume only on queue by client find a clean way to insure that
+class Queue(models.Model):
     created = models.DateTimeField(auto_now_add=True)
-    # TODO change Foreign to OneToOneField or put primary_key = true on ForeignKey Order
-    # order = models.OneToOneField(Order, on_delete=models.CASCADE, primary_key=True)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    queue = models.ForeignKey(OrderFlow, on_delete=models.CASCADE)
+    client_id = models.IntegerField()
     position = models.IntegerField(default=-1)
+    last_rank = models.IntegerField(default=-1)
+
+    def __str__(self):
+        return str(self.id)
 
 
 class RNN_OrderItem(models.Model):

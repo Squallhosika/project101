@@ -137,3 +137,26 @@ class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
         model = Employee
         fields = ('url', 'id',
                   'name')
+
+
+class RNN_ClientShiftSerializer(serializers.HyperlinkedModelSerializer):
+    cqs = Client.objects.all()
+    sqs = Shift.objects.all()
+
+    client_id = serializers.PrimaryKeyRelatedField(many=False, queryset=cqs)
+    shift_id = serializers.PrimaryKeyRelatedField(many=False, queryset=sqs)
+
+    class Meta:
+        model = RNN_ShiftEmployee
+        fields = ('url', 'id', 'client_id', 'shift_id', 'status')
+
+    def create(self, validated_data):
+        client_id = validated_data['client_id'].id
+        shift_id = validated_data['shift_id'].id
+
+        client = Client.objects.get(pk=client_id)
+        shift = Shift.objects.get(pk=shift_id)
+        status = validated_data['status']
+
+        rnn = RNN_ClientShift.objects.create(client=client, shift=shift, status=status)
+        return rnn

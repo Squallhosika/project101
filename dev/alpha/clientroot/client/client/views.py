@@ -41,6 +41,11 @@ class RNN_ShiftEmployeeViewSet(viewsets.ModelViewSet):
     serializer_class = RNN_ShiftEmployeeSerializer
 
 
+class RNN_ClientShiftViewSet(viewsets.ModelViewSet):
+    queryset = RNN_ClientShift.objects.all()
+    serializer_class = RNN_ClientShiftSerializer
+
+
 @api_view(['GET'])
 def client_around(request):
     try:
@@ -354,11 +359,36 @@ def remove_item_from_menu(request):
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(['DELETE'])
 def remove_employee_from_shift(request):
+
+    if 'id' in request.data:
+        return remove_employee_from_shift_by_id(request)
+    else:
+        return remove_employee_from_shift_by_shift_employee(request)
+
+
+def remove_employee_from_shift_by_id(request):
     try:
         pk = request.data.get('id')
         shift_employee = RNN_ShiftEmployee.objects.get(pk=pk)
+    except RNN_ShiftEmployee.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'DELETE':
+        shift_employee.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+def remove_employee_from_shift_by_shift_employee(request):
+    try:
+        shift_id = request.data.get('shift_id')
+        employee_id = request.data.get('employee_id')
+        shift = Shift.objects.get(id=shift_id)
+        employee = Shift.objects.get(id=employee_id)
+        shift_employee = RNN_ShiftEmployee.objects.get(shift=shift, employee=employee)
     except RNN_ShiftEmployee.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 

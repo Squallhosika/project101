@@ -6,14 +6,24 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 
+class ItemViewSet(viewsets.ModelViewSet):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+
+
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
 
-class ItemViewSet(viewsets.ModelViewSet):
-    queryset = Item.objects.all()
-    serializer_class = ItemSerializer
+class OrderFlowViewSet(viewsets.ModelViewSet):
+    queryset = OrderFlow.objects.all()
+    serializer_class = OrderFlowSerializer
+
+
+class QueueViewSet(viewsets.ModelViewSet):
+    queryset = Queue.objects.all()
+    serializer_class = QueueSerializer
 
 
 class RNN_OrderItemViewSet(viewsets.ModelViewSet):
@@ -21,33 +31,21 @@ class RNN_OrderItemViewSet(viewsets.ModelViewSet):
     serializer_class = RNN_OrderItemSerializer
 
 
-class QueueViewSet(viewsets.ModelViewSet):
-    queryset = OrderFlow.objects.all()
-    serializer_class = QueueSerializer
-
-
-class OrderInQueueViewSet(viewsets.ModelViewSet):
-    queryset = OrderInQueue.objects.all()
-    serializer_class = OrderInQueueSerializer
-
-
-def order_id_to_position(request):
-    data = JSONParser().parse(request)
+def order_id_to_last_flow(request):
     try:
-        order = Order.objects.get(id=data['order_id'])
+        order = Order.objects.get(id=request.data['order_id'])
     except Order.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     try:
-        return OrderInQueue.objects.get(order=order), order
-    except OrderInQueue.DoesNotExist:
+        return OrderFlow.objects.get(order=order, many=True).lastest()
+    except OrderFlow.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 def order_id_to_item_list(request):
-    data = JSONParser().parse(request)
     try:
-        order = Order.objects.get(id=data['order_id'])
+        order = Order.objects.get(id=request.data['order_id'])
     except Order.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -55,6 +53,40 @@ def order_id_to_item_list(request):
         return RNN_OrderItem.objects.filter(order=order)
     except RNN_OrderItem.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+def create_next_flow(order_flow, flow_status, employee_id=None):
+    if not employee_id:
+        employee_id = order_flow.employee_id
+    return OrderFlow.objects.create(order=order_flow.order,
+                                    client_id=order_flow.client_id,
+                                    employee_id=employee_id,
+                                    status=flow_status,
+                                    rank=order_flow.rank)
+
+
+@api_view(['POST'])
+def create_item(request):
+    if request.method == 'POST':
+        serializer = ItemSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['DELETE'])
+def delete_item(request):
+    try:
+        id = request.data.get('id')
+        item = Item.objects.get(pk=id)
+    except Item.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'DELETE':
+        item.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -77,6 +109,49 @@ def order_add_item(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['POST'])
+def place_order(request):
+    # TODO check if it is ok to use request.data directly or
+    # we have to use JSONParser
+    # data = JSONParser().parse(request)
+    try:
+        order = Order.objects.get(id=request.data['order_id'])
+    except Order.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'POST':
+        queue = Queue.objects.filter(client_id=order.client_id).get()
+        queue.last_rank += 1
+        order_flow = OrderFlow.objects.create(order=order, client_id=order.client_id,
+                                              status='PendingValidationClient', rank=queue.last_rank)
+        queue.save()
+        serializer = OrderFlowSerializer(order_flow, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+def order_on_status(request, status):
+    order_flow = OrderFlow.objects.filter(client_id=request.data['client_id'], status=status)
+
+    if request.method == 'GET':
+        serializer = OrderFlowSerializer(order_flow, many=True, context={'request': request})
+        return Response(serializer.data)
+
+
+@api_view(['GET'])
+def new_orders(request):
+    return order_on_status(request, 'PendingValidationClient')
+
+
+@api_view(['GET'])
+def beingserve_orders(request):
+    return order_on_status(request, 'beingServe')
+
+
+@api_view(['GET'])
+def inqueue_orders(request):
+    return order_on_status(request, 'accepted_by_client')
+
+
 @api_view(['GET'])
 def items_by_order(request):
     items = order_id_to_item_list(request)
@@ -85,67 +160,39 @@ def items_by_order(request):
         return Response(serializer.data)
 
 
-@api_view(['POST'])
-def place_order(request):
-    data = JSONParser().parse(request)
-    try:
-        order = Order.objects.get(id=data['order_id'])
-    except Order.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    try:
-        queue = OrderFlow.objects.get(id=data['queue_id'])
-    except OrderFlow.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'POST':
-        orders_in_queue = OrderInQueue.objects.filter(queue=queue)
-        # TODO maybe there is a better way to do that
-        positions = [order.position for order in orders_in_queue]
-        new_pos = max(positions) + 1
-        order_in_queue = OrderInQueue.objects.create(order=order, queue=queue, position=new_pos)
-        serializer = OrderInQueueSerializer(order_in_queue, context={'request': request})
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
-def end_order(request, status):
-    order_in_queue, order = order_id_to_position(request)
+def update_status_order(request, flow_status):
+    order_flow = order_id_to_last_flow(request)
     if request.method == 'PUT':
-        pos = order_in_queue.position
-        orders_in_queue = OrderInQueue.objects.filter(queue=order_in_queue.queue)
-        # TODO can do better that the lop && belong to the business logic
-        for ordq in orders_in_queue:
-            if ordq.position > pos:
-                ordq.position = ordq.position - 1
-                ordq.save()
-        order_in_queue.delete()
-        order.status = status
-        order.save()
-        serializer = OrderSerializer(order, context={'request': request})
+        new_flow = create_next_flow(order_flow, flow_status)
+        serializer = OrderFlowSerializer(new_flow, context={'request': request})
         return Response(serializer.data)
 
 
 @api_view(['PUT'])
-def cancel_order(request):
-    return end_order(request, 'canceled')
+def order_accepted_by_client(request):
+    return update_status_order(request, 'accepted_by_client')
 
 
 @api_view(['PUT'])
-def complete_order(request):
-    return end_order(request, 'completed')
+def order_rejected_by_client(request):
+    return update_status_order(request, 'rejected_by_client')
 
 
-@api_view(['GET'])
-def queue_position(request):
-    position, _ = order_id_to_position(request)
-    if request.method == 'GET':
-        serializer = OrderInQueueSerializer(position)
-        return Response(serializer.data)
+@api_view(['PUT'])
+def order_canceled_by_user(request):
+    return update_status_order(request, 'canceled_by_user')
+
+
+@api_view(['PUT'])
+def order_completed(request):
+    return update_status_order(request, 'completed')
+
 
 # TODO for now just the position is enough
 @api_view(['GET'])
 def get_estimated_time():
     pass
+
 
 @api_view(['POST'])
 def create_queue(request):
@@ -159,9 +206,8 @@ def create_queue(request):
 
 @api_view(['DELETE'])
 def delete_queue(request):
-    data = JSONParser().parse(request)
     try:
-        queue = OrderFlow.objects.get(id=data['id'])
+        queue = OrderFlow.objects.get(id=request.data['id'])
     except OrderFlow.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -171,46 +217,27 @@ def delete_queue(request):
 
 
 @api_view(['GET'])
-def orders_in_queue(request):
-    data = JSONParser().parse(request)
-    try:
-        queue = OrderFlow.objects.get(id=data['queue_id'])
-    except OrderFlow.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    orders = OrderInQueue.obects.filter(queue=queue)
-
+def last_orderflow(request):
     if request.method == 'GET':
-        serializer = OrderInQueueSerializer(orders, many=True, context={'request': request})
-        return Response(serializer.data)
-
-
-@api_view(['PUT'])
-def order_status(request):
-    data = JSONParser().parse(request)
-    order_id = data['order_id']
-    status = data['status']
-
-    try:
-        order = Order.objects.get(id=order_id)
-    except Order.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'PUT':
-        order.status = status
-        order.save()
-        serializer = OrderSerializer(order, context={'request': request})
-        return Response(serializer.data)
+        return order_id_to_last_flow(request)
 
 
 @api_view(['GET'])
 def next_to_serve(request):
-    data = JSONParser().parse(request)
+    client_id = request.data['client_id']
+    employee_id = request.data['employee_id']
     try:
-        queue = OrderFlow.objects.get(id=data['queue_id'])
-    except OrderFlow.DoesNotExist:
+        queue = Queue.objects.get(client_id=client_id)
+    except Queue.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    order_in_queue = OrderInQueue.obects.filter(queue=queue, position=1)
 
     if request.method == 'GET':
-        serializer = OrderSerializer(order_in_queue.order, context={'request': request})
-        return Response(serializer.data)
+        pos = queue.position + 1
+        while pos <= queue.last_rank:
+            try:
+                order_flow = Queue.objects.get(client_id=client_id, rank=pos)
+            except OrderFlow.DoesNotExist:
+                continue
+            new_flow = create_next_flow(order_flow, 'beingServe', employee_id)
+            serializer = OrderFlowSerializer(new_flow.order, context={'request': request})
+            return Response(serializer.data)

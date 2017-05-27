@@ -103,3 +103,12 @@ class RNN_ShiftEmployee(models.Model):
 
     def __str__(self):
         return self.shift.name
+
+
+class RNN_ClientShift(models.Model):
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    shift = models.ForeignKey(Shift, on_delete=models.CASCADE, blank=True)
+    status = models.CharField(max_length=100, blank=True, default='')
+
+    class Meta:
+        pass

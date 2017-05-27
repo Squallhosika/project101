@@ -29,6 +29,7 @@ router.register(r'client/employees', views.EmployeeViewSet)
 router.register(r'client/menuitems', views.RNN_MenuItemViewSet)
 router.register(r'client/clientmenus', views.RNN_ClientMenuViewSet)
 router.register(r'client/shiftemployees', views.RNN_ShiftEmployeeViewSet)
+router.register(r'client/clientshifts', views.RNN_ClientShiftViewSet)
 
 # The API URLs are now determined automatically by the router.
 # Additionally, we include the login URLs for the browsable API.
@@ -50,5 +51,8 @@ urlpatterns = [
     url(r'^client/itemmenus/', views.get_items_from_menu),
     url(r'^client/addmenuclient/', views.add_menu_to_client),
     url(r'^client/removemenuclient/', views.remove_menu_from_client),
+    url(r'^client/getemployeesfromshift/', views.get_employees_from_shift),
+    url(r'^client/addemployeetoshift/', views.add_employee_to_shift),
+    url(r'^client/removeemployeefromshift/', views.remove_employee_from_shift),
     url(r'^', include(router.urls))
 ]

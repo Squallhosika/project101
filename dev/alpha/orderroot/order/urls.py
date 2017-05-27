@@ -26,22 +26,26 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 router.register(r'order/items', views.ItemViewSet)
 router.register(r'order/orders', views.OrderViewSet)
-router.register(r'order/orderitems', views.RNN_OrderItemViewSet)
+router.register(r'order/orderflows', views.OrderFlowViewSet)
 router.register(r'order/queues', views.QueueViewSet)
-router.register(r'order/orderinqueues', views.OrderInQueueViewSet)
+router.register(r'order/orderitems', views.RNN_OrderItemViewSet)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include(router.urls)),
+    url('order/createitem', views.create_item),
     url('order/createorder', views.create_order),
     url('order/orderadditem', views.order_add_item),
-    # url('order/itemsbyorder', views.items_by_order),
     url('order/placeorder', views.place_order),
-    url('order/cancelorder', views.cancel_order),
-    url('order/completeorder', views.complete_order),
-    # url('order/queueposition', views.queue_position),
+    url('order/neworders', views.new_orders),
+    url('order/beingserveorders', views.beingserve_orders),
+    url('order/inqueueorders', views.inqueue_orders),
+    url('order/itemsbyorder', views.items_by_order),
+    url('order/orderacceptedbyclient', views.order_accepted_by_client),
+    url('order/orderrejectedbyclient', views.order_rejected_by_client),
+    url('order/ordercanceledbyuser', views.order_canceled_by_user),
+    url('order/ordercompleted', views.order_completed),
     url('order/createqueue', views.create_queue),
     url('order/deletequeue', views.delete_queue),
-    # url('order/ordersinqueue', views.orders_in_queue),
-    url('order/orderstatus', views.order_status)
+    url('order/nexttoserve', views.next_to_serve),
 ]
