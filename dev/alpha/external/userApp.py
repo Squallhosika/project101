@@ -31,15 +31,51 @@ def client_around():
 
 def get_menu(client_id):
     service_name = 'client'
+
     function_name = 'getmenu'
     params = {'client_id': client_id}
 
     req0 = call_function('GET', service_name, function_name, params)
-    menu_id = ''
+    # c=req0.json()
+    menu_id = req0.json()[0]['menu_id']
 
     function_name = 'getitems'
     params = {'menu_id': menu_id}
-    return req0.json()
+
+    req1 = call_function('GET', service_name, function_name, params)
+    # c = req1.json()
+    return req1.json()
+
+
+
+def create_order(items):
+    service_name = 'order'
+
+    function_name = 'createorder'
+    client_id = items[0]['client_id']
+    params = {'user_id': 1, 'client_id': client_id}
+
+    req0 = call_function('POST', service_name, function_name, params)
+    order_id = req0.json()[0]['id']
+
+    for item in items:
+        item_id = item['item_id']
+        price = item['price']
+        qty = item['qty']
+
+        function_name = 'orderadditem'
+        params = {'item_id': 1, 'order_id': order_id, 'price': price, 'quantity': qty}
+
+        req1 = call_function('POST', service_name, function_name, params)
+        # call_function('POST', 'order', 'orderadditem', {'item_id': 1, 'order_id': order_id, 'price': 2.5, 'quantity': 4})
+
+    function_name = 'placeorder'
+    params = {'order_id': order_id}
+
+    req2 = call_function('POST', service_name, function_name, params)
+    return req2.json()
+
+
 
 # if __name__ == '__main__':
 #
