@@ -9,14 +9,30 @@ import json
 
 input_dir = sys.path.append(os.getcwd())
 
-def list_clients():
 
+
+def list_orders():
+    #delete current list
+    for wid in order_bottom.winfo_children():
+        wid.destroy()
+
+    order_list = u.client_pending_orders()
+
+    for order in order_list:
+        user_id = order['user_id']
+        client_id = order['client_id']
+        id = order['id']
+
+        create_order_lbl(order_bottom, client_id, id)
+
+def list_clients():
+    #delete current list
     for wid in client_bottom.winfo_children():
         wid.destroy()
 
 
     client_list = u.client_around()
-    json_string = json.dumps(client_list)
+    # json_string = json.dumps(client_list)
     # c = str(type(client_list)) #json.loads(json_string)
     # c = client_list
     # c = ''
@@ -33,6 +49,10 @@ def list_clients():
 def create_client_btn(frame, name, id):
     button = tk.Button(frame, text=name, width=25,  command=lambda: create_menu(id))
     button.grid() #.pack()
+
+def create_order_lbl(frame, client_id, order_id):
+    label = tk.Label(frame, text='Order: ' + str(order_id) + '- Client: ' + str(client_id),fg="black")
+    label.grid()
 
 def create_item(frame, item, client_id):
     item_id = item['item_id']
@@ -91,7 +111,7 @@ def create_order():
     entries = get_entries()
     u.create_order(entries)
 
-    return c
+    # return c
 
 def init_client_frame(root):
     client_frame = tk.Frame(root)
@@ -152,7 +172,7 @@ def init_order_frame(root):
     button = tk.Button(top, text='Histo', width=25, command='1')
     button.grid(row=1, column=0)
 
-    button1 = tk.Button(top, text='Refresh', width=25, command='1')
+    button1 = tk.Button(top, text='Refresh', width=25, command=lambda: list_orders())
     button1.grid(row=1, column=1)
 
     return bottom
