@@ -161,7 +161,7 @@ if __name__ == "__main__":
     # sys.stdout.write("######################")
 
     root = tk.Tk()
-    root.title("Client List")
+    root.title("User Unicorn App")
     root["padx"] = 60
     root["pady"] = 40
 
