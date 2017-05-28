@@ -63,8 +63,18 @@ class Command(BaseCommand):
             else:
                 cmd = UNIC_ROOT + r'\play\setup_dbs.py -s ' + str(self.service) + ' -t ' + str(self.table)
 
-        if self.service == 'order':
-            cmd = 'start cmd /k ' + UNIC_ROOT + r'\play\setup_dbs.py order'
+        elif self.service == 'order':
+            if self.flush:
+                cmd0 = UNIC_ROOT + '\\' + str(self.service) + r'root\manage.py flush'
+                os.system(str(cmd0))
+
+            if self.table == 'all':
+                cmd = UNIC_ROOT + r'\play\setup_dbs.py -s ' + str(self.service)
+            else:
+                cmd = UNIC_ROOT + r'\play\setup_dbs.py -s ' + str(self.service) + ' -t ' + str(self.table)
+
+        # if self.service == 'order':
+        #     cmd = 'start cmd /k ' + UNIC_ROOT + r'\play\setup_dbs.py order'
 
         os.system(str(cmd))
         # sys.stdout.write(app)
