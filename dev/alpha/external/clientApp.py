@@ -10,16 +10,16 @@ class ClientApp():
         self.inqueue_order = None
         self.active_employees = []
         self.update_pending_order()
-        self.update_beingserve_order()
-        self.update_inqueue_order()
-        self.update_active_employees()
+        # self.update_beingserve_order()
+        # self.update_inqueue_order()
+        # self.update_active_employees()
 
     def update_pending_order(self):
         req_new_orders = call_function('GET', 'order', 'neworders', {'client_id': self.client_id})
         self.pending_order = req_new_orders.json()
 
     def next_pending_order(self):
-        return min(self.pending_order, lambda po: po['rank'])
+        return min(self.pending_order, key=lambda po: po.get('rank'))
 
     def validate_next_pending_order(self):
         order = self.next_pending_order()

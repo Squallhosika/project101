@@ -38,7 +38,7 @@ def order_id_to_last_flow(request):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     try:
-        return OrderFlow.objects.get(order=order, many=True).lastest()
+        return OrderFlow.objects.filter(order=order).latest('created')
     except OrderFlow.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -163,8 +163,9 @@ def items_by_order(request):
 def update_status_order(request, flow_status):
     order_flow = order_id_to_last_flow(request)
     if request.method == 'PUT':
-        new_flow = create_next_flow(order_flow, flow_status)
-        serializer = OrderFlowSerializer(new_flow, context={'request': request})
+        order_flow.status = flow_status
+        order_flow.save()
+        serializer = OrderFlowSerializer(order_flow, context={'request': request})
         return Response(serializer.data)
 
 
