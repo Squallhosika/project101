@@ -47,12 +47,6 @@ def prepare_dic_files(service):
     # input_files = {}
     input_files = collections.OrderedDict()
     if service == 'client':
-        # input_files = {
-        #     'createclient': 'clients.csv',
-        #     'createmenu': 'menus.csv',
-        #     'createitem': 'items.csv',
-        #     'additemmenu': 'rnn_menu_item.csv',
-        # }
         input_files['createclient'] = 'clients.csv'
         input_files['createmenu'] = 'menus.csv'
         input_files['createitem'] = 'items.csv'
@@ -60,9 +54,12 @@ def prepare_dic_files(service):
         input_files['addmenuclient'] = 'rnn_client_menu.csv'
 
     elif service == 'order':
-        input_files = {
-            'createitem': 'items.csv',
-        }
+        # input_files = {
+        #     'createitem': 'items.csv',
+        # }
+        input_files['createitem'] = 'items.csv'
+        # input_files['createorder'] = 'orders.csv'
+
 
     return input_files
 

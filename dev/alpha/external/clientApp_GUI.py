@@ -8,37 +8,67 @@ import sys
 import json
 
 
-if __name__ == "__main__":
-    # sys.stdout.write("######################")
+def init_pending_frame(root):
+    pending_frame = tk.Frame(root)
+    pending_frame.grid(row=0, column=0)
 
+    top=tk.Frame(pending_frame)
+    bottom =tk.Frame(pending_frame)
+
+    top.grid(row=0)
+    bottom.grid(row=1)
+
+    label = tk.Label(top, text='List of pending orders', fg="dark green")
+    label.grid(row=0, column=0, columnspan=2)
+
+    button = tk.Button(top, text='Validate', width=25, command='1')
+    button.grid(row=1, column=0)
+
+    button1 = tk.Button(top, text='Reject', width=25, command='1')
+    button1.grid(row=1, column=1)
+
+    return bottom
+
+def init_employee_frame(root):
+    pass
+
+def init_order_frame(root):
+    order_frame = tk.Frame(root)
+    order_frame.grid(row=0, column=1)
+
+    top=tk.Frame(order_frame)
+    bottom =tk.Frame(order_frame)
+
+    top.grid(row=0)
+    bottom.grid(row=1)
+
+    label = tk.Label(top, text='List of orders', fg="dark green")
+    label.grid(row=0, column=0, columnspan=2)
+
+    button = tk.Button(top, text='Pick Up Request', width=25, command='1')
+    button.grid(row=1, column=0)
+
+    button1 = tk.Button(top, text='Complete', width=25, command='1')
+    button1.grid(row=1, column=1)
+
+    return bottom
+
+
+if __name__ == "__main__":
     client = ca.ClientApp(1)
 
     root = tk.Tk()
-    root.title("Client List")
-    root["padx"] = 30
-    root["pady"] = 20
+    root.title("Client Unicorn App")
+    root["padx"] = 60
+    root["pady"] = 40
 
-    frame = tk.Frame(root)
-    frame.pack()
+    main_frame = tk.Frame(root)
+    main_frame.grid(row=0, column=0)
 
-    client_frame = tk.Frame(root)
-    client_frame.pack(side='bottom')
+    pending_bottom = init_pending_frame(root)
 
-    label = tk.Label(frame, text='List of clients', fg="dark green")
-    label.pack()
+    order_bottom = init_order_frame(root)
 
-    button = tk.Button(frame, text='List', width=25, command=lambda: list_clients(label, client_frame))
-    button.pack()
-
-    button1 = tk.Button(frame, text='Stop', width=25, command=root.destroy)
-    button1.pack()
-
-    listbox = tk.Listbox(root)
-    listbox.pack()
-
-    listbox.insert(tk.END, "a list entry")
-
-    for item in ["one", "two", "three", "four"]:
-        listbox.insert(tk.END, item)
+    employee_bottom = init_employee_frame(root)
 
     root.mainloop()
