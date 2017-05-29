@@ -6,7 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/userroot" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/orderroot" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.5.2 virtualenv at C:\Users\Jonathan\git\unicorn\dev\alpha\env" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.5.2 virtualenv at unicorn\dev\alpha\env" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TestRunnerService">
