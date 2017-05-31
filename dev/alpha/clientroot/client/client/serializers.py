@@ -55,16 +55,7 @@ class ClientSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Client
-        fields = ('url', 'id',
-                  'name', 'location', ) # 'menus', )
-
-    def create(self, validated_data):
-        if 'name' in self.validated_data:
-            client = Client.objects.create(name=validated_data['name'])
-        else:
-            # client = Client.objects.create(name=validated_data['name'], items=validated_data['menus'])
-            client = Client.objects.create(name=validated_data['name'])
-        return client
+        fields = ('url', 'id', 'name', 'location', )
 
 class MenuSerializer(serializers.HyperlinkedModelSerializer):
     # items = RNN_MenuItemSerializer(source='rnn_menuitem_set', many=True, read_only=False)

@@ -387,7 +387,7 @@ def remove_employee_from_shift_by_shift_employee(request):
         shift_id = request.data.get('shift_id')
         employee_id = request.data.get('employee_id')
         shift = Shift.objects.get(id=shift_id)
-        employee = Shift.objects.get(id=employee_id)
+        employee = Employee.objects.get(id=employee_id)
         shift_employee = RNN_ShiftEmployee.objects.get(shift=shift, employee=employee)
     except RNN_ShiftEmployee.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)

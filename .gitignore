@@ -61,3 +61,8 @@ Thumbs.db
 /dev/alpha/.idea/alpha.iml
 /dev/alpha/.idea/misc.xml
 /dev/alpha/.idea/vcs.xml
+
+# directories names #
+#####################
+__pycache__
+migrations

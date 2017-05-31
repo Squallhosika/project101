@@ -38,7 +38,7 @@ def order_id_to_last_flow(request):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     try:
-        return OrderFlow.objects.get(order=order, many=True).lastest()
+        return OrderFlow.objects.filter(order=order).latest('created')
     except OrderFlow.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -163,8 +163,9 @@ def items_by_order(request):
 def update_status_order(request, flow_status):
     order_flow = order_id_to_last_flow(request)
     if request.method == 'PUT':
-        new_flow = create_next_flow(order_flow, flow_status)
-        serializer = OrderFlowSerializer(new_flow, context={'request': request})
+        order_flow.status = flow_status
+        order_flow.save()
+        serializer = OrderFlowSerializer(order_flow, context={'request': request})
         return Response(serializer.data)
 
 
@@ -222,7 +223,7 @@ def last_orderflow(request):
         return order_id_to_last_flow(request)
 
 
-@api_view(['GET'])
+@api_view(['PUT'])
 def next_to_serve(request):
     client_id = request.data['client_id']
     employee_id = request.data['employee_id']
@@ -231,13 +232,18 @@ def next_to_serve(request):
     except Queue.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'GET':
-        pos = queue.position + 1
+    if request.method == 'PUT':
+        pos = queue.position
         while pos <= queue.last_rank:
+            pos += 1
             try:
-                order_flow = Queue.objects.get(client_id=client_id, rank=pos)
+                order_flow = OrderFlow.objects.get(client_id=client_id, rank=pos)
+                if order_flow.status != 'accepted_by_client':
+                    continue
             except OrderFlow.DoesNotExist:
                 continue
-            new_flow = create_next_flow(order_flow, 'beingServe', employee_id)
-            serializer = OrderFlowSerializer(new_flow.order, context={'request': request})
+            order_flow.employee_id = employee_id
+            order_flow.status = 'beingServe'
+            order_flow.save()
+            serializer = OrderFlowSerializer(order_flow, context={'request': request})
             return Response(serializer.data)
