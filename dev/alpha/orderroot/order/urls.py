@@ -51,6 +51,7 @@ urlpatterns = [
     url('order/nexttoserve', views.next_to_serve),
     url('order/orderbyclientstatus', views.get_orders_by_client_status),
     url('order/ordervalidate', views.order_validate),
+    url('order/orderpickup', views.order_pickup),
 
 
 ]

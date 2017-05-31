@@ -70,6 +70,7 @@ class Employee(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=100, blank=True, default='')
     status = models.CharField(max_length=100, blank=True, default='')
+    client_id = models.ForeignKey(Client, on_delete=models.CASCADE)
 
     def __str__(self):              # __unicode__ on Python 2
         return self.name

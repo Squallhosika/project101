@@ -123,11 +123,12 @@ class ShiftSerializer(serializers.HyperlinkedModelSerializer):
         return menu
 
 class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
+    cqs = Client.objects.all()
+    client_id = serializers.PrimaryKeyRelatedField(many=False, queryset=cqs)
 
     class Meta:
         model = Employee
-        fields = ('url', 'id',
-                  'name')
+        fields = ('url', 'id','name','client_id')
 
 
 class RNN_ClientShiftSerializer(serializers.HyperlinkedModelSerializer):
