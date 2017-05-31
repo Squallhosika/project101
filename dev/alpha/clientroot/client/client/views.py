@@ -40,10 +40,10 @@ class RNN_ShiftEmployeeViewSet(viewsets.ModelViewSet):
     queryset = RNN_ShiftEmployee.objects.all()
     serializer_class = RNN_ShiftEmployeeSerializer
 
-
 class RNN_ClientShiftViewSet(viewsets.ModelViewSet):
     queryset = RNN_ClientShift.objects.all()
     serializer_class = RNN_ClientShiftSerializer
+
 
 
 @api_view(['GET'])

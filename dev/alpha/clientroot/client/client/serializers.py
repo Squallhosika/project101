@@ -65,14 +65,14 @@ class MenuSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'id',
                   'name', )
 
-    def create(self, validated_data):
-        if 'name' not in self.validated_data:
-            menu = Menu.objects.create(name=validated_data['name'])
-        else:
-            menu = Menu.objects.create(name=validated_data['name'])
-            # menu = Menu.objects.create(name=name, items=items_list) #, item=item.id)
-
-        return menu
+    # def create(self, validated_data):
+    #     if 'name' not in self.validated_data:
+    #         menu = Menu.objects.create(name=validated_data['name'])
+    #     else:
+    #         menu = Menu.objects.create(name=validated_data['name'])
+    #         # menu = Menu.objects.create(name=name, items=items_list) #, item=item.id)
+    #
+    #     return menu
 
 class ItemSerializer(serializers.HyperlinkedModelSerializer):
 
