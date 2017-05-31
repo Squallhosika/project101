@@ -1,41 +1,80 @@
-# from external.userApp import call_function
-import requests
-API_BASE_URL = 'http://127.0.0.1:8000/'
-API_CLIENT_URL = 'http://127.0.0.1:8000/'
-API_USER_URL = 'http://127.0.0.1:8002/'
-API_ORDER_URL = 'http://127.0.0.1:8003/'
-
-def call_function(method_name, service_name, function_name, params=None):
-    url = get_url(service_name, function_name)
-
-    if method_name == 'GET':        req = requests.get(url, data=params)
-    elif method_name == 'POST':     req = requests.post(url, data=params)
-    elif method_name == 'PUT':      req = requests.put(url, data=params)
-    elif method_name == 'DELETE':   req = requests.delete(url, data=params)
-
-    return req
-
-def get_url(service_name, function_name):
-    if service_name == 'client':    url = API_CLIENT_URL
-    elif service_name == 'user':    url = API_USER_URL
-    elif service_name == 'order':   url = API_ORDER_URL
-
-    return url + service_name + '/' + function_name + '/'
-
+from core.app.api.base import call_function
 
 class ClientApp():
 
     def __init__(self, client_id) : #, shift_id):
         self.client_id = client_id
-        # self.shift_id = shift_id
-        self.pending_order = None
-        self.beingserve_order = None
-        self.inqueue_order = None
-        self.active_employees = []
-        # self.update_pending_order()
-        # self.update_beingserve_order()
-        # self.update_inqueue_order()
-        # self.update_active_employees()
+
+
+    #GET ORDERS
+    def get_pending_orders(self):
+        return self.get_orders_by_status('created')
+
+    def get_validated_orders(self):
+        return self.get_orders_by_status('validated')
+
+
+    def get_orders_by_status(self, status):
+        service_name = 'order'
+        function_name = 'orderbyclientstatus'
+        params = {'client_id': self.client_id, 'status': status}
+
+        orders = call_function('GET', service_name, function_name, params)
+        return orders.json()
+
+
+    #UPDATE ORDERS STATUS
+    def validate_orders(self, order_ids):
+        orders = {}
+        for order_id in order_ids:
+            orders[order_id] = self.update_order_status(order_id, 'validated')
+
+        return orders
+
+
+    def update_order_status(self, order_id, status):
+        service_name = 'order'
+        function_name = 'ordervalidate'
+
+        params = {'id': order_id, 'status': status}
+        order = call_function('PUT', service_name, function_name, params)
+
+        return order.json()
+
+
+    #GET CLIENTS
+    def get_all_clients(self):
+        service_name = 'client'
+        function_name = 'clients'
+
+        clients = call_function('GET', service_name, function_name)
+        return clients.json()
+
+
+class Jo():
+
+    def get_pending_orders(self):
+
+        orders = self.get_orders_by_status('created')
+
+        self.pending_orders = []
+        for order in orders.json():
+            order_id = order['id']
+            self.pending_orders.append(order_id)
+
+        return self.pending_orders
+
+    def get_validated_orders(self):
+
+        orders = self.get_orders_by_status('validated')
+
+        self.validated_orders = []
+        for order in orders.json():
+            order_id = order['id']
+            self.validated_orders.append(order_id)
+
+        return self.validated_orders
+
 
     def update_pending_order(self):
         req_new_orders = call_function('GET', 'order', 'neworders', {'client_id': self.client_id})
@@ -85,3 +124,9 @@ class ClientApp():
     def update_active_employees(self):
         employees = call_function('GET', 'client', 'getemployeesfromshift', {'shift_id': self.shift_id})
         self.active_employees = [employee['id'] for employee in employees]
+
+
+
+if __name__ == "__main__":
+    clientAPP = ClientApp(1)
+    clientAPP.validate_orders([1])

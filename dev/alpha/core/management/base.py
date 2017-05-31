@@ -224,10 +224,10 @@ class BaseCommand(object):
             #     raise
 
             # SystemCheckError takes care of its own formatting.
-            if isinstance(e, SystemCheckError):
-                self.stderr.write(str(e), lambda x: x)
-            else:
-                self.stderr.write('%s: %s' % (e.__class__.__name__, e))
+            # if isinstance(e, SystemCheckError):
+            #     self.stderr.write(str(e), lambda x: x)
+            # else:
+            #     self.stderr.write('%s: %s' % (e.__class__.__name__, e))
             sys.exit(1)
         finally:
             pass

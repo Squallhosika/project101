@@ -3,7 +3,7 @@ import os
 import sys
 from importlib import import_module
 
-from play.management.base import BaseCommand, CommandParser, CommandError, handle_default_options
+from core.management.base import BaseCommand, CommandParser, CommandError, handle_default_options
 
 
 def get_commands():
@@ -28,7 +28,10 @@ def get_commands():
     The dictionary is cached on the first call and reused on subsequent
     calls.
     """
-    commands = {'runservices': 'play.management', 'runapp': 'play.management', 'initdb': 'play.management'}
+    commands = {'runservices': 'core.management',
+                'runapp': 'core.management',
+                'initdb': 'core.management'
+                }
     return commands
 
 def load_command_class(app_name, name):
