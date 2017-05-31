@@ -4,12 +4,13 @@ import collections
 sys.path.extend(['C:\\Users\\Keuvin\\Documents\\Unicorn\\GIT\\unicorn_master\\dev\\alpha'])
 
 # from external.userApp import call_function
-import external.userApp as u
+# import external.userApp as u
+import core.app.api.base as u
 import pandas as pd
 
 
 # sys.path.append('C:\\Users\\Keuvin\\DOCUME~1\\Unicorn\\GIT\\UNICOR~1\\dev\\alpha\\')  #os.getcwd())
-input_dir = os.path.join(os.getcwd(), 'play', 'input')
+input_dir = os.path.join(os.getcwd(), 'core', 'db', 'input')
 
 
 def csv_to_dicts(path):
@@ -58,7 +59,7 @@ def prepare_dic_files(service):
         #     'createitem': 'items.csv',
         # }
         input_files['createitem'] = 'items.csv'
-        # input_files['createorder'] = 'orders.csv'
+        input_files['createorder'] = 'orders.csv'
 
 
     return input_files
