@@ -26,9 +26,10 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 router.register(r'order/items', views.ItemViewSet)
 router.register(r'order/orders', views.OrderViewSet)
-router.register(r'order/orderflows', views.OrderFlowViewSet)
+# router.register(r'order/orderflows', views.OrderFlowViewSet)
 router.register(r'order/queues', views.QueueViewSet)
 router.register(r'order/orderitems', views.RNN_OrderItemViewSet)
+router.register(r'order/queueorders', views.RNN_QueueOrderViewSet)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -48,4 +49,8 @@ urlpatterns = [
     url('order/createqueue', views.create_queue),
     url('order/deletequeue', views.delete_queue),
     url('order/nexttoserve', views.next_to_serve),
+    url('order/orderbyclientstatus', views.get_orders_by_client_status),
+    url('order/ordervalidate', views.order_validate),
+
+
 ]

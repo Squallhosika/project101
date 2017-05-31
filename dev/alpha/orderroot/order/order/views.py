@@ -5,30 +5,71 @@ from order.order.serializers import *
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-
-class ItemViewSet(viewsets.ModelViewSet):
-    queryset = Item.objects.all()
-    serializer_class = ItemSerializer
-
+class QueueViewSet(viewsets.ModelViewSet):
+    queryset = Queue.objects.all()
+    serializer_class = QueueSerializer
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
-
-class OrderFlowViewSet(viewsets.ModelViewSet):
-    queryset = OrderFlow.objects.all()
-    serializer_class = OrderFlowSerializer
-
-
-class QueueViewSet(viewsets.ModelViewSet):
-    queryset = Queue.objects.all()
-    serializer_class = QueueSerializer
-
+class ItemViewSet(viewsets.ModelViewSet):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
 
 class RNN_OrderItemViewSet(viewsets.ModelViewSet):
     queryset = RNN_OrderItem.objects.all()
     serializer_class = RNN_OrderItemSerializer
+
+class RNN_QueueOrderViewSet(viewsets.ModelViewSet):
+    queryset = RNN_QueueOrder.objects.all()
+    serializer_class = RNN_QueueOrderSerializer
+
+# class OrderFlowViewSet(viewsets.ModelViewSet):
+#     queryset = OrderFlow.objects.all()
+#     serializer_class = OrderFlowSerializer
+
+
+@api_view(['GET'])
+def get_orders_by_client_status(request):
+    try:
+        client_id = request.data.get('client_id')
+        status = request.data.get('status')
+        orders = Order.objects.filter(client_id=client_id, status=status)
+
+    except Order.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = OrderSerializer(orders, context={'request': request}, many=True)
+        return Response(serializer.data)
+
+@api_view(['PUT'])
+def order_validate(request):
+    try:
+        pk = request.data.get('id')
+        order = Order.objects.get(pk=pk)
+    except Order.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'PUT':
+        serializer = OrderSerializer(order, data=request.data, context={'request': request}, partial=True)
+        if serializer.is_valid() and request.data['status'] == 'validated':
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def order_id_to_last_flow(request):
