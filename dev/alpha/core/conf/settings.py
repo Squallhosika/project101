@@ -1,3 +1,5 @@
+import collections
+
 UNIC_ROOT = r'C:\Users\Keuvin\DOCUME~1\Unicorn\GIT\UNICOR~1\dev\alpha'
 
 SERVICES = {
@@ -23,5 +25,59 @@ APPS = {
     'client': {
         'ROOT': r'\core\app\gui',
         'GUI': r'\clientApp_GUI.py'
+    }
+}
+
+DATABASES = {
+    'UPDATE_ALL': {
+        'client': True,
+        'order': True,
+    },
+    'SERVICES': {
+        'client': {
+            'DB_ROOT': r'\core\db',
+            'SERVICE_ROOT': r'\clientroot'
+        },
+        'order': {
+            'DB_ROOT': r'\core\db',
+            'SERVICE_ROOT': r'\orderroot'
+        }
+    },
+    'CMD': {
+        'FLUSH_CMD': r'\manage.py flush',
+        'SAVE_CMD': r'\core\db\setup_dbs.py'
+    }
+}
+
+DB_INPUTS = {
+    'client': {
+        'INPUT_ROOT': r'\core\db\input\client',
+        'UPDATE': collections.OrderedDict([
+            ('client', True),
+            ('menu', True),
+            ('item', True),
+            ('employee', True),
+            ('menuitem', True),
+            ('clientmenu', True),
+        ]),
+        'FILES': collections.OrderedDict([
+            ('client', {'fct': 'createclient', 'file': 'clients.csv'}),
+            ('menu', {'fct': 'createmenu', 'file': 'menus.csv'}),
+            ('item', {'fct': 'createitem', 'file': 'items.csv'}),
+            ('employee', {'fct': 'createemployee', 'file': 'employees.csv'}),
+            ('menuitem', {'fct': 'additemmenu', 'file': 'rnn_menu_item.csv'}),
+            ('clientmenu', {'fct': 'addmenuclient', 'file': 'rnn_client_menu.csv'}),
+        ])
+    },
+    'order': {
+        'INPUT_ROOT': r'\core\db\input\order',
+        'UPDATE': collections.OrderedDict([
+            ('item', True),
+            ('order', True),
+        ]),
+        'FILES': collections.OrderedDict([
+            ('item', {'fct': 'createitem', 'file': 'items.csv'}),
+            ('order', {'fct': 'createorder', 'file': 'orders.csv'}),
+        ])
     }
 }

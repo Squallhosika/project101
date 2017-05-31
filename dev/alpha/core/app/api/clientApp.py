@@ -13,6 +13,8 @@ class ClientApp():
     def get_validated_orders(self):
         return self.get_orders_by_status('validated')
 
+    def get_pickup_orders(self):
+        return self.get_orders_by_status('pickup')
 
     def get_orders_by_status(self, status):
         service_name = 'order'
@@ -21,6 +23,25 @@ class ClientApp():
 
         orders = call_function('GET', service_name, function_name, params)
         return orders.json()
+
+    #GET EMPLOYEES
+    def get_pending_orders(self):
+        return self.get_orders_by_status('created')
+
+    def get_validated_orders(self):
+        return self.get_orders_by_status('validated')
+
+    def get_pickup_orders(self):
+        return self.get_orders_by_status('pickup')
+
+    def get_employees(self, status):
+        service_name = 'order'
+        function_name = 'orderbyclientstatus'
+        params = {'client_id': self.client_id, 'status': status}
+
+        orders = call_function('GET', service_name, function_name, params)
+        return orders.json()
+
 
 
     #UPDATE ORDERS STATUS
@@ -31,10 +52,27 @@ class ClientApp():
 
         return orders
 
+    def reject_orders(self, order_ids):
+        orders = {}
+        for order_id in order_ids:
+            orders[order_id] = self.update_order_status(order_id, 'rejected')
+
+        return orders
+
+    def pickup_orders(self, order_ids):
+        orders = {}
+        for order_id in order_ids:
+            orders[order_id] = self.update_order_status(order_id, 'pickup')
+
+        return orders
 
     def update_order_status(self, order_id, status):
         service_name = 'order'
-        function_name = 'ordervalidate'
+
+        if status == 'validated':
+            function_name = 'ordervalidate'
+        elif status == 'pickup':
+            function_name = 'orderpickup'
 
         params = {'id': order_id, 'status': status}
         order = call_function('PUT', service_name, function_name, params)

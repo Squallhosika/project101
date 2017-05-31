@@ -6,6 +6,8 @@ sys.path.extend(['C:\\Users\\Keuvin\\Documents\\Unicorn\\GIT\\unicorn_master\\de
 # from external.userApp import call_function
 # import external.userApp as u
 import core.app.api.base as u
+import core.conf as conf
+
 import pandas as pd
 
 
@@ -44,39 +46,31 @@ def prepare_dic(service):
 
     return input
 
-def prepare_dic_files(service):
-    # input_files = {}
+def prepare_dic_files(service, settings):
     input_files = collections.OrderedDict()
-    if service == 'client':
-        input_files['createclient'] = 'clients.csv'
-        input_files['createmenu'] = 'menus.csv'
-        input_files['createitem'] = 'items.csv'
-        input_files['additemmenu'] = 'rnn_menu_item.csv'
-        input_files['addmenuclient'] = 'rnn_client_menu.csv'
+    db_inputs = settings.DB_INPUTS
 
-    elif service == 'order':
-        # input_files = {
-        #     'createitem': 'items.csv',
-        # }
-        input_files['createitem'] = 'items.csv'
-        input_files['createorder'] = 'orders.csv'
+    for serv, params in db_inputs.items():
+        if serv == service:
+            input_dir = params['INPUT_ROOT']
+            update = params['UPDATE']
+            files = params['FILES']
 
+            for tab,to_update in update.items():
+                if to_update:
+                    input_files[files[tab]['fct']] = files[tab]['file']
 
     return input_files
 
-def get_table(fct):
-    if fct == 'createclient': table = 'client'
-    elif fct == 'createmenu': table = 'menu'
-    elif fct == 'createitem': table = 'item'
-    elif fct == 'additemmenu': table = 'menuitem'
 
-    return table
+def get_table_fct(table, service, settings):
+    db_inputs = settings.DB_INPUTS
 
-def get_table_key(table):
-    if table == 'client': fct = 'createclient'
-    elif table == 'menu': fct = 'createmenu'
-    elif table == 'item': fct = 'createitem'
-    elif table == 'menuitem': fct = 'additemmenu'
+    fct = ''
+    for serv, params in db_inputs.items():
+        if serv == service:
+            files = params['FILES']
+            fct = files[table]['fct']
 
     return fct
 
@@ -85,29 +79,25 @@ if __name__ == '__main__':
     from sys import argv
     myargs = getopts(argv)
 
+    settings = conf.Settings()
+
     # input_files = {}
     input_files = collections.OrderedDict()
     if '-s' in myargs:
         service = myargs['-s']
-        input_files = prepare_dic_files(service)
+        input_files = prepare_dic_files(service, settings)
         print(service)
 
         if '-t' in myargs:
             table = myargs['-t']
             print(table)
 
-            fct = get_table_key(table)
+            fct = get_table_fct(table, service, settings)
             csv_to_req(os.path.join(input_dir, service, input_files[fct]), 'POST', service, fct)
 
         else:
             for fct in input_files:
                 csv_to_req(os.path.join(input_dir, service, input_files[fct]), 'POST', service, fct)
 
-
-    # Client
-    # csv_to_req(os.path.join(input_dir, 'client', 'menus.csv'), 'POST', 'client', 'createmenu')
-    # csv_to_req(os.path.join(input_dir, 'client', 'clients.csv'), 'POST', 'client', 'createclient')
-    # csv_to_req(os.path.join(input_dir, 'client', 'items.csv'), 'POST', 'client', 'createitem')
-    # csv_to_req(os.path.join(input_dir, 'client', 'items.csv'), 'POST', 'client', 'createitem')
-
-
+    else:
+        pass

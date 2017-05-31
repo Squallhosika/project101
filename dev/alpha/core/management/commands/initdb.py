@@ -1,7 +1,10 @@
 import sys
+sys.path.extend(['C:\\Users\\Keuvin\\Documents\\Unicorn\\GIT\\unicorn_master\\dev\\alpha'])
+
 import os
 
 from core.management.base import BaseCommand, CommandError
+import core.conf as conf
 
 class Command(BaseCommand):
     help = (
@@ -41,16 +44,86 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        os.environ['UNIC_ROOT'] = r'C:\Users\Keuvin\DOCUME~1\Unicorn\GIT\UNICOR~1\dev\alpha'
-
         self.service = options['service']
         self.table = options['table']
         self.flush = options['flush']
 
         return self.run_app()
 
-
     def run_app(self):
+
+        settings = conf.Settings()
+
+        UNIC_ROOT = settings.UNIC_ROOT
+        databases = settings.DATABASES
+
+        flush_cmd = databases['CMD']['FLUSH_CMD']         #'\manage.py flush'
+        save_cmd = databases['CMD']['SAVE_CMD']
+        services = databases['SERVICES']
+        update_all = databases['UPDATE_ALL']
+
+        cmds = []
+        if self.service == 'all':
+            for service_name, update in update_all.items():
+                if update:
+                    if service_name in services:
+                        service_root = services[service_name]['SERVICE_ROOT']
+
+                        if self.flush:
+                            cmd0 = UNIC_ROOT + service_root + flush_cmd
+                            cmds.append(cmd0)
+
+                        cmd1 = UNIC_ROOT + save_cmd + ' -s ' + str(service_name)
+                        if self.table != 'all':
+                            cmd1 = cmd1 + ' -t ' + str(self.table)
+
+                        cmds.append(cmd1)
+
+                    else:
+                        print(service_name + ' service in update all but not in conf')
+                else:
+                    print(service_name + 'not set to update in conf ALL')
+
+        else:
+            if self.service in services:
+                service_root = services[self.service]['SERVICE_ROOT']
+                if self.flush:
+                    cmd0 = UNIC_ROOT + service_root + flush_cmd
+                    cmds.append(cmd0)
+
+                cmd1 = UNIC_ROOT + save_cmd + ' -s ' + str(self.service)
+                if self.table != 'all':
+                    cmd1 = cmd1 + ' -t ' + str(self.table)
+
+                cmds.append(cmd1)
+            else:
+                print('service not in conf')
+
+
+        for cmd in cmds:
+            os.system(str(cmd))
+
+        # for service, params in services.items():
+        #     service_root = params['SERVICE_ROOT']   #'\clientroot'
+        #
+        #     if service == self.service or self.service == 'all':
+        #         if self.flush:
+        #             cmd0 = UNIC_ROOT + service_root + flush_cmd
+        #             cmds.append(cmd0)
+        #             # os.system(str(cmd0))
+        #
+        #         cmd1 = UNIC_ROOT + save_cmd + ' -s ' + str(self.service)
+        #         if self.table != 'all':
+        #             cmd1 = cmd1 + ' -t ' + str(self.table)
+        #
+        #         cmds.append(cmd1)
+        #
+        # for cmd in cmds:
+        #     os.system(str(cmd))
+
+        sys.stdout.write(self.service + ' db reset')
+
+    def run_app2(self):
         UNIC_ROOT = os.environ['UNIC_ROOT']
 
         if self.service == 'client':
