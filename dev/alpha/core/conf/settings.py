@@ -57,6 +57,7 @@ DB_INPUTS = {
             ('menu', True),
             ('item', True),
             ('employee', True),
+            ('shift', True),
             ('menuitem', True),
             ('clientmenu', True),
         ]),
@@ -65,6 +66,7 @@ DB_INPUTS = {
             ('menu', {'fct': 'createmenu', 'file': 'menus.csv'}),
             ('item', {'fct': 'createitem', 'file': 'items.csv'}),
             ('employee', {'fct': 'createemployee', 'file': 'employees.csv'}),
+            ('shift', {'fct': 'createshift', 'file': 'shifts.csv'}),
             ('menuitem', {'fct': 'additemmenu', 'file': 'rnn_menu_item.csv'}),
             ('clientmenu', {'fct': 'addmenuclient', 'file': 'rnn_client_menu.csv'}),
         ])

@@ -132,20 +132,20 @@ class ClientAppGUI():
     def create_shift_control(self, top, panel_name):
         if panel_name == 'employees':
             label = tk.Label(top, text='List of employees', fg="dark green")
-            button = tk.Button(top, text='Refresh', width=15, command=lambda: self.create_pending_queue(self.client_id))
+            button = tk.Button(top, text='Refresh', width=15, command=lambda: self.create_employees_list(self.client_id))
             button1 = tk.Button(top, text='Add tp shift', width=15, command=lambda: self.validate_orders())
             button2 = tk.Button(top, text='Delete', width=15, command=lambda: self.reject_orders())
 
         elif panel_name == 'active':
             label = tk.Label(top, text='Active shift employees', fg="dark green")
-            button = tk.Button(top, text='Refresh', width=15, command=lambda: self.create_validated_queue(self.client_id))
+            button = tk.Button(top, text='Refresh', width=15, command=lambda: self.create_active_list(self.client_id))
             button1 = tk.Button(top, text='Remove Employee', width=15, command=lambda: self.request_pickup_orders())
-            button2 = tk.Button(top, text='Unactivate Shift', width=15, command='1')
+            button2 = tk.Button(top, text='Unactivate Shift', width=15, command=lambda: self.desactivate_shifts())
 
         elif panel_name == 'shifts':
             label = tk.Label(top, text='List of available shifts', fg="dark green")
-            button = tk.Button(top, text='Refresh', width=15, command=lambda: self.create_pickup_queue(self.client_id))
-            button1 = tk.Button(top, text='Activate shift', width=15, command='1')
+            button = tk.Button(top, text='Refresh', width=15, command=lambda: self.create_shifts_list(self.client_id))
+            button1 = tk.Button(top, text='Activate shift', width=15, command=lambda: self.activate_shifts())
             button2 = tk.Button(top, text='Remove Shift', width=15, command='1')
 
         if label.winfo_exists(): label.grid(row=0, column=0, columnspan=3)
@@ -257,22 +257,56 @@ class ClientAppGUI():
         for wid in bottom.winfo_children():
             wid.destroy()
 
-        employees = self.clientAPP.get_pending_orders()
+        employees = self.clientAPP.get_available_employees()
         print('available employees: ' + str(len(employees)))
 
-        order_ids = []
-        for order in orders:
-            id = order['id']
-            menu_id = order['menu_id']
-            user_id = order['user_id']
-            order_ids.append('order: ' + str(id) + ' - user: ' + str(user_id) + ' - menu: ' +str(menu_id))
+        employee_ids = []
+        for employee in employees:
+            id = employee['id']
+            name = employee['name']
+            status = employee['status']
+            employee_ids.append('employee: ' + str(id) + ' - name: ' + str(name) + ' - status: ' +str(status))
 
-        self.created_orders = Checkbar(bottom, order_ids,'id')
-        self.created_orders.grid()
+        self.created_employees = Checkbar(bottom, employee_ids,'id')
+        self.created_employees.grid()
+
+    def create_active_list(self, client_id):
+        bottom = self.frames['Shifts_active_bottom']
+        for wid in bottom.winfo_children():
+            wid.destroy()
+
+        #GET ACTIVE SHIFTS
+        shifts = self.clientAPP.get_active_shifts()
+        print('active shifts: ' + str(len(shifts)))
+
+        shift_ids = []
+        for shift in shifts:
+            id = shift['id']
+            name = shift['name']
+            status = shift['status']
+            shift_ids.append('shift: ' + str(id) + ' - name: ' + str(name) + ' - status: ' +str(status))
+
+        self.active_shifts = Checkbar(bottom, shift_ids,'id')
+        self.active_shifts.grid()
 
 
+    def create_shifts_list(self, client_id):
+        bottom = self.frames['Shifts_shifts_bottom']
+        for wid in bottom.winfo_children():
+            wid.destroy()
 
+        shifts = self.clientAPP.get_inactive_shifts()
+        print('available shifts: ' + str(len(shifts)))
 
+        shift_ids = []
+        for shift in shifts:
+            id = shift['id']
+            name = shift['name']
+            status = shift['status']
+            shift_ids.append('shift: ' + str(id) + ' - name: ' + str(name) + ' - status: ' +str(status))
+
+        self.created_shifts = Checkbar(bottom, shift_ids,'id')
+        self.created_shifts.grid()
 
 
 
@@ -315,8 +349,36 @@ class ClientAppGUI():
         self.create_validated_queue(self.client_id)
         self.create_pickup_queue(self.client_id)
 
+
+    def activate_shifts(self):
+        print(self.created_shifts.state())
+
+        activated_shifts = []
+        for k,v in self.created_shifts.state().items():
+            if v > 0:
+                activated_shifts.append(k)
+
+        shifts = self.clientAPP.activate_shifts(activated_shifts)
+
+        self.create_active_list(self.client_id)
+        self.create_shifts_list(self.client_id)
+
+    def desactivate_shifts(self):
+        print(self.active_shifts.state())
+
+        desactivated_shifts = []
+        for k,v in self.active_shifts.state().items():
+            if v > 0:
+                desactivated_shifts.append(k)
+
+        shifts = self.clientAPP.desactivate_shifts(desactivated_shifts)
+
+        self.create_active_list(self.client_id)
+        self.create_shifts_list(self.client_id)
+
 if __name__ == "__main__":
 
     clientGUI = ClientAppGUI()
+    clientGUI.activate_shifts()
     clientGUI.run()
 

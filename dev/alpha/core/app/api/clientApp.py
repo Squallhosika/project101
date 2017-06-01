@@ -25,23 +25,38 @@ class ClientApp():
         return orders.json()
 
     #GET EMPLOYEES
-    def get_pending_orders(self):
-        return self.get_orders_by_status('created')
+    def get_available_employees(self):
+        return self.get_employees_by_status('available')
 
-    def get_validated_orders(self):
-        return self.get_orders_by_status('validated')
-
-    def get_pickup_orders(self):
-        return self.get_orders_by_status('pickup')
-
-    def get_employees(self, status):
-        service_name = 'order'
-        function_name = 'orderbyclientstatus'
+    def get_employees_by_status(self, status):
+        service_name = 'client'
+        function_name = 'employeebyclientstatus'
         params = {'client_id': self.client_id, 'status': status}
+        # params = {'client_id': self.client_id}
 
-        orders = call_function('GET', service_name, function_name, params)
-        return orders.json()
+        employees = call_function('GET', service_name, function_name, params)
+        return employees.json()
 
+
+    #GET SHIFTS
+    def get_all_shifts(self):
+        return self.get_shifts_by_status('all')
+
+    def get_active_shifts(self):
+        return self.get_shifts_by_status('active')
+
+    def get_inactive_shifts(self):
+        return self.get_shifts_by_status('inactive')
+
+
+    def get_shifts_by_status(self, status):
+        service_name = 'client'
+        function_name = 'shiftbyclientstatus'
+        params = {'client_id': self.client_id, 'status': status}
+        # params = {'client_id': self.client_id}
+
+        employees = call_function('GET', service_name, function_name, params)
+        return employees.json()
 
 
     #UPDATE ORDERS STATUS
@@ -78,6 +93,37 @@ class ClientApp():
         order = call_function('PUT', service_name, function_name, params)
 
         return order.json()
+
+
+    #UPDATE SHIFTS STATUS
+    def activate_shifts(self, shift_ids):
+        shifts = {}
+        for shift_id in shift_ids:
+            shifts[shift_id] = self.update_shift_status(shift_id, 'active')
+
+        return shifts
+
+    def desactivate_shifts(self, shift_ids):
+        shifts = {}
+        for shift_id in shift_ids:
+            shifts[shift_id] = self.update_shift_status(shift_id, 'inactive')
+
+        return shifts
+
+
+    def update_shift_status(self, shift_id, status):
+        service_name = 'client'
+
+        if status == 'active':
+            function_name = 'shiftactivate'
+        elif status == 'inactive':
+            function_name = 'shiftdesactivate'
+
+        params = {'id': shift_id, 'status': status}
+        shift = call_function('PUT', service_name, function_name, params)
+
+        print(shift)
+        return shift.json()
 
 
     #GET CLIENTS
@@ -197,4 +243,4 @@ class ClientAppJo():
 
 if __name__ == "__main__":
     clientAPP = ClientApp(1)
-    clientAPP.validate_orders([1])
+    clientAPP.activate_shifts([1])
