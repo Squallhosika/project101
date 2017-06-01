@@ -69,6 +69,69 @@ def get_active_menu(request):
         serializer = RNN_ClientMenuSerializer(active_menu, context={'request': request}, many=True)
         return Response(serializer.data)
 
+@api_view(['GET'])
+def get_employees_by_client_status(request):
+    try:
+        client_id = request.data.get('client_id')
+        status = request.data.get('status')
+        employees = Employee.objects.filter(client_id=client_id, status=status)
+
+    except Employee.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = EmployeeSerializer(employees, context={'request': request}, many=True)
+        return Response(serializer.data)
+
+@api_view(['GET'])
+def get_shifts_by_client_status(request):
+    try:
+        client_id = request.data.get('client_id')
+        status = request.data.get('status')
+
+        if status == 'all':
+            shifts = Shift.objects.filter(client_id=client_id)
+        else:
+            shifts = Shift.objects.filter(client_id=client_id, status=status)
+
+    except Shift.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = ShiftSerializer(shifts, context={'request': request}, many=True)
+        return Response(serializer.data)
+
+
+
+@api_view(['PUT'])
+def shift_activate(request):
+    try:
+        pk = request.data.get('id')
+        shift = Shift.objects.get(pk=pk)
+    except Shift.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'PUT':
+        serializer = ShiftSerializer(shift, data=request.data, context={'request': request}, partial=True)
+        if serializer.is_valid() and request.data['status'] == 'active':
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT'])
+def shift_desactivate(request):
+    try:
+        pk = request.data.get('id')
+        order = Shift.objects.get(pk=pk)
+    except Shift.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'PUT':
+        serializer = ShiftSerializer(order, data=request.data, context={'request': request}, partial=True)
+        if serializer.is_valid() and request.data['status'] == 'inactive':
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 

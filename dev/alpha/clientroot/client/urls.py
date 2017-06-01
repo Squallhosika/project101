@@ -38,11 +38,17 @@ urlpatterns = [
     url(r'^client/clientaround/', views.client_around),
     url(r'^client/getmenu/', views.get_active_menu),
     url(r'^client/getitems/', views.get_items_from_menu),
+    url(r'^client/employeebyclientstatus/', views.get_employees_by_client_status),
+    url(r'^client/shiftbyclientstatus/', views.get_shifts_by_client_status),
+    url(r'^client/shiftactivate', views.shift_activate),
+    url(r'^client/shiftdesactivate', views.shift_desactivate),
+
     url(r'^client/createclient/', views.create_client),
     url(r'^client/createmenu/', views.create_menu),
     url(r'^client/createitem/', views.create_item),
     url(r'^client/createshift/', views.create_shift),
     url(r'^client/createemployee/', views.create_employee),
+
     url(r'^client/updateclient/', views.update_client),
     url(r'^client/updatemenu/', views.update_menu),
     url(r'^client/updateitem/', views.update_item),

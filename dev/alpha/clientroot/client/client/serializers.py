@@ -107,20 +107,13 @@ class RNN_ShiftEmployeeSerializer(serializers.HyperlinkedModelSerializer):
         return rnn
 
 class ShiftSerializer(serializers.HyperlinkedModelSerializer):
+    cqs = Client.objects.all()
+    client_id = serializers.PrimaryKeyRelatedField(many=False, queryset=cqs)
 
     class Meta:
         model = Shift
-        fields = ('url', 'id',
-                  'name', )
+        fields = ('url', 'id', 'name', 'client_id', 'status' )
 
-    def create(self, validated_data):
-        if 'name' not in self.validated_data:
-            menu = Shift.objects.create(name=validated_data['name'])
-        else:
-            menu = Shift.objects.create(name=validated_data['name'])
-            # menu = Menu.objects.create(name=name, items=items_list) #, item=item.id)
-
-        return menu
 
 class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
     cqs = Client.objects.all()
@@ -128,7 +121,7 @@ class EmployeeSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Employee
-        fields = ('url', 'id','name','client_id')
+        fields = ('url', 'id','name','client_id','status')
 
 
 class RNN_ClientShiftSerializer(serializers.HyperlinkedModelSerializer):

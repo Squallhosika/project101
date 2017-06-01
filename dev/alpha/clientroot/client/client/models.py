@@ -81,6 +81,8 @@ class Employee(models.Model):
 class Shift(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=100, blank=True, default='')
+    client_id = models.ForeignKey(Client, on_delete=models.CASCADE)
+    status = models.CharField(max_length=100, blank=True, default='inactive')
 
     employees = models.ManyToManyField(Item, through='RNN_ShiftEmployee', blank=True)
 
