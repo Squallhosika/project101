@@ -1,4 +1,4 @@
-"""unicorn URL Configuration
+"""geo URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.10/topics/http/urls/
@@ -13,23 +13,19 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
-from django.contrib import admin
 from django.conf.urls import url, include
-from client.client import views
+from django.contrib import admin
+from geo.geo import views
 from rest_framework.routers import DefaultRouter
 
-# Create a router and register our viewsets with it.
 router = DefaultRouter()
-router.register(r'items', views.ItemViewSet)
-router.register(r'menus', views.MenuViewSet)
-router.register(r'clients', views.ClientViewSet)
-router.register(r'menuitems', views.RNN_MenuItemViewSet)
-router.register(r'clientmenus', views.RNN_ClientMenuViewSet)
+router.register(r'geo/users', views.UserViewSet)
+router.register(r'geo/clients', views.ClientViewSet)
 
-# The API URLs are now determined automatically by the router.
-# Additionally, we include the login URLs for the browsable API.
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^geo/clientsaround', views.client_around),
+    url(r'^geo/createclient', views.create_client),
+    url(r'^geo/createuser', views.create_user),
     url(r'^', include(router.urls))
 ]
