@@ -14,6 +14,12 @@ SERVICES = {
         'PORT': '8003',
         'ROOT': r'\orderroot',
         'CMD': r'\manage.py runserver'
+    },
+    'geo': {
+        'HOST': '127.0.0.1',
+        'PORT': '8001',
+        'ROOT': r'\georoot',
+        'CMD': r'\manage.py runserver'
     }
 }
 
@@ -41,6 +47,10 @@ DATABASES = {
         'order': {
             'DB_ROOT': r'\core\db',
             'SERVICE_ROOT': r'\orderroot'
+        },
+        'geo': {
+            'DB_ROOT': r'\core\db',
+            'SERVICE_ROOT': r'\georoot'
         }
     },
     'CMD': {
@@ -80,6 +90,17 @@ DB_INPUTS = {
         'FILES': collections.OrderedDict([
             ('item', {'fct': 'createitem', 'file': 'items.csv'}),
             ('order', {'fct': 'createorder', 'file': 'orders.csv'}),
+        ])
+    },
+    'geo': {
+        'INPUT_ROOT': r'\core\db\input\geo',
+        'UPDATE': collections.OrderedDict([
+            ('client', True),
+            ('user', True),
+        ]),
+        'FILES': collections.OrderedDict([
+            ('client', {'fct': 'createclient', 'file': 'clients.csv'}),
+            ('user', {'fct': 'createuser', 'file': 'users.csv'}),
         ])
     }
 }

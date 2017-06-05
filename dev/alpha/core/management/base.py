@@ -2,9 +2,9 @@ import os
 import sys
 from argparse import ArgumentParser
 
-from django.utils.encoding import force_str
-from django.core.management.color import color_style, no_style
-from django.core import checks
+# from django.utils.encoding import force_str
+# from django.core.management.color import color_style, no_style
+# from django.core import checks
 
 
 class CommandError(Exception):
@@ -159,11 +159,11 @@ class BaseCommand(object):
     def __init__(self, stdout=None, stderr=None, no_color=False):
         self.stdout = stdout or sys.stdout
         self.stderr = stderr or sys.stderr
-        if no_color:
-            self.style = no_style()
-        else:
-            self.style = color_style()
-            self.stderr.style_func = self.style.ERROR
+        # if no_color:
+        #     self.style = no_style()
+        # else:
+        #     self.style = color_style()
+        #     self.stderr.style_func = self.style.ERROR
 
     def get_version(self):
         """
