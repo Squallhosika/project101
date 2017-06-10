@@ -3,16 +3,30 @@ import json
 from core.app.api.base import call_function
 
 class UserApp():
-    def __init__(self, user_id):
+    def __init__(self, user_id, latitude=0, longitude=0, radius=0.5):
         self.user_id = user_id
+        self.longitude = float(longitude)
+        self.latitude = float(latitude)
+        self.radius = radius
+
         # self.location = 1
 
-    def client_around(self):
-        service_name = 'client'
-        function_name = 'clientaround'
+    # def client_around(self):
+    #     service_name = 'client'
+    #     function_name = 'clientaround'
+    #
+    #     req0 = call_function('GET', service_name, function_name)
+    #     return req0.json()
 
-        req0 = call_function('GET', service_name, function_name)
+    def client_around(self):
+        service_name = 'geo'
+        function_name = 'clientsaround'
+
+        params = {'latitude': self.latitude, 'longitude': self.longitude, 'radius': self.radius}
+
+        req0 = call_function('GET', service_name, function_name, params)
         return req0.json()
+        # return req0.json()
 
     def client_pending_orders(self):
         service_name = 'order'
@@ -20,6 +34,9 @@ class UserApp():
 
         req0 = call_function('GET', service_name, function_name)
         return req0.json()
+
+    def user_created_orders(self):
+        pass
 
     def get_menu(self,client_id):
         service_name = 'client'
@@ -42,8 +59,11 @@ class UserApp():
         service_name = 'order'
 
         function_name = 'createorder'
-        client_id = items[0]['client_id']
-        params = {'user_id': 1, 'client_id': client_id}
+        # client_id = items[0]['client_id']
+        item1 = items[next(iter(items))]
+        client_id = item1['client_id']
+        menu_id = item1['menu_id']
+        params = {'user_id': 1, 'client_id': client_id, 'menu_id': menu_id}
 
         req0 = call_function('POST', service_name, function_name, params)
         dsds = req0.text
@@ -52,8 +72,8 @@ class UserApp():
         # order_id = c['id']
 
         ct=0
-        for item in items:
-            item_id = item['item_id']
+        for item_id, item in items.items():
+            # item_id = item['item_id']
             price = item['price']
             qty = item['qty']
 
@@ -69,8 +89,10 @@ class UserApp():
         params = {'order_id': order_id}
 
         if ct > 0:
-            req2 = call_function('POST', service_name, function_name, params)
-            return req2.json()
+            #TODO
+            pass
+            # req2 = call_function('POST', service_name, function_name, params)
+            # return req2.json()
 
 
 #

@@ -43,17 +43,63 @@ class Dropdownbar(tk.Frame):
         self.selection = value
 
 class Inputbar(tk.Frame):
-    def __init__(self, parent=None, picks=[], side=tk.LEFT, anchor=tk.N):
+    def __init__(self, parent=None, elements={}):
         tk.Frame.__init__(self, parent)
-        self.vars = []
-        self.ct=0
-        for pick in picks:
-            var = tk.IntVar()
-            chk = tk.Checkbutton(self, text=pick, variable=var)
-            chk.grid(row=self.ct, sticky=tk.W)
-            # chk.pack(side=side, anchor=anchor, expand=tk.YES)
-            self.vars.append(var)
-            self.ct = self.ct + 1
-    def state(self):
-        return map((lambda var: var.get()), self.vars)
 
+        self.elements = []
+        self.ct=0
+
+        for key, element in elements.items():
+            if self.ct == 0:
+                label = tk.Label(parent, text=element['title'])
+                label.grid()
+                self.ct = self.ct + 1
+
+            params = element['params']
+            lbl_params = element['label_params']
+            name = element['name']
+
+            entry_label = EntryLabel(parent,params, lbl_params)
+            entry_label.grid({'row':self.ct})
+
+            self.elements.append(entry_label)
+            # self.elements[name] = entry_label #{'var':var, 'frame':frame, 'params': params}
+            self.ct = self.ct + 1
+
+    def state(self):
+        view = {}
+        for elem in self.elements:
+            var = elem.var
+            params = elem.params
+            id = params['id']
+            view[id] = {'value':var.get(), 'params':params}
+        return view
+
+
+class EntryLabel(tk.Frame):
+    def __init__(self, parent, params, lbl_params):
+        tk.Frame.__init__(self, parent)
+        self.params = params
+
+        self.frame = tk.Frame(parent)
+        self.label = tk.Label(self.frame, **lbl_params)
+
+        self.var = tk.StringVar()
+        self.entry = tk.Entry(self.frame, textvariable=self.var)
+
+        self.label.grid(row=0, column=0)
+        self.entry.grid(row=0, column=1)
+
+
+
+    def grid(self, position={}):
+        self.frame.grid(**position)
+
+    def get_params(self):
+        return self.params
+
+    def get_value(self):
+        return self.var.get()
+
+    def get_frame(self):
+        return  self.frame
