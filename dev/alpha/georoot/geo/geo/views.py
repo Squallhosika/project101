@@ -44,12 +44,20 @@ def create_client(request):
 def client_around(request):
     try:
         # point = Point(51.521219, -0.0777986) #POINT (51.521219 -0.0777986)
-        user=User.objects.filter(pk=2)
-        for u in user:
-            point = u.last_location
-            radius = u.preferred_radius/10
+        # user=User.objects.filter(pk=2)
+        # for u in user:
+        #     point = u.last_location
+        #     radius = u.preferred_radius/10
+
+        latitude = float(request.data.get('latitude'))
+        longitude = float(request.data.get('longitude'))
+
+        point = Point(latitude, longitude)
+        radius = request.data.get('radius')
+
+        # point = Point(x=longitude,y=latitude)
         close_clients = Client.objects.filter(location__distance_lte=(point, D(km=radius)))
-        # close_clients = User.objects.filter(location=point)
+
     except User.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
