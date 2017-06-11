@@ -1,7 +1,7 @@
 import os
 import sys
 import collections
-sys.path.extend(['C:\\Users\\Keuvin\\Documents\\Unicorn\\GIT\\unicorn_master\\dev\\alpha'])
+# sys.path.extend(['C:\\Users\\Jonathan\\git\\unicorn\\dev\\alpha'])
 
 # from external.userApp import call_function
 # import external.userApp as u

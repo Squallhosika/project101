@@ -1,5 +1,5 @@
 import sys
-sys.path.extend(['C:\\Users\\Keuvin\\Documents\\Unicorn\\GIT\\unicorn_master\\dev\\alpha'])
+# sys.path.extend(['C:\\Users\\Jonathan\\git\\unicorn\\dev\\alpha'])
 
 import os
 import webbrowser
@@ -46,7 +46,7 @@ class Command(BaseCommand):
             cmd = params['CMD']
 
             if service == self.service or self.service == 'all':
-                cmd = 'start cmd /k ' + UNIC_ROOT + root + cmd + ' ' + host + ':' + port
+                cmd = 'start cmd /k python ' + UNIC_ROOT + root + cmd + ' ' + host + ':' + port
                 cmds.append(cmd)
 
         for cmd in cmds:

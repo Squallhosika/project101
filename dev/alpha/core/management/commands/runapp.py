@@ -35,7 +35,7 @@ class Command(BaseCommand):
             gui = params['GUI']
 
             if app == self.app or self.app == 'all':
-                cmd = 'start cmd /k ' + UNIC_ROOT + root + gui
+                cmd = 'start cmd /k python ' + UNIC_ROOT + root + gui
                 cmds.append(cmd)
 
         for cmd in cmds:

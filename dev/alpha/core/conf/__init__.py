@@ -11,7 +11,7 @@ import importlib
 
 class Settings():
     def __init__(self):
-        sys.path.extend(['C:\\Users\\Keuvin\\Documents\\Unicorn\\GIT\\unicorn_master\\dev\\alpha'])
+        sys.path.extend(['C:\\Users\\Jonathan\\git\\unicorn\\dev\\alpha'])
         self.SETTINGS_MODULE = "core.conf.settings"
         self._configured = None
 

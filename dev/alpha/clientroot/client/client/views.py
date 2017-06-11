@@ -392,7 +392,11 @@ def get_employees_from_shift(request):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer = RNN_ShiftEmployeeSerializer(shift_employee, context={'request': request}, many=True)
+        employee_ids = [employee.employee_id for employee in shift_employee]
+        qs_e = Employee.objects.filter(id=employee_ids[0])
+        qss = [Employee.objects.filter(id=id) for id in employee_ids[1:]]
+        qs_e = qs_e.union(*qss)
+        serializer = EmployeeSerializer(qs_e, context={'request': request}, many=True)
         return Response(serializer.data)
 
 
@@ -451,11 +455,11 @@ def remove_employee_from_shift_by_shift_employee(request):
         employee_id = request.data.get('employee_id')
         shift = Shift.objects.get(id=shift_id)
         employee = Employee.objects.get(id=employee_id)
-        shift_employee = RNN_ShiftEmployee.objects.get(shift=shift, employee=employee)
+        shift_employees = RNN_ShiftEmployee.objects.filter(shift=shift, employee=employee)
     except RNN_ShiftEmployee.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'DELETE':
-        shift_employee.delete()
+        [se.delete() for se in shift_employees]
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_400_BAD_REQUEST)

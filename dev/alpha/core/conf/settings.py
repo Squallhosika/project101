@@ -1,6 +1,6 @@
 import collections
 
-UNIC_ROOT = r'C:\Users\Keuvin\DOCUME~1\Unicorn\GIT\UNICOR~1\dev\alpha'
+UNIC_ROOT = r'C:\Users\Jonathan\git\unicorn\dev\alpha'
 
 SERVICES = {
     'client': {
