@@ -1,18 +1,13 @@
 import os
-import sys
 import collections
-# sys.path.extend(['C:\\Users\\Jonathan\\git\\unicorn\\dev\\alpha'])
 
-# from external.userApp import call_function
-# import external.userApp as u
 import core.app.api.base as u
 import core.conf as conf
+import core.conf.settings as settings
 
 import pandas as pd
 
-
-# sys.path.append('C:\\Users\\Keuvin\\DOCUME~1\\Unicorn\\GIT\\UNICOR~1\\dev\\alpha\\')  #os.getcwd())
-input_dir = os.path.join(os.getcwd(), 'core', 'db', 'input')
+input_dir = os.path.join(settings.UNIC_ROOT, 'core', 'db', 'input')
 
 
 def csv_to_dicts(path):

@@ -1,6 +1,4 @@
 import sys
-# sys.path.extend(['C:\\Users\\Jonathan\\git\\unicorn\\dev\\alpha'])
-
 import os
 
 from core.management.base import BaseCommand, CommandError
@@ -62,7 +60,7 @@ class Command(BaseCommand):
         services = databases['SERVICES']
         update_all = databases['UPDATE_ALL']
 
-        cmds = []
+        cmds = ['set PYTHONPATH=' + settings.UNIC_ROOT]
         if self.service == 'all':
             for service_name, update in update_all.items():
                 if update:

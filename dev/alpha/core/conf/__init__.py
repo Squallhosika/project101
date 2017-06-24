@@ -1,17 +1,8 @@
-import sys
-import os
-# sys.path.extend(['C:\\Users\\Keuvin\\Documents\\Unicorn\\GIT\\unicorn_master\\dev\\alpha'])
-# os.environ.setdefault("UNIC_SETTINGS_MODULE", "core.conf.settings")
-
 import importlib
-
-
-# ENVIRONMENT_VARIABLE = "UNIC_SETTINGS_MODULE"
 
 
 class Settings():
     def __init__(self):
-        sys.path.extend(['C:\\Users\\Jonathan\\git\\unicorn\\dev\\alpha'])
         self.SETTINGS_MODULE = "core.conf.settings"
         self._configured = None
 
