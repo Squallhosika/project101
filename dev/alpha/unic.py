@@ -4,7 +4,7 @@ import sys
 
 if __name__ == "__main__":
     os.environ.setdefault("UNIC_SETTINGS_MODULE", "core.conf")
-    sys.path.extend(['C:\\Users\\Keuvin\\Documents\\Unicorn\\GIT\\unicorn_master\\dev\\alpha'])
+    sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
     try:
         from core.management import execute_from_command_line

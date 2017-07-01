@@ -4,7 +4,9 @@ class ClientApp():
 
     def __init__(self, client_id):
         self.client_id = client_id
-        self.menu_id = 1
+        self.shift_id = None
+        self.menu_id = None
+        self.init_shift()
 
 
     #GET MENUS
@@ -67,6 +69,9 @@ class ClientApp():
         employees = call_function('GET', service_name, function_name, params)
         return employees.json()
 
+    def get_employees_in_shift(self):
+        employees = call_function('GET', 'client', 'getemployeesfromshift', {'shift_id': self.shift_id})
+        return employees.json()
 
     #GET SHIFTS
     def get_all_shifts(self):
@@ -85,8 +90,8 @@ class ClientApp():
         params = {'client_id': self.client_id, 'status': status}
         # params = {'client_id': self.client_id}
 
-        employees = call_function('GET', service_name, function_name, params)
-        return employees.json()
+        shifts = call_function('GET', service_name, function_name, params)
+        return shifts.json()
 
 
     #UPDATE ORDERS STATUS
@@ -126,6 +131,22 @@ class ClientApp():
 
 
     #UPDATE SHIFTS STATUS
+    def init_shift(self):
+        active_shifts = self.get_active_shifts()
+        if len(active_shifts) > 0:
+            self.shift_id = active_shifts[0]['id']
+            return
+        shifts = self.get_all_shifts()
+        self.activate_shift(shifts[0]['id'])
+
+
+    def activate_shift(self, shift_id):
+        if self.shift_id:
+            self.update_shift_status(self.shift_id, 'inactive')
+
+        self.update_shift_status(shift_id, 'active')
+        self.shift_id = shift_id
+
     def activate_shifts(self, shift_ids):
         shifts = {}
         for shift_id in shift_ids:
@@ -155,6 +176,32 @@ class ClientApp():
         print(shift)
         return shift.json()
 
+    #UPDATE EMPLOYEES
+    def add_employees_to_shift(self, employee_ids):
+        for employee_id in employee_ids:
+            self.add_employee_to_shift(employee_id)
+
+    def remove_employees_from_shift(self, employee_ids):
+        for employee_id in employee_ids:
+            self.remove_employee_from_shift(employee_id)
+
+    def add_employee_to_shift(self, employee_id):
+        if not self.shift_id:
+            return False
+        params = {"employee_id": employee_id, "shift_id": self.shift_id, "status": ""}
+        call_function('POST', 'client', 'addemployeetoshift', params)
+        return True
+
+    def remove_employee_from_shift(self, employee_id):
+        if not self.shift_id:
+            return False
+        params = {"shift_id": self.shift_id, 'employee_id': employee_id}
+        call_function('DELETE', 'client', 'removeemployeefromshift',params)
+        return True
+
+    #UPDATE MENU STATUS
+    def activate_menu(self, menu_id):
+        pass
     #UPDATE MENUS
     def activate_menus(self, menu_ids):
         self.update_menu_status(self.menu_id, 'inactive')

@@ -1,6 +1,8 @@
 import collections
+import os
 
-UNIC_ROOT = r'C:\Users\Keuvin\DOCUME~1\Unicorn\GIT\UNICOR~1\dev\alpha'
+UNIC_ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..')
+
 
 SERVICES = {
     'client': {

@@ -16,8 +16,6 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        # os.environ['UNIC_ROOT'] = r'C:\Users\Keuvin\DOCUME~1\Unicorn\GIT\UNICOR~1\dev\alpha'
-
         self.app = str(options['service'])
 
         return self.run_app()
@@ -29,13 +27,13 @@ class Command(BaseCommand):
         UNIC_ROOT = settings.UNIC_ROOT
         apps = settings.APPS
 
-        cmds = []
+        cmds = ['set PYTHONPATH=' + settings.UNIC_ROOT]
         for app, params in apps.items():
             root = params['ROOT']
             gui = params['GUI']
 
             if app == self.app or self.app == 'all':
-                cmd = 'start cmd /k ' + UNIC_ROOT + root + gui
+                cmd = 'start cmd /k python ' + UNIC_ROOT + root + gui
                 cmds.append(cmd)
 
         for cmd in cmds:

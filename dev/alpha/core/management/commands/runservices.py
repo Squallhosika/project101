@@ -1,6 +1,4 @@
 import sys
-sys.path.extend(['C:\\Users\\Keuvin\\Documents\\Unicorn\\GIT\\unicorn_master\\dev\\alpha'])
-
 import os
 import webbrowser
 
@@ -38,7 +36,7 @@ class Command(BaseCommand):
         UNIC_ROOT = settings.UNIC_ROOT
         services = settings.SERVICES
 
-        cmds = []
+        cmds = ['set PYTHONPATH=' + settings.UNIC_ROOT]
         for service, params in services.items():
             host = params['HOST']
             port = params['PORT']
@@ -46,7 +44,7 @@ class Command(BaseCommand):
             cmd = params['CMD']
 
             if service == self.service or self.service == 'all':
-                cmd = 'start cmd /k ' + UNIC_ROOT + root + cmd + ' ' + host + ':' + port
+                cmd = 'start cmd /k python ' + UNIC_ROOT + root + cmd + ' ' + host + ':' + port
                 cmds.append(cmd)
 
         for cmd in cmds:
