@@ -43,6 +43,9 @@ urlpatterns = [
     url(r'^client/shiftactivate', views.shift_activate),
     url(r'^client/shiftdesactivate', views.shift_desactivate),
 
+    url(r'^client/menuactivate', views.menu_activate),
+    url(r'^client/menudesactivate', views.menu_desactivate),
+
     url(r'^client/createclient/', views.create_client),
     url(r'^client/createmenu/', views.create_menu),
     url(r'^client/createitem/', views.create_item),
@@ -58,6 +61,7 @@ urlpatterns = [
     url(r'^client/addmenuclient/', views.add_menu_to_client),
     url(r'^client/removemenuclient/', views.remove_menu_from_client),
     url(r'^client/getemployeesfromshift/', views.get_employees_from_shift),
+    url(r'^client/getmenusforclient/', views.get_menus_from_client),
     url(r'^client/addemployeetoshift/', views.add_employee_to_shift),
     url(r'^client/removeemployeefromshift/', views.remove_employee_from_shift),
     url(r'^', include(router.urls))

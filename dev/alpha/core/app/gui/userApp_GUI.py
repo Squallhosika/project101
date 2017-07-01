@@ -2,7 +2,7 @@
 import __init__
 
 import core.app.api.userApp as ua
-from core.app.gui.base_GUI import Inputbar, Checkbar
+from core.app.gui.base_GUI import Inputbar, Checkbar, Dropdownbar
 
 import collections
 import tkinter as tk
@@ -122,13 +122,16 @@ class UserAppGUI():
             el = tk.Label(top, text='Main', fg="dark green")
             panel_elements['order_' + panel_name + '_lbl'] = {'element':el, 'position': {'row':0, 'column':0, 'columnspan':3}}
 
-            # self.admin_client = Inputbar(top, elements=elements)
-            # self.admin_client.grid()
+            el = tk.Button(top, text='Refresh App', command=lambda: self.set_admin())
+            panel_elements['admin_' + panel_name + '_btn1'] = {'element':el, 'position': {'row':1, 'column':0}}
+
 
         for name, element in panel_elements.items():
             el = element['element']
             pos = element['position']
             if el.winfo_exists(): el.grid(**pos)
+
+        self.create_admin()
 
     def create_order_control(self, top, panel_name):
 
@@ -163,6 +166,31 @@ class UserAppGUI():
 
 
     #REFRESH BOTTOM FRAMES
+    def create_admin(self):
+        bottom = self.frames['Admin_main_bottom']
+        for wid in bottom.winfo_children():
+            wid.destroy()
+
+        # lbl_params = {'text':'User ID', 'fg':"black"}
+        #
+        # users = [user['id'] for user in self.userAPP.get_all_users()]
+        # self.admin_users = Dropdownbar(bottom, users, self.userAPP.user_id, lbl_params)
+        # self.admin_users.grid()
+
+        elements = {}
+
+        ct=1
+        for field in ['latitude', 'longitude', 'radius']:
+            element = {}
+            element['name'] = field
+            element['title'] = 'Admin'
+            element['label_params'] = {'text':field, 'name':field, 'fg':"black"}
+            element['params'] = {'id':field}
+            elements[field] = element
+            ct=ct+1
+
+        self.admin_user = Inputbar(bottom, elements=elements)
+        self.admin_user.grid()
 
     #ORDERS TAB
     def create_client_list(self):
@@ -292,6 +320,20 @@ class UserAppGUI():
             print('order created: ' + str(order_id))
         print(order)
 
+    def set_admin(self):
+        user = self.admin_user.state()
+        # print(user)
+        if user['longitude']['value'] != '':
+            self.userAPP.longitude = float(user['longitude']['value'])
+        if user['latitude']['value'] != '':
+            self.userAPP.latitude = float(user['latitude']['value'])
+        if user['radius']['value'] != '':
+            self.userAPP.radius = float(user['radius']['value'])
+
+        # print(self.userAPP.longitude)
+        # print(self.userAPP.latitude)
+
+        # print('user ID: ' + str(self.user_id))
 
 if __name__ == "__main__":
 

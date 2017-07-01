@@ -25,16 +25,22 @@ class Checkbar(tk.Frame):
         # return map((lambda var: var.get()), self.vars)
 
 class Dropdownbar(tk.Frame):
-    def __init__(self, parent=None, picks=[], initial_value=None):
+    def __init__(self, parent=None, picks=[], initial_value=None, lbl_params=None):
         tk.Frame.__init__(self, parent)
         self.picks = picks
         self.selection = initial_value
 
+        self.label = tk.Label(parent, **lbl_params)
+
         var = tk.StringVar()
         if initial_value is not None and initial_value in picks:
             var.set(initial_value)
-        option = tk.OptionMenu(parent, var, *picks, command=self.store)
-        option.grid()
+        self.option = tk.OptionMenu(parent, var, *picks, command=self.store)
+
+        self.label.grid(row=0, column=0)
+        self.option.grid(row=0, column=1)
+
+        # option.grid()
 
     def selected(self):
         return self.selection

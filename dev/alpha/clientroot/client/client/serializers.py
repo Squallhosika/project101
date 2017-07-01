@@ -62,8 +62,7 @@ class MenuSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Menu
-        fields = ('url', 'id',
-                  'name', )
+        fields = ('url', 'id', 'name')
 
     # def create(self, validated_data):
     #     if 'name' not in self.validated_data:

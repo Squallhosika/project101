@@ -4,6 +4,36 @@ class ClientApp():
 
     def __init__(self, client_id):
         self.client_id = client_id
+        self.menu_id = 1
+
+
+    #GET MENUS
+    def get_available_items(self):
+        service_name = 'order'
+        function_name = 'items'
+
+        # params = {'client_id': self.client_id, 'status': status}
+
+        items = call_function('GET', service_name, function_name)
+        return items.json()
+
+    def get_available_menus(self):
+        service_name = 'client'
+        function_name = 'getmenusforclient'
+
+        params = {'client_id': self.client_id}
+
+        items = call_function('GET', service_name, function_name, params)
+        return items.json()
+
+    def get_items_activemenu(self):
+        service_name = 'client'
+        function_name = 'itemmenus'
+
+        params = {'menu_id': self.menu_id}
+
+        items = call_function('GET', service_name, function_name, params)
+        return items.json()
 
 
     #GET ORDERS
@@ -125,6 +155,55 @@ class ClientApp():
         print(shift)
         return shift.json()
 
+    #UPDATE MENUS
+    def activate_menus(self, menu_ids):
+        self.update_menu_status(self.menu_id, 'inactive')
+
+        menus = {}
+        for menu_id in menu_ids:
+            menus[menu_id] = self.update_menu_status(menu_id, 'active')
+            self.menu_id = menu_id
+
+        return menus
+
+    def update_menu_status(self, menu_id, status):
+        service_name = 'client'
+
+        if status == 'active':
+            function_name = 'menuactivate'
+        elif status == 'inactive':
+            function_name = 'menudesactivate'
+
+        params = {'id': menu_id, 'status': status}
+        menu = call_function('PUT', service_name, function_name, params)
+
+        # print(shift)
+        return menu.json()
+
+    def remove_items_menu(self, item_ids):
+        items = {}
+        for item_id in item_ids:
+            items[item_id] = self.update_menu_item(item_id, 'remove')
+            # self.menu_id = item_id
+
+        return items
+
+    def update_menu_item(self, item_id, status):
+        service_name = 'client'
+
+        if status == 'remove':
+            function_name = 'removeitemmenu'
+            method_name = 'DELETE'
+        elif status == 'add':
+            function_name = 'additemmenu'
+            method_name = 'POST'
+
+        params = {'item_id': item_id, 'menu_id': self.menu_id}
+        menu = call_function(method_name, service_name, function_name, params)
+
+        # print(shift)
+        if status == 'add':
+            return menu.json()
 
     #GET CLIENTS
     def get_all_clients(self):

@@ -94,9 +94,7 @@ class ClientAppGUI():
         top = self.frames[tab_name + '_' + str(panel_name) + '_control']
 
         if tab_name == 'Admin':
-            label = tk.Label(top, text='Admin', fg="dark green")
-            self.create_admin()
-            label.grid(row=0, column=0, columnspan=3)
+            self.create_admin_control(top, panel_name)
 
         elif tab_name == 'Orders':
             self.create_order_control(top, panel_name)
@@ -104,6 +102,28 @@ class ClientAppGUI():
         elif tab_name == 'Shifts':
             self.create_shift_control(top, panel_name)
 
+        elif tab_name == 'Menus':
+            self.create_menu_control(top, panel_name)
+
+
+    def create_admin_control(self,top, panel_name):
+        panel_elements = {}
+
+        if panel_name == 'main':
+            el = tk.Label(top, text='Main', fg="dark green")
+            panel_elements['admin_' + panel_name + '_lbl'] = {'element':el, 'position': {'row':0, 'column':0, 'columnspan':3}}
+
+            el = tk.Button(top, text='Refresh App', command=lambda: self.set_admin())
+            panel_elements['admin_' + panel_name + '_btn1'] = {'element':el, 'position': {'row':1, 'column':0}}
+
+        for name, element in panel_elements.items():
+            el = element['element']
+            pos = element['position']
+            if el.winfo_exists(): el.grid(**pos)
+
+        # label = tk.Label(top, text='Admin', fg="dark green")
+        self.create_admin()
+        # label.grid(row=0, column=0, columnspan=3)
 
     def create_order_control(self, top, panel_name):
         if panel_name == 'created':
@@ -153,6 +173,30 @@ class ClientAppGUI():
         if button1.winfo_exists(): button1.grid(row=1, column=1)
         if button2.winfo_exists(): button2.grid(row=1, column=2)
 
+    def create_menu_control(self, top, panel_name):
+        if panel_name == 'items':
+            label = tk.Label(top, text='List of items', fg="dark green")
+            button = tk.Button(top, text='Refresh', width=15, command=lambda: self.create_items_list())
+            button1 = tk.Button(top, text='Add to menu', width=15, command=1)
+            button2 = tk.Button(top, text='Delete', width=15, command=1)
+
+        elif panel_name == 'active':
+            label = tk.Label(top, text='Active menu items', fg="dark green")
+            button = tk.Button(top, text='Refresh', width=15, command=lambda: self.create_activemenu_list())
+            button1 = tk.Button(top, text='Remove Items', width=15, command=lambda: self.remove_item_from_menu())
+            button2 = tk.Button(top, text='Unactivate Menu', width=15, command=1)
+
+        elif panel_name == 'menus':
+            label = tk.Label(top, text='List of available menus', fg="dark green")
+            button = tk.Button(top, text='Refresh', width=15, command=lambda: self.create_menus_list())
+            button1 = tk.Button(top, text='Activate menu', width=15, command=lambda: self.activate_menu())
+            button2 = tk.Button(top, text='Remove Shift', width=15, command='1')
+
+        if label.winfo_exists(): label.grid(row=0, column=0, columnspan=3)
+        if button.winfo_exists(): button.grid(row=1, column=0)
+        if button1.winfo_exists(): button1.grid(row=1, column=1)
+        if button2.winfo_exists(): button2.grid(row=1, column=2)
+
 
 
 
@@ -163,13 +207,13 @@ class ClientAppGUI():
     def get_tabs(self):
         tab_dic = collections.OrderedDict()
         # tab_list = ['Orders', 'Shifts', 'Menus', 'Admin']
-        tab_list = ['Orders', 'Shifts', 'Admin']
+        tab_list = ['Orders', 'Menus', 'Shifts', 'Admin']
 
         for t in tab_list:
             if t == 'Orders':
                 panels = ['created', 'validated', 'pickup']
             elif t == 'Admin':
-                panels = ['client']
+                panels = ['main']
             elif t == 'Shifts':
                 panels = ['employees', 'active', 'shifts']
             elif t == 'Menus':
@@ -188,12 +232,14 @@ class ClientAppGUI():
 
     #REFRESH BOTTOM FRAMES
     def create_admin(self):
-        bottom = self.frames['Admin_client_bottom']
+        bottom = self.frames['Admin_main_bottom']
         for wid in bottom.winfo_children():
             wid.destroy()
 
+        lbl_params = {'text':'Client ID', 'fg':"black"}
+
         clients = [client['id'] for client in self.clientAPP.get_all_clients()]
-        self.admin_clients = Dropdownbar(bottom, clients, self.clientAPP.client_id)
+        self.admin_clients = Dropdownbar(bottom, clients, self.clientAPP.client_id, lbl_params)
         self.admin_clients.grid()
 
     #ORDERS
@@ -309,6 +355,62 @@ class ClientAppGUI():
         self.created_shifts.grid()
 
 
+    def create_items_list(self):
+        bottom = self.frames['Menus_items_bottom']
+        for wid in bottom.winfo_children():
+            wid.destroy()
+
+        items = self.clientAPP.get_available_items()
+        print('available items: ' + str(len(items)))
+
+        item_ids = []
+        for item in items:
+            id = item['id']
+            name = item['name']
+            item_ids.append('item: ' + str(id) + ' - name: ' + str(name))
+
+        self.available_items = Checkbar(bottom, item_ids,'id')
+        self.available_items.grid()
+
+    def create_menus_list(self):
+        bottom = self.frames['Menus_menus_bottom']
+        for wid in bottom.winfo_children():
+            wid.destroy()
+
+        menus = self.clientAPP.get_available_menus()
+        print('available menus: ' + str(len(menus)))
+
+        menu_ids = []
+        for menu in menus:
+            id = menu['id']
+            name = menu['menu_id']
+            menu_ids.append('menu: ' + str(id) + ' - name: ' + str(name))
+
+        self.available_menus = Checkbar(bottom, menu_ids,'id')
+        self.available_menus.grid()
+
+
+    def create_activemenu_list(self):
+        bottom = self.frames['Menus_active_bottom']
+        for wid in bottom.winfo_children():
+            wid.destroy()
+
+        label = tk.Label(bottom, text='Active Menu: ' + str(self.clientAPP.menu_id), fg="dark green")
+        label.grid()
+
+        items = self.clientAPP.get_items_activemenu()
+        print('items in active menu: ' + str(len(items)))
+
+        item_ids = []
+        for item in items:
+            id = item['id']
+            item_id = item['item_id']
+            price = item['price']
+            item_ids.append('item_id: ' + str(item_id) + ' - price: ' + str(price))
+
+        self.available_items_menu = Checkbar(bottom, item_ids,'id')
+        self.available_items_menu.grid()
+
 
 
     #ACTIONS
@@ -375,6 +477,51 @@ class ClientAppGUI():
 
         self.create_active_list(self.client_id)
         self.create_shifts_list(self.client_id)
+
+
+    def activate_menu(self):
+
+        print(self.available_menus.state())
+
+        activated_menus = []
+        for k,v in self.available_menus.state().items():
+            if v > 0:
+                activated_menus.append(k)
+
+        menus = self.clientAPP.activate_menus(activated_menus)
+
+        self.create_menus_list()
+        self.create_activemenu_list()
+        # self.create_active_list(self.client_id)
+        # self.create_shifts_list(self.client_id)
+
+
+    def remove_item_from_menu(self):
+        # self.available_items
+        # self.available_items_menu
+        print(self.available_items_menu.state())
+
+        removed_items = []
+        for k,v in self.available_items_menu.state().items():
+            if v > 0:
+                removed_items.append(k)
+
+        menus = self.clientAPP.remove_items_menu(removed_items)
+
+        # self.create_items_list()
+        self.create_activemenu_list()
+
+    def add_item_to_menu(self):
+        self.available_items
+        self.available_items_menu
+
+
+    def set_admin(self):
+        new_id = self.admin_clients.selected()
+        self.client_id = new_id
+        self.clientAPP.client_id = new_id
+
+        print('client ID: ' + str(self.client_id))
 
 if __name__ == "__main__":
 

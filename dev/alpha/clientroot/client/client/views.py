@@ -412,8 +412,9 @@ def remove_menu_from_client(request):
 @api_view(['DELETE'])
 def remove_item_from_menu(request):
     try:
-        pk = request.data.get('id')
-        menu_item = RNN_MenuItem.objects.get(pk=pk)
+        menu_id = request.data.get('menu_id')
+        item_id = request.data.get('item_id')
+        menu_item = RNN_MenuItem.objects.get(item_id=item_id, menu_id=menu_id)
     except RNN_MenuItem.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
