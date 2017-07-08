@@ -1,0 +1,16 @@
+branch-defaults:
+  default:
+    environment: ook-test
+    group_suffix: null
+global:
+  application_name: ook
+  branch: null
+  default_platform: Python 3.4
+  default_region: eu-west-1
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: eb-cli
+  repository: null
+  sc: null
+  workspace_type: Application
