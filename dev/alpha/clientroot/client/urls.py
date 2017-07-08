@@ -43,8 +43,8 @@ urlpatterns = [
     url(r'^client/shiftactivate', views.shift_activate),
     url(r'^client/shiftdesactivate', views.shift_desactivate),
 
-    url(r'^client/menuactivate', views.menu_activate),
-    url(r'^client/menudesactivate', views.menu_desactivate),
+    # url(r'^client/menuactivate', views.menu_activate),
+    # url(r'^client/menudesactivate', views.menu_desactivate),
 
     url(r'^client/createclient/', views.create_client),
     url(r'^client/createmenu/', views.create_menu),
