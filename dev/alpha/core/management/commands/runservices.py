@@ -50,7 +50,10 @@ class Command(BaseCommand):
         for cmd in cmds:
             os.system(str(cmd))
 
-            if self.web:
+        if self.web:
+            for _, params in services.items():
+                host = params['HOST']
+                port = params['PORT']
                 webbrowser.open('http://' + host + ':' + port)
 
         sys.stdout.write(self.service + ' service started')
