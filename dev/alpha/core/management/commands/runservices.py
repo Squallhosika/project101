@@ -32,11 +32,12 @@ class Command(BaseCommand):
     def run_services(self):
 
         settings = conf.Settings()
+        os.environ['PYTHONPATH'] = settings.UNIC_ROOT
 
         UNIC_ROOT = settings.UNIC_ROOT
         services = settings.SERVICES
 
-        cmds = ['set PYTHONPATH=' + settings.UNIC_ROOT]
+        cmds = []
         for service, params in services.items():
             host = params['HOST']
             port = params['PORT']
