@@ -164,6 +164,10 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, "..", "www", "static")
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [
+    "/opt/python/bundle/8/www/static/",
+]
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
