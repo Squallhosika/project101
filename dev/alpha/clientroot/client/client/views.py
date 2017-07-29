@@ -1,10 +1,9 @@
 from rest_framework import viewsets
 from client.client.serializers import *
-
 from rest_framework import status
-from rest_framework.parsers import JSONParser
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from core.app.api.base import call_function
 
 
 class ClientViewSet(viewsets.ModelViewSet):
@@ -114,24 +113,34 @@ def shift_activate(request):
     if request.method == 'PUT':
         serializer = ShiftSerializer(shift, data=request.data, context={'request': request}, partial=True)
         if serializer.is_valid() and request.data['status'] == 'active':
+            param = {'master_id', shift.id}
+            # create a queue when activate the shift
+            req_createqueue = call_function('POST', 'dqueue', 'createqueue', param)
+            if not req_createqueue.status_code == status.HTTP_201_CREATED:
+                return req_createqueue
+
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['PUT'])
 def shift_desactivate(request):
     try:
         pk = request.data.get('id')
-        order = Shift.objects.get(pk=pk)
+        shift = Shift.objects.get(pk=pk)
     except Shift.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'PUT':
-        serializer = ShiftSerializer(order, data=request.data, context={'request': request}, partial=True)
+        serializer = ShiftSerializer(shift, data=request.data, context={'request': request}, partial=True)
         if serializer.is_valid() and request.data['status'] == 'inactive':
+            param = {'master_id', shift.id}
+            # create a queue when activate the shift
+            call_function('GET', 'dqueue', 'deletequeue', param)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 
@@ -143,7 +152,7 @@ def create_client(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def create_menu(request):
@@ -152,7 +161,7 @@ def create_menu(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def create_item(request):
@@ -161,7 +170,7 @@ def create_item(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def create_shift(request):
@@ -170,7 +179,7 @@ def create_shift(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 def create_employee(request):
@@ -179,7 +188,7 @@ def create_employee(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 

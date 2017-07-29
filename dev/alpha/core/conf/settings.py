@@ -1,7 +1,7 @@
 import collections
 import os
 
-UNIC_ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..')
+UNIC_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 
 SERVICES = {
