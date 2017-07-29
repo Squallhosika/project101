@@ -4,6 +4,7 @@ import os
 from core.management.base import BaseCommand, CommandError
 import core.conf as conf
 
+
 class Command(BaseCommand):
     help = "Runs all services in local servers based on config file"
 
@@ -23,17 +24,17 @@ class Command(BaseCommand):
     def run_app(self):
         # pass
         settings = conf.Settings()
+        os.environ['PYTHONPATH'] = settings.UNIC_ROOT
 
-        UNIC_ROOT = settings.UNIC_ROOT
         apps = settings.APPS
 
-        cmds = ['set PYTHONPATH=' + settings.UNIC_ROOT]
+        cmds = []
         for app, params in apps.items():
             root = params['ROOT']
             gui = params['GUI']
 
             if app == self.app or self.app == 'all':
-                cmd = 'start cmd /k python ' + UNIC_ROOT + root + gui
+                cmd = 'start cmd /k python ' + settings.UNIC_ROOT + root + gui
                 cmds.append(cmd)
 
         for cmd in cmds:

@@ -1,7 +1,7 @@
 import collections
 import os
 
-UNIC_ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..')
+UNIC_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 
 SERVICES = {
@@ -22,7 +22,13 @@ SERVICES = {
         'PORT': '8001',
         'ROOT': r'\georoot',
         'CMD': r'\manage.py runserver'
-    }
+    },
+    'dqueue': {
+        'HOST': '127.0.0.1',
+        'PORT': '8002',
+        'ROOT': r'\dqueueroot',
+        'CMD': r'\manage.py runserver'
+    },
 }
 
 APPS = {
@@ -53,7 +59,12 @@ DATABASES = {
         'geo': {
             'DB_ROOT': r'\core\db',
             'SERVICE_ROOT': r'\georoot'
+        },
+        'dqueue': {
+            'DB_ROOT': r'\core\db',
+            'SERVICE_ROOT': r'\dqueueroot'
         }
+
     },
     'CMD': {
         'FLUSH_CMD': r'\manage.py flush',

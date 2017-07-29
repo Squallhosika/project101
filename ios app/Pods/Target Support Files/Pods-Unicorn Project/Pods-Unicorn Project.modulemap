@@ -1,0 +1,6 @@
+framework module Pods_Unicorn_Project {
+  umbrella header "Pods-Unicorn Project-umbrella.h"
+
+  export *
+  module * { export * }
+}

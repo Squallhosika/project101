@@ -27,9 +27,9 @@ router = DefaultRouter()
 router.register(r'order/items', views.ItemViewSet)
 router.register(r'order/orders', views.OrderViewSet)
 # router.register(r'order/orderflows', views.OrderFlowViewSet)
-router.register(r'order/queues', views.QueueViewSet)
+# router.register(r'order/queues', views.QueueViewSet)
 router.register(r'order/orderitems', views.RNN_OrderItemViewSet)
-router.register(r'order/queueorders', views.RNN_QueueOrderViewSet)
+# router.register(r'order/queueorders', views.RNN_QueueOrderViewSet)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -37,18 +37,7 @@ urlpatterns = [
     url(r'order/createitem', views.create_item),
     url(r'order/createorder', views.create_order),
     url(r'order/orderadditem', views.order_add_item),
-    url(r'order/placeorder', views.place_order),
-    url(r'order/neworders', views.new_orders),
-    url(r'order/beingserveorders', views.beingserve_orders),
-    url(r'order/inqueueorders', views.inqueue_orders),
     url(r'order/itemsbyorder', views.items_by_order),
-    url(r'order/orderacceptedbyclient', views.order_accepted_by_client),
-    url(r'order/orderrejectedbyclient', views.order_rejected_by_client),
-    url(r'order/ordercanceledbyuser', views.order_canceled_by_user),
-    url(r'order/ordercompleted', views.order_completed),
-    url(r'order/createqueue', views.create_queue),
-    url(r'order/deletequeue', views.delete_queue),
-    url(r'order/nexttoserve', views.next_to_serve),
     url(r'order/orderbyclientstatus', views.get_orders_by_client_status),
     url(r'order/ordervalidate', views.order_validate),
     url(r'order/orderpickup', views.order_pickup),

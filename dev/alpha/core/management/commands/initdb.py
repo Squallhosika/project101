@@ -51,6 +51,7 @@ class Command(BaseCommand):
     def run_app(self):
 
         settings = conf.Settings()
+        os.environ['PYTHONPATH'] = settings.UNIC_ROOT
 
         UNIC_ROOT = settings.UNIC_ROOT
         databases = settings.DATABASES
@@ -60,7 +61,7 @@ class Command(BaseCommand):
         services = databases['SERVICES']
         update_all = databases['UPDATE_ALL']
 
-        cmds = ['set PYTHONPATH=' + settings.UNIC_ROOT]
+        cmds = []
         if self.service == 'all':
             for service_name, update in update_all.items():
                 if update:

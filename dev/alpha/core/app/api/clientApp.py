@@ -118,6 +118,7 @@ class ClientApp():
 
     def update_order_status(self, order_id, status):
         service_name = 'order'
+        function_name = None
 
         if status == 'validated':
             function_name = 'ordervalidate'

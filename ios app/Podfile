@@ -1,0 +1,9 @@
+platform :ios, '9.0'
+
+target 'Unicorn Project' do
+
+    use_frameworks!
+
+    pod 'ChameleonFramework/Swift'
+
+end
