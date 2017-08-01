@@ -31,7 +31,9 @@ router.register(r'dqueue/nodes', views.NodeViewSet)
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include(router.urls)),
+    url(r'dqueue/createqueue', views.create_queue),
     url(r'dqueue/createnode', views.create_node),
     url(r'dqueue/repositionnode', views.reposition_node),
-    url(r'dqueue/removenode', views.remove_node)
+    url(r'dqueue/deletenode', views.remove_node),
+    url(r'dqueue/nodesbytype', views.nodes_by_type)
 ]

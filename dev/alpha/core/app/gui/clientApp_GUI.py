@@ -253,14 +253,18 @@ class ClientAppGUI():
             wid.destroy()
 
         orders = self.clientAPP.get_pending_orders()
+        # Here we receive ordored orders
+        nodes = self.clientAPP.get_pending_nodes()
         print('pending orders: ' + str(len(orders)))
 
         order_ids = []
-        for order in orders:
-            id = order['id']
+        for node in nodes:
+            order_id = node['id']
+            # TODO this can be optimize
+            order = list(filter(lambda o: o['id'] == order_id, orders))[0]
             menu_id = order['menu_id']
             user_id = order['user_id']
-            order_ids.append('order: ' + str(id) + ' - user: ' + str(user_id) + ' - menu: ' +str(menu_id))
+            order_ids.append('order: ' + str(order_id) + ' - user: ' + str(user_id) + ' - menu: ' + str(menu_id))
 
         self.created_orders = Checkbar(bottom, order_ids,'id')
         self.created_orders.grid()
@@ -271,16 +275,19 @@ class ClientAppGUI():
             wid.destroy()
 
         orders = self.clientAPP.get_validated_orders()
+        nodes = self.clientAPP.get_validated_nodes()
         print('validated orders: ' + str(len(orders)))
 
         order_ids = []
-        for order in orders:
-            id = order['id']
+        for node in nodes:
+            order_id = node['id']
+            # TODO this can be optimize
+            order = list(filter(lambda o: o['id'] == order_id, orders))[0]
             menu_id = order['menu_id']
             user_id = order['user_id']
-            order_ids.append('order:' + str(id) + ' - user:' + str(user_id) + ' - menu:' +str(menu_id))
+            order_ids.append('order:' + str(order_id) + ' - user:' + str(user_id) + ' - menu:' + str(menu_id))
 
-        self.validated_orders = Checkbar(bottom, order_ids,'id')
+        self.validated_orders = Checkbar(bottom, order_ids, 'id')
         self.validated_orders.grid()
 
     def create_pickup_queue(self):

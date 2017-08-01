@@ -7,6 +7,7 @@ class ClientApp():
         self.shift_id = None
         self.menu_id = None
         self.init_shift()
+        self.nb_display_order = 5
 
 
     #GET MENUS
@@ -37,7 +38,6 @@ class ClientApp():
         items = call_function('GET', service_name, function_name, params)
         return items.json()
 
-
     #GET ORDERS
     def get_pending_orders(self):
         return self.get_orders_by_status('created')
@@ -47,6 +47,20 @@ class ClientApp():
 
     def get_pickup_orders(self):
         return self.get_orders_by_status('pickup')
+
+    def get_pending_nodes(self):
+        return self.get_nodes_by_type('pending')
+
+    def get_validated_nodes(self):
+        return self.get_nodes_by_type('validated')
+
+    def get_nodes_by_type(self, type_nodes):
+        service_name = 'dqueue'
+        function_name = 'nodesbytypes'
+        params = {'master_id': self.shift_id, 'type': type_nodes, 'number': self.nb_display_order}
+
+        orders = call_function('GET', service_name, function_name, params)
+        return orders.json()
 
     def get_orders_by_status(self, status):
         service_name = 'order'

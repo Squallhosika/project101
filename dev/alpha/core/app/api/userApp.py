@@ -64,12 +64,18 @@ class UserApp():
         item1 = items[next(iter(items))]
         client_id = item1['client_id']
         menu_id = item1['menu_id']
-        params = {'user_id': 1, 'client_id': client_id, 'menu_id': menu_id}
+        shift_id = item1['shift_id']
+        params = {'user_id': 1, 'client_id': client_id, 'shift_id': shift_id, 'menu_id': menu_id}
 
         req0 = call_function('POST', service_name, function_name, params)
         dsds = req0.text
         de=json.loads(dsds)
         order_id = de['id']
+
+        # Actualy this is done in the service order
+        # params_queue = {'master_id': shift_id, 'type': 'pending', 'id': order_id, 'time': 2.5, 'rating': 2.5}
+        # req_queue = call_function('POST', 'dqueue', 'createnode', )
+
         # order_id = c['id']
 
         ct=0
@@ -94,6 +100,19 @@ class UserApp():
             pass
             # req2 = call_function('POST', service_name, function_name, params)
             # return req2.json()
+
+    def get_active_shift_id(self, client_id):
+        service_name = 'client'
+        function_name = 'shiftbyclientstatus'
+
+        params = {'client_id': client_id, 'status': 'active'}
+
+        items = call_function('GET', service_name, function_name, params)
+        res = items.json()
+        if len(res) != 1:
+            raise Exception('For now client should have only 1 active shift.'
+                            + 'This is not the case for the clientID', client_id)
+        return res[0]['id']
 
     #GET USERS
     def get_all_users(self):
