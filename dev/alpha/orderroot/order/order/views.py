@@ -50,7 +50,9 @@ def order_validate(request):
         if serializer.is_valid() and request.data['status'] == 'validated':
             # TODO for now an order is automatically add to the Queue
             # Do we want that ? At this place it is sure that we do not want
-            order_to_queue(order)
+            # TODO is the program crash after call function node desaper
+            call_function('DELETE', 'dqueue', 'deletenode', {'id': order.id})
+            order_to_queue(order, 'validated')
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -85,15 +87,16 @@ def order_id_to_item_list(request):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
 
-def order_to_queue(order):
+def order_to_queue(order, dqueue_type):
     time = ctr.OrderControl.estimated_time(order)
     # TODO implement that and then remove fixe rating
     # rating_req = call_function('GET', 'user', 'userrating')
     # rating = rating_req['rating']
     rating = 4.5
     queue_id = ctr.OrderControl.queue_id(order)
-    params = {'id': order.id, 'queue_id': queue_id, 'time': time, 'rating': rating}
+    params = {'id': order.id, 'master_id': order.shift_id, 'type': dqueue_type, 'time': time, 'rating': rating}
     call_function('POST', 'dqueue', 'createnode', params)
+
 
 
 @api_view(['POST'])
@@ -125,7 +128,8 @@ def create_order(request):
     if request.method == 'POST':
         serializer = OrderSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
-            serializer.save()
+            order = serializer.save()
+            order_to_queue(order, 'pending')
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

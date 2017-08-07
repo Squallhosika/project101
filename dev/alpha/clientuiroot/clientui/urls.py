@@ -1,4 +1,4 @@
-"""dqueue URL Configuration
+"""clientui URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.11/topics/http/urls/
@@ -16,24 +16,6 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from django.conf.urls import url
-from django.contrib import admin
-from django.conf.urls import url, include
-from dqueue.dqueue import views
-from rest_framework.routers import DefaultRouter
-
-# Create a router and register our viewsets with it.
-router = DefaultRouter()
-router.register(r'dqueue/queues', views.QueueViewSet)
-router.register(r'dqueue/nodes', views.NodeViewSet)
-
-
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include(router.urls)),
-    url(r'dqueue/createqueue', views.create_queue),
-    url(r'dqueue/createnode', views.create_node),
-    url(r'dqueue/repositionnode', views.reposition_node),
-    url(r'dqueue/deletenode', views.remove_node),
-    url(r'dqueue/nodesbytype', views.nodes_by_type)
 ]

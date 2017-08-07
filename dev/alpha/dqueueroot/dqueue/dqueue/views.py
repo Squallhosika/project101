@@ -25,14 +25,21 @@ def remove_from_queue(node):
     if node.id_next:
         node_next = Node.objects.get(pk=node.id_next)
         node_next.id_previous = node.id_previous
-        node.id_previous = None
         node_next.save()
+        if not node.id_previous:
+            node.queue.node_id_first = node_next.id
+            node.queue.save()
 
     if node.id_previous:
         node_previous = Node.objects.get(pk=node.id_previous)
         node_previous.id_next = node.id_next
-        node.id_next = None
         node_previous.save()
+        if not node.id_next:
+            node.queue.node_id_last = node_previous.id
+            node.queue.save()
+
+    node.id_previous = None
+    node.id_next = None
 
     node.save()
 
@@ -73,14 +80,48 @@ def node_place(node, node_displaced, place_before):
         node_displaced.save()
 
 
+@api_view(['GET'])
+def nodes_by_type(request):
+    try:
+        master_id = request.data.get('master_id')
+        type_queue = request.data.get('type')
+        number = int(request.data.get('number'))
+        queue = Queue.objects.filter(master_id=master_id, type=type_queue).get()
+    except Queue.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    id_first = queue.node_id_first
+    current_node = Node.objects.get(id=id_first)
+    nodes = [current_node]
+    iterator = 1
+
+    while current_node.id_next and iterator < number:
+        current_node = Node.objects.get(id=current_node.id_next)
+        nodes.append(current_node)
+        iterator += 1
+
+    if request.method == 'GET':
+        serializer = NodeSerializer(nodes, data=request.data, many=True, context={'request': request})
+        if serializer.is_valid():
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 @api_view(['POST'])
 def create_queue(request):
     if request.method == 'POST':
-        serializer = QueueSerializer(data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        master_id = int(request.data.get('master_id'))
+        type_queue = request.data.get('type')
+        que = Queue.objects.create(master_id=master_id, type=type_queue)
+        que.save()
+        return Response(status=status.HTTP_201_CREATED)
+
+        # TODO remove the return obove decoment that and understand why its not working
+        # serializer = QueueSerializer(que, data=request.data, context={'request': request})
+        # if serializer.is_valid():
+        #     serializer.save()
+        #     return Response(serializer.data, status=status.HTTP_201_CREATED)
+        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['DELETE'])
@@ -100,11 +141,29 @@ def delete_queue(request):
 @api_view(['POST'])
 def create_node(request):
     if request.method == 'POST':
-        serializer = NodeSerializer(data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        master_id = request.data.get('master_id')
+        type_queue = request.data.get('type')
+        node_id = request.data.get('id')
+        time = request.data.get('time')
+        rating = request.data.get('rating')
+
+        queue = Queue.objects.filter(master_id=master_id, type=type_queue).get()
+        # TODO serelize the node to validate the creation
+        node = ctr.QueueControl.add_node(queue, node_id, time, rating)
+        return Response(status=status.HTTP_201_CREATED)
+
+
+# @api_view(['POST'])
+# def create_node_end(request):
+#     if request.method == 'POST':
+#
+#         id_order = request.date.get('id_order')
+#         try:
+#             queue = Queue.objects.filter(master_id=master_id, type=type_queue)
+#         except Queue.DoesNotExist:
+#             return Response(status=status.HTTP_404_NOT_FOUND)
+#
+#         last = Node.objects.get(id=queue.node_id_last)
 
 
 @api_view(['UPDATE'])
@@ -131,4 +190,5 @@ def remove_node(request):
         return Response(status=status.HTTP_404_NOT_FOUND)
     remove_from_queue(node)
     node.delete()
-    node.save()
+    # node.save()
+    return  Response(status=status.HTTP_204_NO_CONTENT)

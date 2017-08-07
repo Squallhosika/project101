@@ -3,8 +3,9 @@ import requests
 API_BASE_URL = 'http://127.0.0.1:8000/'
 API_CLIENT_URL = 'http://127.0.0.1:8000/'
 API_GEO_URL = 'http://127.0.0.1:8001/'
-API_USER_URL = 'http://127.0.0.1:8002/'
+API_DQUEUE_URL = 'http://127.0.0.1:8002/'
 API_ORDER_URL = 'http://127.0.0.1:8003/'
+API_USER_URL = 'http://127.0.0.1:8004/'
 
 def call_function(method_name, service_name, function_name, params=None):
     url = get_url(service_name, function_name)
@@ -20,6 +21,7 @@ def get_url(service_name, function_name):
     if service_name == 'client':    url = API_CLIENT_URL
     elif service_name == 'user':    url = API_USER_URL
     elif service_name == 'order':   url = API_ORDER_URL
-    elif service_name == 'geo':   url = API_GEO_URL
+    elif service_name == 'geo':     url = API_GEO_URL
+    elif service_name == 'dqueue':  url = API_DQUEUE_URL
 
     return url + service_name + '/' + function_name + '/'

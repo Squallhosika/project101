@@ -33,11 +33,11 @@ class ItemSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Item
-        fields = '__all__'  # ('url', 'id', 'name', 'item_id')
+        fields = ('url', 'id', 'name', 'item_id')  # '__all__'
 
 
 class OrderSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Order
-        fields = '__all__'  # ('url', 'id', 'status', 'shift_id', 'client_id', 'menu_id', 'user_id')
+        fields = ('url', 'id', 'status', 'shift_id', 'client_id', 'menu_id', 'user_id')

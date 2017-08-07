@@ -46,6 +46,7 @@ DATABASES = {
     'UPDATE_ALL': {
         'client': True,
         'order': True,
+        'dqueue': True,
     },
     'SERVICES': {
         'client': {
@@ -115,5 +116,15 @@ DB_INPUTS = {
             ('client', {'fct': 'createclient', 'file': 'clients.csv'}),
             ('user', {'fct': 'createuser', 'file': 'users.csv'}),
         ])
+    },
+    'dqueue': {
+        'INPUT_ROOT': r'\core\db\input\dqueue',
+        'UPDATE': collections.OrderedDict([
+            ('queue', True),
+        ]),
+        'FILES': collections.OrderedDict([
+            ('queue', {'fct': 'createqueue', 'file': 'queue.csv'}),
+        ])
     }
+
 }

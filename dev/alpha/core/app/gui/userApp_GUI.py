@@ -212,7 +212,7 @@ class UserAppGUI():
             wid.destroy()
 
         menu = self.userAPP.get_menu(client_id)
-
+        shift_id = self.userAPP.get_active_shift_id(client_id)
         elements = {}
 
         for item in menu:
@@ -223,8 +223,10 @@ class UserAppGUI():
 
             element['name'] = str(menu_id) + '_' + str(item_id)
             element['title'] = 'Menu: ' + str(menu_id) + ' of client: ' + str(client_id)
-            element['label_params'] = {'text':"item " + str(item_id) + ' @ £' + str(item_price), 'name':str(item_id), 'fg':"black"}
-            element['params'] = {'id':item_id, 'item_id': item_id, 'item_price': item_price, 'menu_id':menu_id,'client_id':client_id, 'qty':0}
+            element['label_params'] = {'text':"item " + str(item_id) + ' @ £' + str(item_price), 'name':str(item_id),
+                                       'fg':"black"}
+            element['params'] = {'id':item_id, 'item_id': item_id, 'item_price': item_price, 'menu_id':menu_id,
+                                 'shift_id': shift_id, 'client_id': client_id, 'qty': 0}
 
             elements[str(menu_id) + '_' + str(item_id)] = element
 
@@ -310,8 +312,10 @@ class UserAppGUI():
             qty = 0 if item['value'] == '' else int(item['value'])
             price = item['params']['item_price']
             client_id = item['params']['client_id']
+            shift_id = item['params']['shift_id']
             menu_id = item['params']['menu_id']
-            order[item_id] = {'item_id':item_id, 'client_id':client_id, 'menu_id':menu_id, 'price':price, 'qty':qty}
+            order[item_id] = {'item_id': item_id, 'client_id': client_id, 'shift_id': shift_id,
+                              'menu_id': menu_id, 'price': price, 'qty': qty}
 
             nb_items = nb_items + qty
 

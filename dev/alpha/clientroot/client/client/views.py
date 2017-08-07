@@ -86,12 +86,12 @@ def get_employees_by_client_status(request):
 def get_shifts_by_client_status(request):
     try:
         client_id = request.data.get('client_id')
-        status = request.data.get('status')
+        status_shift = request.data.get('status')
 
-        if status == 'all':
+        if status_shift == 'all':
             shifts = Shift.objects.filter(client_id=client_id)
         else:
-            shifts = Shift.objects.filter(client_id=client_id, status=status)
+            shifts = Shift.objects.filter(client_id=client_id, status=status_shift)
 
     except Shift.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
