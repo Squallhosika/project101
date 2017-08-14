@@ -1,17 +1,15 @@
 from kafka import KafkaConsumer, TopicPartition
-from useruiroot.userui.userui.kafka.KProcessor import KProcessor
+from core.kafka.KProcessor import KProcessor
 
 
 class KConsumer:
 
-    def __init__(self):
-        self.kafka_host = 'localhost'
-        self.kafka_port = '9092'
-        self.kafka_topics = ['order']
-        self.kafka_groups = ['group-1']
-
-        # self.client = kafka.SimpleClient(self.kafka_host + ':' + self.kafka_port)
-        # self.consumer = kafka.SimpleConsumer(self.client, self.kafka_groups[0], self.kafka_topics[0])
+    def __init__(self, settings):
+        self.kafka_host = settings.kafka_host
+        self.kafka_port = settings.kafka_port
+        self.kafka_topics = settings.kafka_topics
+        self.kafka_groups = settings.kafka_groups
+        self.kprocessor = KProcessor(settings)
 
         self.consumer = KafkaConsumer(bootstrap_servers=[self.kafka_host + ':' + self.kafka_port])
 
@@ -26,17 +24,23 @@ class KConsumer:
         self.consumer.seek_to_beginning(partition)
 
         for msg in self.consumer:
-            print(msg[6])
-            # KProcessor.process(msg)
+            self.kprocessor.process(msg[6])
 
     def start(self):
         partitions = [TopicPartition(x, 0) for x in self.kafka_topics]
         self.consumer.assign(partitions)
-        self.consumer.seek_to_beginning(partitions[0])
+        # TODO do that instead of the below loop
+        # self.consumer.seek_to_beginning(partitions)
+
+        for partition in partitions:
+            self.consumer.seek_to_beginning(partition)
 
         while True:
             msg = next(self.consumer)
-            print(msg[6])
+            try:
+                self.kprocessor.process(msg)
+            except:
+                print('event string not in the good format :', msg.value)
             # use KProducer here
 
     def close(self):
