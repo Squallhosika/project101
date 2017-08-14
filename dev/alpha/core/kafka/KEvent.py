@@ -30,7 +30,6 @@ class KEvent:
     def from_json(cls, json_string):
         event = KEvent()
         json_dic = json.loads(json_string)
-        event.event_type = json_dic['event_type']
         for key, value in json_dic.items():
             if key in event.__dict__:
                 event.__dict__[key] = value
