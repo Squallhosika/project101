@@ -2,12 +2,12 @@ from kafka import KafkaProducer
 from kafka.errors import KafkaError
 
 
-class KProducer():
+class KProducer:
 
     def __init__(self):
         self.kafka_host = 'localhost'
         self.kafka_port = '9092'
-        self.kafka_topics = ['test']
+        self.kafka_topics = ['order']
         self.kafka_groups = ['group-1']
 
         self.producer = KafkaProducer(bootstrap_servers=[self.kafka_host + ':' + self.kafka_port])
@@ -17,6 +17,24 @@ class KProducer():
 
     def start(self):
         pass
+
+    def send(self, topic,  value):
+        return self.producer.send(topic, value=value.encode('utf-8'))
+
+    def send_synchronous(self, topic, value):
+        future = self.producer.send(topic, value=value)
+
+        try:
+            rcd_metadata = future.get(timeout=10)
+            print(rcd_metadata.topic)
+            print(rcd_metadata.partition)
+            print(rcd_metadata.offset)
+        except KafkaError:
+            # Decide what to do if produce request failed...
+            # log.exception()
+            pass
+
+
 
 if __name__ == '__main__':
 
@@ -34,9 +52,9 @@ if __name__ == '__main__':
         pass
 
     # Successful result returns assigned partition and offset
-    print (record_metadata.topic)
-    print (record_metadata.partition)
-    print (record_metadata.offset)
+    print(record_metadata.topic)
+    print(record_metadata.partition)
+    print(record_metadata.offset)
 
     # produce keyed messages to enable hashed partitioning
     producer.send('test', key=b'foo', value=b'bar')

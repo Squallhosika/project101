@@ -2,12 +2,12 @@ from kafka import KafkaConsumer, TopicPartition
 from useruiroot.userui.userui.kafka.KProcessor import KProcessor
 
 
-class KConsumer():
+class KConsumer:
 
     def __init__(self):
         self.kafka_host = 'localhost'
         self.kafka_port = '9092'
-        self.kafka_topics = ['test']
+        self.kafka_topics = ['order']
         self.kafka_groups = ['group-1']
 
         # self.client = kafka.SimpleClient(self.kafka_host + ':' + self.kafka_port)
@@ -18,26 +18,41 @@ class KConsumer():
     def startThread(self):
         pass
 
-    def start(self):
+    def start_old(self):
+        # TODO here only the first topic is selected
         partition = TopicPartition(self.kafka_topics[0], 0)
 
         self.consumer.assign([partition])
         self.consumer.seek_to_beginning(partition)
 
         for msg in self.consumer:
-            KProcessor.process(msg)
+            print(msg[6])
+            # KProcessor.process(msg)
 
+    def start(self):
+        partitions = [TopicPartition(x, 0) for x in self.kafka_topics]
+        self.consumer.assign(partitions)
+        self.consumer.seek_to_beginning(partitions[0])
 
-    def startOld(self):
-        for message in self.consumer:
-            print(message.message.value)
+        while True:
+            msg = next(self.consumer)
+            print(msg[6])
+            # use KProducer here
 
+    def close(self):
+        self.consumer.close()
 
+    def add_topics(self, topics):
+        self.kafka_topics.append(topics)
+
+    def remove_topics(self, topics):
+        self.kafka_topics.remove(topics)
 
 if __name__ == '__main__':
 
     consumer = KConsumer()
     consumer.start()
+    consumer.close()
 
     # client = kafka.SimpleClient('localhost:9092')
     # consumer = kafka.SimpleConsumer(client, "group1", "test")
