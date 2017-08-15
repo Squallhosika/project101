@@ -10,7 +10,8 @@ class KProcessor:
     def process(self, msg):
         msg_value = msg.value.decode("utf-8")
         event = KEvent.from_json(msg_value)
-        self.event_to_fct[event.broker_topic][event.event_name](event.body)
+        if event.event_name in self.event_to_fct[event.broker_topic]:
+            self.event_to_fct[event.broker_topic][event.event_name](event.body)
 
 
 

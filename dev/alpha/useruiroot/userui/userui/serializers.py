@@ -1,22 +1,43 @@
-from userui.userui.models import *
+from rest_framework import serializers
+from order.order.models import *
 
 
-@classmethod
-def from_json(cls, json_string):
-    json_dic = json.loads(json_string)
-    event.event_type = json_dic['event_type']
-    for key, value in json_dic.items():
-        if key in event.__dict__:
-            event.__dict__[key] = value
+class RNN_OrderItemSerializer(serializers.HyperlinkedModelSerializer):
 
-    return event
+    # TODO Check this part do we load all the objects:
+    iqs = Item.objects.all()
+    oqs = Order.objects.all()
+
+    item_id = serializers.PrimaryKeyRelatedField(many=False, queryset=iqs)
+    order_id = serializers.PrimaryKeyRelatedField(many=False, queryset=oqs)
+
+    class Meta:
+        model = RNN_OrderItem
+        fields = ('url', 'id', 'item_id', 'order_id', 'price', 'quantity')
+
+    def create(self, validated_data):
+        item_id = validated_data['item_id'].id
+        order_id = validated_data['order_id'].id
+
+        item = Item.objects.get(pk=item_id)
+        order = Order.objects.get(pk=order_id)
+
+        price = validated_data['price']
+        quantity = validated_data['quantity']
+
+        rnn = RNN_OrderItem.objects.create(item=item, order=order, price=price, quantity=quantity)
+        return rnn
 
 
-def to_json(self):
-    json_string = '{'
-    for key, value in self.__dict__.items():
-        json_string += '"{}":"{}",'.format(key, value)
-    json_string = json_string[:(len(json_string) - 1)]
-    json_string += '}'
-    return json_string
+class ItemSerializer(serializers.HyperlinkedModelSerializer):
 
+    class Meta:
+        model = Item
+        fields = ('url', 'id', 'name', 'item_id')
+
+
+class OrderSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Order
+        fields = ('url', 'id', 'status', 'shift_id', 'client_id', 'menu_id', 'user_id')

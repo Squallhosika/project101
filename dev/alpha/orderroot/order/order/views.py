@@ -36,6 +36,34 @@ def get_orders_by_client_status(request):
         serializer = OrderSerializer(orders, context={'request': request}, many=True)
         return Response(serializer.data)
 
+@api_view(['PUT'])
+def order_status(request):
+    try:
+        pk = request.data.get('id')
+        order = Order.objects.get(pk=pk)
+    except Order.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'PUT':
+        order.status = request.data.get('status')
+        order.save()
+        return Response(status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT'])
+def order_reject(request):
+    try:
+        pk = request.data.get('id')
+        order = Order.objects.get(pk=pk)
+    except Order.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'PUT':
+        order.status = 'rejected'
+        order.save()
+        return Response(status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['PUT'])
 def order_validate(request):
@@ -46,13 +74,9 @@ def order_validate(request):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'PUT':
+        order.status = 'validated'
         serializer = OrderSerializer(order, data=request.data, context={'request': request}, partial=True)
-        if serializer.is_valid() and request.data['status'] == 'validated':
-            # TODO for now an order is automatically add to the Queue
-            # Do we want that ? At this place it is sure that we do not want
-            # TODO is the program crash after call function node desaper
-            call_function('DELETE', 'dqueue', 'deletenode', {'id': order.id})
-            order_to_queue(order, 'validated')
+        if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -121,6 +145,18 @@ def delete_item(request):
         item.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     return Response(status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def create_order_with_items(request):
+    # TODO still have to be implemented
+    pass
+    if request.method == 'POST':
+        serializer = OrderSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            order = serializer.save()
+            order_to_queue(order, 'pending')
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])

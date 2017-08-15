@@ -40,7 +40,7 @@ urlpatterns = [
     url(r'order/itemsbyorder', views.items_by_order),
     url(r'order/orderbyclientstatus', views.get_orders_by_client_status),
     url(r'order/ordervalidate', views.order_validate),
+    url(r'order/orderreject', views.order_reject),
+    url(r'order/orderstatus', views.order_status),
     url(r'order/orderpickup', views.order_pickup),
-
-
 ]

@@ -148,7 +148,7 @@ def create_node(request):
         rating = request.data.get('rating')
 
         queue = Queue.objects.filter(master_id=master_id, type=type_queue).get()
-        # TODO serelize the node to validate the creation
+        # TODO serialize the node to validate the creation
         node = ctr.QueueControl.add_node(queue, node_id, time, rating)
         return Response(status=status.HTTP_201_CREATED)
 

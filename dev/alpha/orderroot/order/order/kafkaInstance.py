@@ -1,13 +1,17 @@
 from core.kafka.KEventManager import KEventManager
 from core.kafka.KSettings import KSettings
+import order.order.kafkaFunctions as kf
+
 
 event_to_fct = \
     {'order':
-         {'create_order': lambda x: print("test0"),
-          'delete_order': lambda x: print("test1")},
-     'test':
-         {'test0': lambda x: print("test2"),
-          'test1': lambda x: print("test3")}
+         {'call_creation_order': kf.created_order,
+          'validated_order': kf.validated_order,
+          'rejected_order': kf.rejected_order,
+          'order_pickup_soon': kf.order_status_pickup_soon,
+          'order_to_pickup': kf.order_status_to_pickup,
+          'being_serve': kf.order_status_being_serve,
+          'order_completed': kf.order_status_completed},
      }
 
 host = 'localhost'

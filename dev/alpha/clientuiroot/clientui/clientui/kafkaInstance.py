@@ -1,17 +1,15 @@
 from core.kafka.KEventManager import KEventManager
 from core.kafka.KSettings import KSettings
+import clientui.clientui.kafkaFunctions as kf
+
 
 event_to_fct = \
     {'order':
-         {'create_order': lambda body: {},
-          'order_add_item': lambda body: {},
+         {'created_order': kf.notified_created_order,
+          'order_positioned_pending': kf.notified_order_positioned_pending,
           'order_pickup_soon': lambda x: {},
           'order_to_pickup': lambda x: {},
-          'being_serve': lambda x: {},
-          'order_completed': lambda x: {}},
-     'test':
-         {'test0': lambda x: print("test2"),
-          'test1': lambda x: print("test3")}
+          'arriving_for_pickup': lambda x: {}}
      }
 
 host = 'localhost'

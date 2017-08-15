@@ -69,7 +69,7 @@ class UserApp():
 
         req0 = call_function('POST', service_name, function_name, params)
         dsds = req0.text
-        de=json.loads(dsds)
+        de = json.loads(dsds)
         order_id = de['id']
 
         # Actualy this is done in the service order

@@ -1,23 +1,47 @@
-from core.serializer.jsonable import Jsonable
+from django.db import models
 
 
-class OrderLine:
+class Item(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    name = models.CharField(max_length=100, blank=True, default='')
+    item_id = models.IntegerField()
 
-    def __init__(self, item_id, quantity, price):
-        self.item_id = item_id
-        self.quantity = quantity
-        # TODO price for checking ?
-        self.price = price
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ('created',)
 
 
-@Jsonable('status', 'client_id', 'shift_id', 'menu_id', 'user_id', 'order_lines', 'ini_waiting_time')
-class Order:
+class Order(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=100, blank=True, default='created')
 
-    def __init__(self, client_id, shift_id, menu_id, user_id, order_lines):
-        self.status = 'created'
-        self.client_id = client_id
-        self.shift_id = shift_id
-        self.menu_id = menu_id
-        self.user_id = user_id
-        self.order_lines = order_lines
-        self.ini_waiting_time = 10 * len(self.order_lines)
+    client_id = models.IntegerField()
+    shift_id = models.IntegerField()
+    menu_id = models.IntegerField()
+    user_id = models.IntegerField()
+    ini_waiting_time = models.IntegerField(default=0) #  models.DecimalField(default=0, max_digits=20, decimal_places=10)
+
+    items = models.ManyToManyField(Item, through='RNN_OrderItem', blank=True)
+
+    def __str__(self):
+        return str(self.id)
+
+    class Meta:
+        ordering = ('created',)
+
+
+class RNN_OrderItem(models.Model):
+    # TODO order X item should be a primary key it is not the case today
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, blank=True)
+
+    price = models.FloatField(default=0.0)
+    quantity = models.IntegerField()
+
+    class Meta:
+        pass
+
+    def __str__(self):
+        return str(self.order.id)
