@@ -5,10 +5,13 @@ from core.kafka.KProcessor import KProcessor
 class KConsumer:
 
     def __init__(self, settings):
-        self.kafka_host = settings.kafka_host
-        self.kafka_port = settings.kafka_port
-        self.kafka_topics = settings.kafka_topics
-        self.kafka_groups = settings.kafka_groups
+        self.kafka_host = settings.BROKER['HOST']
+        self.kafka_port = settings.BROKER['PORT']
+
+        self.kafka_topics = settings.BROKER['TOPICS']
+        self.kafka_groups = settings.BROKER['GROUPS']
+        # self.kafka_topics = settings.kafka_topics
+        # self.kafka_groups = settings.kafka_groups
         self.kprocessor = KProcessor(settings)
 
         self.consumer = KafkaConsumer(bootstrap_servers=[self.kafka_host + ':' + self.kafka_port])
