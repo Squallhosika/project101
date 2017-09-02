@@ -1,0 +1,9 @@
+{
+  "service": {
+    "name": "order",
+    "tags": [
+      "order"
+    ],
+    "port": 8003
+  }
+}

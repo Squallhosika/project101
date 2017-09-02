@@ -31,8 +31,23 @@ EVENT_TO_FCT = {
 
 
 FCT_TO_EVENT = {
-
+    kf.notified_created_order.__name__: {
+        'sender':None,
+        'broker_topic':None,
+        'event_type':None,
+        'event_name':'name',
+        'body':None
+    },
+    kf.notified_order_positioned_pending.__name__: {
+        'sender':None,
+        'broker_topic':None,
+        'event_type':None,
+        'event_name':None,
+        'body':None
+    },
 }
+
+
 #
 #
 # event_to_fct = \
