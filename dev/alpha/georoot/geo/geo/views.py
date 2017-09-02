@@ -42,6 +42,7 @@ def create_client(request):
 
 @api_view(['GET'])
 def client_around(request):
+    # TODO if latitude, longitude not passed raise error or return null
     try:
         # point = Point(51.521219, -0.0777986) #POINT (51.521219 -0.0777986)
         # user=User.objects.filter(pk=2)
@@ -49,8 +50,8 @@ def client_around(request):
         #     point = u.last_location
         #     radius = u.preferred_radius/10
 
-        latitude = float(request.data.get('latitude'))
-        longitude = float(request.data.get('longitude'))
+        latitude = float(request.data.get('latitude')) #51.521219
+        longitude = float(request.data.get('longitude')) #-0.0777986
 
         point = Point(latitude, longitude)
         radius = request.data.get('radius')
@@ -63,4 +64,5 @@ def client_around(request):
 
     if request.method == 'GET':
         serializer = ClientSerializer(close_clients, context={'request': request}, many=True)
+
         return Response(serializer.data)

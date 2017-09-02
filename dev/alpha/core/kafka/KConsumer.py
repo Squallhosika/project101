@@ -1,3 +1,5 @@
+from concurrent.futures import ThreadPoolExecutor
+
 from kafka import KafkaConsumer, TopicPartition
 from core.kafka.KProcessor import KProcessor
 
@@ -17,7 +19,9 @@ class KConsumer:
         self.consumer = KafkaConsumer(bootstrap_servers=[self.kafka_host + ':' + self.kafka_port])
 
     def startThread(self):
-        pass
+        executor = ThreadPoolExecutor(max_workers=1)
+        future = executor.submit(self.start())
+        print(future.result())
 
     def start_old(self):
         # TODO here only the first topic is selected
@@ -41,7 +45,9 @@ class KConsumer:
         while True:
             msg = next(self.consumer)
             try:
-                self.kprocessor.process(msg)
+                print('good format :', msg.value)
+                json_string = msg.value.decode("utf-8")
+                self.kprocessor.process(json_string)
             except:
                 print('event string not in the good format :', msg.value)
             # use KProducer here

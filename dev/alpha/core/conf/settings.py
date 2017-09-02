@@ -5,14 +5,20 @@ UNIC_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__f
 
 
 SERVICES = {
-    'client': {
+    'userui': {
         'HOST': '127.0.0.1',
         'PORT': '8000',
+        'ROOT': r'\useruiroot',
+        'CMD': r'\manage.py runserver'
+    },
+    'client': {
+        'HOST': '127.0.0.1',
+        'PORT': '8004',
         'ROOT': r'\clientroot',
         'CMD': r'\manage.py runserver'
     },
     'order': {
-        'HOST': '127.0.0.1',
+        'HOST': '0.0.0.0',
         'PORT': '8003',
         'ROOT': r'\orderroot',
         'CMD': r'\manage.py runserver'

@@ -18,10 +18,11 @@ def call_function(method_name, service_name, function_name, params=None):
     return req
 
 def get_url(service_name, function_name):
-    if service_name == 'client':    url = API_CLIENT_URL
-    elif service_name == 'user':    url = API_USER_URL
-    elif service_name == 'order':   url = API_ORDER_URL
-    elif service_name == 'geo':     url = API_GEO_URL
-    elif service_name == 'dqueue':  url = API_DQUEUE_URL
+    # if service_name == 'client':    url = API_CLIENT_URL
+    # elif service_name == 'user':    url = API_USER_URL
+    # elif service_name == 'order':   url = API_ORDER_URL
+    # elif service_name == 'geo':     url = API_GEO_URL
+    # elif service_name == 'dqueue':  url = API_DQUEUE_URL
 
+    url = API_BASE_URL
     return url + service_name + '/' + function_name + '/'

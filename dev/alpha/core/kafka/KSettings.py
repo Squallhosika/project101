@@ -28,10 +28,16 @@ class KSettings:
         return self._configured is not None
 
     def getSettingsModule(self, service):
-        if service == 'clientui':
-            return 'clientuiroot.clientui.clientui.kafka.kafka_settings'
-        else:
-            return 'clientuiroot.clientui.clientui.kafka.kafka_settings'
+        #return 'clientuiroot.clientui.clientui.kafka.kafka_settings'
+        # ct = inspect.stack()[3]
+        # print(ct.filename)
+
+        return service + 'root.' + service + '.' + service + '.kafka.ksettings'
+
+        # if service == 'clientui':
+        #     return 'clientuiroot.clientui.clientui.kafka.kafka_settings'
+        # else:
+        #     return 'clientuiroot.clientui.clientui.kafka.kafka_settings'
 
 
 
