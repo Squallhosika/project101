@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.util.JsonReader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +14,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,42 +34,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        AsyncTask.execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                // Create URL
-//                URL githubEndpoint = null;
-//                try {
-//                    githubEndpoint = new URL("http://localhost:8000/geo/clientsaround");
-//                    // Create connection
-//                    HttpsURLConnection myConnection =
-//                            (HttpsURLConnection) githubEndpoint.openConnection();
-//
-//                    if (myConnection.getResponseCode() == 200) {
-//                        // Success
-//                        InputStream responseBody = myConnection.getInputStream();
-//                        InputStreamReader responseBodyReader =
-//                                new InputStreamReader(responseBody, "UTF-8");
-//                        JsonReader jsonReader = new JsonReader(responseBodyReader);
-//
-//
-//                    } else {
-//                        // Error handling code goes here
-//                    }
-//
-//                } catch (MalformedURLException e) {
-//                    e.printStackTrace();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//
-//
-//            }
-//        });
-
         getContent();
-        run();
 
         ArrayAdapter adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),R.layout.list_view_main, R.id.firstLine,this.values);
         ListView listView = (ListView) getActivity().findViewById(R.id.listview);
@@ -80,18 +50,59 @@ public class HomeFragment extends Fragment {
 
 
 
-    private void run(){
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    URL endpoint = new URL("http://localhost:8000/geo/clientsaround");
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
+    private class HttpRequestTask extends AsyncTask<Void, Void, Greeting> {
+        @Override
+        protected Greeting doInBackground(Void... params) {
+            try {
+                final String url = "http://rest-service.guides.spring.io/greeting";
+                RestTemplate restTemplate = new RestTemplate();
+                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                Greeting greeting = restTemplate.getForObject(url, Greeting.class);
+                return greeting;
+            } catch (Exception e) {
+                Log.e("MainActivity", e.getMessage(), e);
             }
-        });
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Greeting greeting) {
+            TextView greetingIdText = (TextView) getActivity().findViewById(R.id.id_value);
+            TextView greetingContentText = (TextView) getActivity().findViewById(R.id.content_value);
+            greetingIdText.setText(greeting.getId());
+            greetingContentText.setText(greeting.getContent());
+        }
+
     }
+
+    private class Greeting{
+        private String id;
+        private String content;
+
+        public Greeting(String id, String content){
+
+            this.id = id;
+            this.content = content;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
+    }
+
 
 
     private void getContent()
@@ -123,6 +134,24 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            new HttpRequestTask().execute();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
 //    @Override
 //    public void onListItemClick(ListView l, View v, int position, long id) {

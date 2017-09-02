@@ -51,8 +51,8 @@ public class MainActivity extends AppCompatActivity
                     break;
 //                    return true;
                 case R.id.navigation_notifications:
-//                    setContentView(R.layout.activity_main);
-//                    fragment = new OrderFragment();
+                    Fragment notFragment = new TestFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, notFragment).commit();
 //                    break;
                     return true;
             }
@@ -146,6 +146,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+//            new HttpRequestTask().execute();
             return true;
         }
 
