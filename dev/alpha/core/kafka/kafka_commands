@@ -1,0 +1,16 @@
+
+bin\windows\zookeeper-server-start.bat config\zookeeper.properties
+
+bin\windows\kafka-server-start.bat config\server.properties
+
+
+LIST TOPICS
+bin\windows\kafka-topics.bat --list --zookeeper localhost:2181
+
+
+
+START PRODUCER
+bin\windows\kafka-console-producer.bat --broker-list localhost:9092 --topic test
+
+START CONSUMER
+bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic test --from-beginning

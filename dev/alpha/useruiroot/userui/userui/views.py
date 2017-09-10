@@ -1,29 +1,40 @@
-from rest_framework import viewsets
-from userui.userui.serializers import *
-from rest_framework import status
+import requests
 from rest_framework.decorators import api_view
-from rest_framework.response import Response
-import userui.userui.kafkaInstance as ki
-from core.kafka.KEvent import KEvent
-from userui.userui.apps import UseruiappConfig
-
-@api_view(['POST'])
-def call_creation_order(request):
-    if request.method == 'POST':
-        serializer = OrderSerializer(data=request.data, context={'request': request})
-        if serializer.is_valid():
-            kevent = KEvent(UseruiappConfig().name, 'order', 'w', __name__, request.data)
-            ki.kEventManager.kgenerator.publish(kevent)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+from django.http import HttpResponseRedirect, HttpResponse
 
 
-@api_view(['POST'])
-def call_order_add_item(request):
-    if request.method == 'POST':
-        serializer = RNN_OrderItemSerializer(data=request.data, context={'request': request})
-        if serializer.is_valid():
-            kevent = KEvent(UseruiappConfig().name, 'order', 'w', __name__, request.data)
-            ki.kEventManager.kgenerator.publish(kevent)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+mapper = {
+    'geo': 'localhost:8001',
+    'order': 'localhost:8003',
+    'client': 'localhost:8004',
+}
+
+
+def get_route(path):
+    service = path.split('/')[1]
+    return 'http://' + mapper.get(service) + path
+
+
+def route(request):
+    path = request.path
+    url = get_route(path)
+
+    return HttpResponse(requests.get(url, data=request.data))
+
+@api_view(['GET'])
+def get_orders(request):
+    return route(request)
+
+@api_view(['GET'])
+def get_clients(request):
+    return route(request)
+
+@api_view(['GET'])
+def clients_around(request):
+    return route(request)
+
+
+
+
+
+

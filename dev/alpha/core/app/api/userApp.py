@@ -3,7 +3,7 @@ import json
 from core.app.api.base import call_function
 
 class UserApp():
-    def __init__(self, user_id, latitude=0, longitude=0, radius=0.5):
+    def __init__(self, user_id, latitude=-0.075835, longitude=51.521456, radius=0.5):
         self.user_id = user_id
         self.longitude = float(longitude)
         self.latitude = float(latitude)

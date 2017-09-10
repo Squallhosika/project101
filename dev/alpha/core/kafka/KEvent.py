@@ -26,6 +26,11 @@ class KEvent:
         self.body = body
         return self
 
+    def event_topic(self, broker_topic):
+        self.broker_topic = broker_topic
+        return self
+
+
     @classmethod
     def from_json(cls, json_string):
         event = KEvent()
