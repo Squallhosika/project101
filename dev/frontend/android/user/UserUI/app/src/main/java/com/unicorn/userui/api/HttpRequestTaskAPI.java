@@ -44,7 +44,8 @@ public class HttpRequestTaskAPI extends AsyncTask<Object, Object, List<Client>> 
         List<Client> clients = null;
         try {
 //            final String url = "http://10.0.2.2:8000/geo/clientsaround";
-            final String urlString = "http://10.0.2.2:8000/client/clients";
+//            final String urlString = "http://10.0.2.2:8000/client/clients";
+            final String urlString = "http://147.135.189.68:8000/order/items";
 
 
             OkHttpClient client = new OkHttpClient();

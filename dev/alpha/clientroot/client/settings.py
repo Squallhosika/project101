@@ -25,7 +25,8 @@ SECRET_KEY = 'l5u$p#lpj4ric0l-2+d%%w(x-rg_5f%htm=5s3#ot*y)p3*59_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]','192.168.99.100','192.168.99.101', 'unicook.eu-west-1.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', '147.135.189.68','192.168.99.100','192.168.99.101'
+    , 'unicook.eu-west-1.elasticbeanstalk.com']
 
 
 # Application definition
