@@ -7,20 +7,18 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+
+import com.unicorn.userui.api.HttpRequestTask;
+import com.unicorn.userui.api.HttpRequestTaskAPI;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener {
@@ -53,8 +51,8 @@ public class MainActivity extends AppCompatActivity
                 case R.id.navigation_notifications:
                     Fragment notFragment = new TestFragment();
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, notFragment).commit();
-//                    break;
-                    return true;
+                    break;
+//                    return true;
             }
 //            final FragmentTransaction transaction = fragmentManager.beginTransaction();
 //            transaction.replace(R.id.content_main, fragment).commit();
@@ -146,7 +144,8 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-//            new HttpRequestTask().execute();
+//            new HttpRequestTask(this).execute();
+            new HttpRequestTaskAPI(this).execute();
             return true;
         }
 
