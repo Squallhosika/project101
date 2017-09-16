@@ -50,60 +50,6 @@ public class HomeFragment extends Fragment {
 
 
 
-    private class HttpRequestTask extends AsyncTask<Void, Void, Greeting> {
-        @Override
-        protected Greeting doInBackground(Void... params) {
-            try {
-                final String url = "http://rest-service.guides.spring.io/greeting";
-                RestTemplate restTemplate = new RestTemplate();
-                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                Greeting greeting = restTemplate.getForObject(url, Greeting.class);
-                return greeting;
-            } catch (Exception e) {
-                Log.e("MainActivity", e.getMessage(), e);
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Greeting greeting) {
-            TextView greetingIdText = (TextView) getActivity().findViewById(R.id.id_value);
-            TextView greetingContentText = (TextView) getActivity().findViewById(R.id.content_value);
-            greetingIdText.setText(greeting.getId());
-            greetingContentText.setText(greeting.getContent());
-        }
-
-    }
-
-    private class Greeting{
-        private String id;
-        private String content;
-
-        public Greeting(String id, String content){
-
-            this.id = id;
-            this.content = content;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        public void setContent(String content) {
-            this.content = content;
-        }
-    }
-
-
 
     private void getContent()
     {
@@ -145,7 +91,7 @@ public class HomeFragment extends Fragment {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            new HttpRequestTask().execute();
+//            new HttpRequestTask().execute();
             return true;
         }
 
