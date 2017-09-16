@@ -21,20 +21,13 @@ def route(request):
 
     return HttpResponse(requests.get(url, data=request.data))
 
-@api_view(['GET'])
-def get_orders(request):
-    return route(request)
 
 @api_view(['GET'])
-def get_clients(request):
-    return route(request)
-
-@api_view(['GET'])
-def clients_around(request):
+def get(request):
     return route(request)
 
 
-
-
-
+@api_view(['POST'])
+def post(request):
+    return route(request)
 
