@@ -4,9 +4,9 @@ from django.http import HttpResponseRedirect, HttpResponse
 
 
 mapper = {
-    'geo': 'localhost:8001',
-    'order': 'localhost:8003',
-    'client': 'localhost:8004',
+    'geo': 'localhost:7001',
+    'order': 'localhost:7003',
+    'client': 'localhost:7004',
 }
 
 
