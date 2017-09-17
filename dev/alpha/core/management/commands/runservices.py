@@ -23,9 +23,16 @@ class Command(BaseCommand):
                 action='store_true',
                 help='Run the specified service.')
 
+        parser.add_argument(
+            '-n', '--network-type',
+            dest='network-type',
+            default='local',
+            help='Select the network type.')
+
     def handle(self, *args, **options):
         self.service = options['service']
         self.web = options['web']
+        self.network_type = options['network-type']
 
         return self.run_services()
 
@@ -39,8 +46,8 @@ class Command(BaseCommand):
 
         cmds = []
         for service, params in services.items():
-            host = params['HOST']
-            port = params['PORT']
+            host = params['URLS'][self.network_type]['HOST']
+            port = params['URLS'][self.network_type]['PORT']
             root = params['ROOT']
             cmd = params['CMD']
 
