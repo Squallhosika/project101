@@ -5,12 +5,15 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.unicorn.userui.HomeFragment;
+import com.unicorn.userui.MainActivity;
 import com.unicorn.userui.R;
 import com.unicorn.userui.model.Client;
 import com.unicorn.userui.response.ClientsResponse;
@@ -31,12 +34,15 @@ import okhttp3.Response;
 
 public class HttpRequestTaskAPI extends AsyncTask<Object, Object, List<Client>> {
 
-    private Activity activity;
+    private MainActivity activity;
+    private HomeFragment nFragment;
     private Context context;
+    private String URL = "http://147.135.189.68:8000";
 
-    public HttpRequestTaskAPI(Context context) {
+    public HttpRequestTaskAPI(Context context, HomeFragment nFragment) {
         this.context = context;
-        this.activity = (Activity) context;
+        this.activity = (MainActivity) context;
+        this.nFragment = nFragment;
     }
 
     @Override
@@ -44,7 +50,8 @@ public class HttpRequestTaskAPI extends AsyncTask<Object, Object, List<Client>> 
         List<Client> clients = null;
         try {
 //            final String url = "http://10.0.2.2:8000/geo/clientsaround";
-            final String urlString = "http://10.0.2.2:8000/client/clients";
+//            final String urlString = "http://10.0.2.2:8000/client/clients";
+            final String urlString = URL + "/client/clients";
 
 
             OkHttpClient client = new OkHttpClient();
@@ -66,20 +73,31 @@ public class HttpRequestTaskAPI extends AsyncTask<Object, Object, List<Client>> 
     }
 
     @Override
-    protected void onPostExecute(List<Client> client) {
-        ListView listView = (ListView) activity.findViewById(R.id.listview);
-        listView.getItemIdAtPosition(0);
+    protected void onPostExecute(List<Client> clients) {
+        if(clients != null){
+//            HomeFragment newFragment = new HomeFragment();
+//            newFragment.refresh(clients);
+            nFragment.refresh(clients);
 
-        TextView tv = (TextView) activity.findViewById(R.id.firstLine);
-        tv.setText(client.get(0).getName());
+//            this.activity.replaceFragment(nFragment);
+//            this.activity.addFragment(nFragment);
+
+//            activity.getSupportFragmentManager().beginTransaction().add(R.id.fragment_container,nFragment).commit();
+
+//            FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+//            transaction.add(R.id.fragment_container,nFragment, "home");
+//            transaction.replace(R.id.fragment_container,nFragment, "home");
+//            transaction.addToBackStack("home");
+
+//            transaction.commit();
+
+        }
+
+//        ListView listView = (ListView) activity.findViewById(R.id.listview);
+//        listView.getItemIdAtPosition(0);
+//
+//        TextView tv = (TextView) activity.findViewById(R.id.firstLine);
+//        tv.setText(clients.get(0).getName());
     }
 
-    protected void refresh(){
-        android.app.Fragment currentFragment = activity.getFragmentManager().findFragmentById(R.id.fragment_container);
-
-        android.app.FragmentTransaction fragTransaction = activity.getFragmentManager().beginTransaction();
-        fragTransaction.detach(currentFragment);
-        fragTransaction.attach(currentFragment);
-        fragTransaction.commit();
-    }
 }

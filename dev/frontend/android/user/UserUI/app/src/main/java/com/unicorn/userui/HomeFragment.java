@@ -1,9 +1,11 @@
 package com.unicorn.userui;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.ListFragment;
 import android.util.JsonReader;
 import android.util.Log;
@@ -16,6 +18,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.unicorn.userui.model.Client;
+
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,41 +28,52 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
 public class HomeFragment extends Fragment {
 
-    private String[] values;
+//    private String[] values;
+    private List<String> values = getContent();;
+    private List<Client> clients;
+    private FragmentActivity myContext;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getContent();
+//        getContent();
 
+//        List<String> res = new ArrayList<>();
         ArrayAdapter adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),R.layout.list_view_main, R.id.firstLine,this.values);
+//        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), R.layout.list_view_main, R.id.firstLine, res);
         ListView listView = (ListView) getActivity().findViewById(R.id.listview);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MenuFragment newFragment = new MenuFragment();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, newFragment).commit();
+//                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, newFragment).commit();
             }
         });
     }
 
 
+//    public String[] getValues() {
+//        return values;
+//    }
 
-
-    private void getContent()
+    private List<String> getContent()
     {
         // the request
-        String[] values = {"Android","IPhone","WindowsMobile","Blackberry",
+//        String[] values = {"Android","IPhone","WindowsMobile","Blackberry",
+        List<String> values = Arrays.asList("Android","IPhone","WindowsMobile","Blackberry",
                 "WebOS","Ubuntu","Windows7","Max OS X","IPhone","WindowsMobile","Blackberry",
-                "WebOS","Ubuntu","Windows7","Max OS X"};
+                "WebOS","Ubuntu","Windows7","Max OS X");
 
-        this.values=values;
+        return values;
     }
 
 
@@ -82,6 +97,7 @@ public class HomeFragment extends Fragment {
     }
 
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -96,6 +112,30 @@ public class HomeFragment extends Fragment {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public List<Client> getClients() {
+        return clients;
+    }
+
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
+    }
+
+    public void refresh(List<Client> clients) {
+        this.setClients(clients);
+        List<String> v = new ArrayList<>();
+        clients.forEach(client->{
+            v.add(client.getName());
+        });
+//        HomeFragment newFragment = new HomeFragment();
+        setValues(v);
+//        myContext.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, newFragment).commit();
+
+    }
+
+    public void setValues(List<String> values) {
+        this.values = values;
     }
 
 
