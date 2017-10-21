@@ -1,0 +1,416 @@
+cd Documents/Unicorn/GIT/dev\ test/docker
+cd Documents/Unicorn/GIT/unicorn/dev/alpha/clientroot
+
+###################################
+##	MACHINES
+###################################
+https://docs.docker.com/machine/get-started/
+
+List machines with ip
+docker-machine ls
+
+Create a machine called manager
+docker-machine create --driver virtualbox manager
+
+Connect to VM via ssh
+docker-machine ssh manager
+
+https://www.ibm.com/developerworks/community/blogs/jfp/entry/Using_Docker_Machine_On_Windows?lang=en
+https://docs.docker.com/machine/reference/env/
+Get Env to import in shell
+docker-machine env
+eval "$(docker-machine env machinemane)
+
+
+####################################
+##	IMAGES
+####################################
+https://docs.docker.com/engine/reference/builder/#usage
+https://techoverflow.net/2013/10/22/docker-remove-all-images-and-containers/
+
+List all images 
+docker images
+
+
+Remove all images (might need to stop/remove containers using images first)
+docker rmi $(docker images -a --format {{".ID"}}
+or
+docker rmi $(docker images -a -q)
+
+
+####################################
+##	CONTAINERS
+####################################
+
+https://techoverflow.net/2013/10/22/docker-remove-all-images-and-containers/
+
+Remove all containers
+docker stop $(docker ps -a --format "{{.ID}}")
+docker rm $(docker ps -a --format "{{.ID}}")
+
+https://docs.docker.com/engine/reference/commandline/ps/#formatting
+List (all) containers
+docker ps 
+docker ps -a
+
+
+docker stop containername
+docker rm containername
+docker run -p 0:8000 -t -i kevin/client
+
+
+http://stackoverflow.com/questions/30209776/docker-container-will-automatically-stop-after-docker-run-d
+Keep container alive
+docker run -d imagename tail -f /dev/null
+
+###################################
+##	NETWORKS / VOLUMES
+###################################
+https://deis.com/blog/2016/connecting-docker-containers-1/
+https://docs.docker.com/engine/tutorials/dockervolumes/#backup-restore-or-migrate-data-volumes
+https://docs.docker.com/compose/networking/
+http://tech.donghao.org/2014/09/24/running-django-in-docker/
+
+docker network ls
+ifconfig
+
+
+
+###################################
+##	COMPOSE
+###################################
+https://docs.docker.com/compose/overview/
+https://docs.docker.com/compose/reference/overview/
+http://cookiecutter-django.readthedocs.io/en/latest/developing-locally-docker.html
+
+docker-compose run web django-admin.py startproject composeexample .
+docker-compose up
+
+
+
+###################################
+##	DJANGO
+###################################
+https://docs.docker.com/compose/django/#connect-the-database
+https://realpython.com/blog/python/django-development-with-docker-compose-and-machine/
+https://runnable.com/docker/python/dockerize-your-django-application
+http://ruddra.com/2016/08/14/docker-django-nginx-postgres/
+https://semaphoreci.com/community/tutorials/dockerizing-a-python-django-web-application
+http://michal.karzynski.pl/blog/2015/04/19/packaging-django-applications-as-docker-container-images/
+
+
+MySQL
+http://stackoverflow.com/questions/33795923/how-to-connect-to-mysql-running-on-docker-from-the-host-machine
+https://howchoo.com/g/y2y1mtkznda/getting-started-with-docker-compose-and-django
+http://stackoverflow.com/questions/31035887/linking-django-and-mysql-containers-using-docker-compose
+http://capside.com/labs/deploying-full-django-stack-with-docker-compose/
+https://codequs.com/p/HJo2PAkgc/django-application-inside-a-docker-container/
+
+
+###################################
+##	SWARM
+###################################
+https://docs.docker.com/engine/swarm/services/#specify-the-image-version-the-service-should-use
+https://docs.docker.com/engine/swarm/
+https://docs.docker.com/engine/getstarted-voting-app/#preview-of-voting-app-stack-and-how-it-works
+https://blog.hypriot.com/post/swarm-machines-or-having-fun-with-docker-machine-and-the-new-docker-swarm-orchestration/
+https://docs.docker.com/engine/swarm/stack-deploy/#test-the-app-with-compose
+
+Create swarm
+docker swarm init --advertise-addr <MANAGER-IP>
+
+Get join toker for worker (need ssh on manager)
+docker swarm join-token worker
+docker swarm join-token --quiet worker (get only toker)
+
+
+See all nodes
+docker node ls
+docker info
+
+Create service based on image
+docker service create kevin/client
+
+
+
+
+
+Access cmd from container
+docker exec -it containername bash
+
+Build image from current folder with name
+docker build -t kevin/client ./
+
+Run container from image / detached
+docker run --publish=8001:8000 kevin/client
+docker run -d --publish=8002:8000 kevin/client
+
+
+docker-machine scp -r ./ manager:/home/docker/
+docker service create --name registry --publish 5000:5000 registry:2
+docker stack deploy -c docker-compose-stack.yml web
+docker-machine scp -r docker-compose-stack.yml manager:/home/docker/
+docker stack rm my_dab
+
+
+docker exec -it clientroot_db_1 bash
+mysql -uroot -proot
+
+
+###################################
+##	STACK DEPLOY
+###################################
+
+
+##  CREATE NODES
+
+$ cd Documents/Unicorn/GIT/unicorn/dev/alpha/clientroot
+$ docker-machine create --driver virtualbox manager
+$ docker-machine create --driver virtualbox worker1
+$ docker-machine create --driver virtualbox worker2
+$ docker-machine ls
+NAME      ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER        ERRORS
+default   *        virtualbox   Running   tcp://192.168.99.100:2376           v1.12.5
+manager   -        virtualbox   Running   tcp://192.168.99.109:2376           v17.04.0-ce
+worker1   -        virtualbox   Running   tcp://192.168.99.110:2376           v17.04.0-ce
+worker2   -        virtualbox   Running   tcp://192.168.99.111:2376           v17.04.0-ce
+
+
+##  CREATE SWARM
+
+$ docker-machine ssh manager
+docker@manager:~$ docker swarm init --advertise-addr <ID of manager leader>
+# copy the message Join
+docker@manager:~$ exit
+
+$ docker-machine ssh worker1
+# paste the docker join command line
+ docker swarm join \ ...
+ docker@manager:~$ exit
+
+$ docker-machine ssh worker2
+# paste the docker join command line
+ docker swarm join \ ...
+docker@manager:~$ exit
+
+
+##  PREPARE SWARM FOR COMPOSE
+
+$ docker-machine scp -r ./ manager:/home/docker/
+$ docker-machine scp -r ./ worker1:/home/docker/
+$ docker-machine scp -r ./ worker2:/home/docker/
+
+$ eval $(docker-machine env manager)
+$ docker service create --name registry --publish 5000:5000 registry:2
+($ docker service rm registry)
+$ docker-compose build
+OR
+$ docker build -t 127.0.0.1:5000/clientroot_db --file "DockerFile-mysql" .
+$ docker build -t 127.0.0.1:5000/clientroot_web --file "DockerFile" .
+
+$ docker-compose push
+OR
+$ docker push 127.0.0.1:5000/clientroot_web
+$ docker push 127.0.0.1:5000/clientroot_db
+
+##  DEPLOY SERVICE
+
+$ docker-machine ssh manager
+docker@manager:~$ docker stack deploy -c docker-compose-stack.yml client
+docker@manager:~$ docker stack ps client
+
+
+docker@manager:~$ docker service ls
+docker@manager:~$ docker service ps --no-trunc <SERVICE-ID>
+docker@manager:~$ docker stack rm client
+
+
+
+
+$ docker-machine scp -r DockerFile manager:/home/docker/
+$ docker-machine scp -r docker-entrypoint.sh manager:/home/docker/
+$ docker build -t 127.0.0.1:5000/clientroot_web --file "DockerFile" .
+$ docker images
+$ docker run <image-id>
+
+docker-machine scp -r client/settings.py manager:/home/docker/client/
+
+
+
+
+
+
+
+
+$ docker-machine ls
+NAME      ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER        ERRORS
+default   *        virtualbox   Running   tcp://192.168.99.100:2376           v1.12.5
+manager   -        virtualbox   Running   tcp://192.168.99.107:2376           v17.04.0-ce
+worker1   -        virtualbox   Running   tcp://192.168.99.108:2376           v17.04.0-ce
+
+
+$ eval $(docker-machine env manager)
+$ docker-machine ls
+NAME      ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER        ERRORS
+default   -        virtualbox   Running   tcp://192.168.99.100:2376           v1.12.5
+manager   *        virtualbox   Running   tcp://192.168.99.107:2376           v17.04.0-ce
+worker1   -        virtualbox   Running   tcp://192.168.99.108:2376           v17.04.0-ce
+worker2   -        virtualbox   Running   tcp://192.168.99.106:2376           v17.04.0-ce
+
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+
+
+CREATE IMAGES
+$ docker-compose up -d
+[33mWARNING[0m: The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use the bundle feature of the Docker experimental build.
+
+More info:
+https://docs.docker.com/compose/bundles
+
+Building db
+Step 1/8 : FROM mysql
+latest: Pulling from library/mysql
+......
+
+Successfully built 74a20fbd232f
+[33mWARNING[0m: Image for service db was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
+Building web
+Step 1/7 : FROM python:3.5
+3.5: Pulling from library/python
+.......
+Successfully built 2e369fdb8da5
+[33mWARNING[0m: Image for service web was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
+Creating clientroot_db_1
+Creating clientroot_web_1
+
+$ docker ps -a
+CONTAINER ID        IMAGE                           COMMAND                  CREATED             STATUS              PORTS                    NAMES
+c8a353b69f82        127.0.0.1:5000/clientroot_web   "python manage.py run"   2 minutes ago       Up 2 minutes        0.0.0.0:8000->8000/tcp   clientroot_web_1
+8d7f45ab7bc7        127.0.0.1:5000/clientroot_db    "docker-entrypoint.sh"   2 minutes ago       Up 2 minutes        3306/tcp                 clientroot_db_1
+
+Keuvin@DESKTOP-4F0F9D8 MINGW64 ~/Documents/Unicorn/GIT/unicorn/dev/alpha/clientroot (kev)
+$ docker stop clientroot_web_1
+clientroot_web_1
+
+Keuvin@DESKTOP-4F0F9D8 MINGW64 ~/Documents/Unicorn/GIT/unicorn/dev/alpha/clientroot (kev)
+$ docker start clientroot_web_1
+clientroot_web_1
+
+Keuvin@DESKTOP-4F0F9D8 MINGW64 ~/Documents/Unicorn/GIT/unicorn/dev/alpha/clientroot (kev)
+$ docker stop clientroot_web_1
+clientroot_web_1
+
+Keuvin@DESKTOP-4F0F9D8 MINGW64 ~/Documents/Unicorn/GIT/unicorn/dev/alpha/clientroot (kev)
+$ docker stop clientroot_db_1
+clientroot_db_1
+
+Keuvin@DESKTOP-4F0F9D8 MINGW64 ~/Documents/Unicorn/GIT/unicorn/dev/alpha/clientroot (kev)
+$ docker images
+REPOSITORY                      TAG                 IMAGE ID            CREATED             SIZE
+127.0.0.1:5000/clientroot_web   latest              2e369fdb8da5        3 minutes ago       736.8 MB
+127.0.0.1:5000/clientroot_db    latest              74a20fbd232f        6 minutes ago       407.1 MB
+mysql                           latest              d5127813070b        2 days ago          407.1 MB
+python                          3.5                 3d5e4e52fcfe        3 weeks ago         688.8 MB
+
+
+CREATE REGISTRY AND PUSH IMAGES
+
+$ docker-machine ssh manager
+
+docker@manager:~$ docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+
+docker@manager:~$ docker service create --name registry --publish 5000:5000 registry:2
+ti5emr5jeflsjwzi1shasgqh1
+
+docker@manager:~$ docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
+daa8a4b6384a        registry:2          "/entrypoint.sh /e..."   8 seconds ago       Up 6 seconds        5000/tcp            registry.1.y67wr5ekdqabwpf6kexov9jjq
+
+docker@manager:~$ docker push 127.0.0.1:5000/clientroot_web
+The push refers to a repository [127.0.0.1:5000/clientroot_web]
+ce688eddc0cd: Pushed
+9755420e4b04: Pushed
+6e52ce7ab1aa: Pushed
+9cb65dda4e87: Pushed
+fbd47ec37d7a: Pushed
+b39a835d74bb: Pushed
+7edf16b85b72: Pushed
+f078de0e3e2b: Pushed
+e6562eb04a92: Pushed
+596280599f68: Pushed
+5d6cbe0dbcf9: Pushed
+latest: digest: sha256:f073f92bdb94a683049a9984a36a544096953d017d7070949033a1798b00a00a size: 2630
+
+docker@manager:~$ docker push 127.0.0.1:5000/clientroot_db
+The push refers to a repository [127.0.0.1:5000/clientroot_db]
+75e9852baad7: Pushed
+cb17e9963103: Pushed
+d695bba9599c: Pushed
+98d5fccd8411: Pushed
+9f06d85639a6: Pushed
+c80068fbe24c: Pushed
+36dea54cdb2d: Pushed
+4a89782c43f4: Pushed
+4b1c12540dec: Pushed
+aae399245bd0: Pushed
+814d7b59f0cc: Pushed
+435f2dfbd884: Pushed
+5d6cbe0dbcf9: Mounted from clientroot_web
+latest: digest: sha256:7a82789c3817f4ce36de21a22baf8b984e93b7d58a3337ae49dc37325c87eed6 size: 3030
+
+docker@manager:~$ docker images
+REPOSITORY                      TAG                 IMAGE ID            CREATED             SIZE
+127.0.0.1:5000/clientroot_web   latest              2e369fdb8da5        24 minutes ago      737MB
+127.0.0.1:5000/clientroot_db    latest              74a20fbd232f        27 minutes ago      407MB
+mysql                           latest              d5127813070b        2 days ago          407MB
+registry                        <none>              136c8b16df20        7 days ago          33.2MB
+python                          3.5                 3d5e4e52fcfe        3 weeks ago         689MB
+
+docker@manager:~$ docker stack deploy -c docker-compose-stack.yml web
+
+
+docker@manager:~$ docker images
+
+
+$ docker-machine scp -r ./ manager:/home/docker/
+$ docker-machine ssh manager
+
+
+docker@manager:~$ ls
+docker@manager:~$ docker stack deploy -c docker-compose-stack.yml web
+docker@manager:~$ docker stack ps web
+docker@manager:~$ docker ps -a
+
+
+
+
+TEST
+$ docker build -t 127.0.0.1:5000/clientroot_db --file "DockerFile-mysql" .
+Sending build context to Docker daemon 67.58 kB
+Step 1 : FROM mysql
+ ---> 9546ca122d3a
+.....
+Step 8 : WORKDIR /code
+ ---> Running in 446a55409cbb
+ ---> 7f20cac48ad5
+Removing intermediate container 446a55409cbb
+Successfully built 7f20cac48ad5
+SECURITY WARNING: You are building a Docker image from Windows against a non-Windows Docker host. All files and directories added to build context will have '-rwxr-xr-x' permissions. It is recommended to double check and reset permissions for sensitive files and directories.
+
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+kevin/db            latest              7f20cac48ad5        1 seconds ago       407 MB
+mysql               latest              9546ca122d3a        2 weeks ago         407 MB
+python              3.5                 3d5e4e52fcfe        3 weeks ago         688.8 MB
+
+$ docker run -d kevin/db
+d1626c9d07bf7a10b98e61128d31ef239b892e75a7f3af2e06569aeabd6db969
+
+$ docker run -d -e MYSQL_ROOT_PASSWORD=root mysql
+142c45d2361ccb406eaa74ba565bee404f96148f9f77e23421d5355fb97fc14c

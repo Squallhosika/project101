@@ -1,0 +1,20 @@
+branch-defaults:
+  default:
+    environment: ook-test
+environment-defaults:
+  ook-test:
+    branch: null
+    repository: null
+global:
+  application_name: ook
+  default_ec2_keyname: ssh1
+  default_platform: arn:aws:elasticbeanstalk:eu-west-1::platform/Python 3.4 running
+    on 64bit Amazon Linux/2.4.1
+  default_region: eu-west-1
+  include_git_submodules: true
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: eb-cli
+  sc: null
+  workspace_type: Application
