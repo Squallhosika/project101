@@ -6,34 +6,94 @@ UNIC_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__f
 
 SERVICES = {
     'userui': {
-        'HOST': '127.0.0.1',
-        'PORT': '8000',
         'ROOT': r'\useruiroot',
-        'CMD': r'\manage.py runserver'
-    },
-    'client': {
-        'HOST': '127.0.0.1',
-        'PORT': '8004',
-        'ROOT': r'\clientroot',
-        'CMD': r'\manage.py runserver'
-    },
-    'order': {
-        'HOST': '0.0.0.0',
-        'PORT': '8003',
-        'ROOT': r'\orderroot',
-        'CMD': r'\manage.py runserver'
+        'CMD': r'\manage.py runserver',
+        'URLS': {
+            'local': {
+                'HOST': '127.0.0.1',
+                'PORT': '8000',
+            },
+            'server': {
+                'HOST': '0.0.0.0',
+                'PORT': '8000',
+            },
+            'serveradmin': {
+                'HOST': '0.0.0.0',
+                'PORT': '7000',
+            },
+        },
     },
     'geo': {
-        'HOST': '127.0.0.1',
-        'PORT': '8001',
         'ROOT': r'\georoot',
-        'CMD': r'\manage.py runserver'
+        'CMD': r'\manage.py runserver',
+        'URLS': {
+            'local': {
+                'HOST': '127.0.0.1',
+                'PORT': '8001',
+            },
+            'server': {
+                'HOST': '127.0.0.1',
+                'PORT': '8001',
+            },
+            'serveradmin': {
+                'HOST': '0.0.0.0',
+                'PORT': '7001',
+            },
+        },
     },
     'dqueue': {
-        'HOST': '127.0.0.1',
-        'PORT': '8002',
         'ROOT': r'\dqueueroot',
-        'CMD': r'\manage.py runserver'
+        'CMD': r'\manage.py runserver',
+        'URLS': {
+            'local': {
+                'HOST': '127.0.0.1',
+                'PORT': '8002',
+            },
+            'server': {
+                'HOST': '127.0.0.1',
+                'PORT': '8002',
+            },
+            'serveradmin': {
+                'HOST': '0.0.0.0',
+                'PORT': '7002',
+            },
+        },
+    },
+    'order': {
+        'ROOT': r'\orderroot',
+        'CMD': r'\manage.py runserver',
+        'URLS': {
+            'local': {
+                'HOST': '127.0.0.1',
+                'PORT': '8003',
+            },
+            'server': {
+                'HOST': '127.0.0.1',
+                'PORT': '8003',
+            },
+            'serveradmin': {
+                'HOST': '0.0.0.0',
+                'PORT': '7003',
+            },
+        },
+    },
+    'client': {
+        'ROOT': r'\clientroot',
+        'CMD': r'\manage.py runserver',
+        'URLS': {
+            'local': {
+                'HOST': '127.0.0.1',
+                'PORT': '8004',
+            },
+            'server': {
+                'HOST': '127.0.0.1',
+                'PORT': '8004',
+            },
+            'serveradmin': {
+                'HOST': '0.0.0.0',
+                'PORT': '7004',
+            },
+        },
     },
 }
 

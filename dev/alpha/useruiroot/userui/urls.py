@@ -24,7 +24,8 @@ router = DefaultRouter()
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include(router.urls)),
-    url(r'order/orders', views.get_orders),
-    url(r'client/clients', views.get_clients),
-    url(r'geo/clientsaround', views.clients_around),
+    url(r'order/orders', views.get),
+    url(r'client/clients', views.get),
+    url(r'client/items', views.get),
+    url(r'geo/clientsaround', views.get),
 ]

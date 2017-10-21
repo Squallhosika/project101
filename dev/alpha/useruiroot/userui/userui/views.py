@@ -4,9 +4,9 @@ from django.http import HttpResponseRedirect, HttpResponse
 
 
 mapper = {
-    'geo': 'localhost:8001',
-    'order': 'localhost:8003',
-    'client': 'localhost:8004',
+    'geo': 'localhost:7001',
+    'order': 'localhost:7003',
+    'client': 'localhost:7004',
 }
 
 
@@ -21,20 +21,13 @@ def route(request):
 
     return HttpResponse(requests.get(url, data=request.data))
 
-@api_view(['GET'])
-def get_orders(request):
-    return route(request)
 
 @api_view(['GET'])
-def get_clients(request):
-    return route(request)
-
-@api_view(['GET'])
-def clients_around(request):
+def get(request):
     return route(request)
 
 
-
-
-
+@api_view(['POST'])
+def post(request):
+    return route(request)
 
