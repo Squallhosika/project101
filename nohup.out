@@ -1,0 +1,8 @@
+Looking in classpath from com.intellij.util.lang.UrlClassLoader@2077d4de for /com/sun/jna/linux-x86-64/libjnidispatch.so
+Found library resource at jar:file:/opt/android-studio/lib/jna.jar!/com/sun/jna/linux-x86-64/libjnidispatch.so
+Trying /home/jonathan/.AndroidStudio2.3/system/tmp/jna848138699375300365.tmp
+Found jnidispatch at /home/jonathan/.AndroidStudio2.3/system/tmp/jna848138699375300365.tmp
+[  26118]   WARN - dea.updater.SdkComponentSource - File /home/jonathan/.android/repositories.cfg could not be loaded. 
+[  27239]   WARN - dea.updater.SdkComponentSource - java.io.FileNotFoundException: /tmp/StudioDownloadersys-img2-1.xml (No such file or directory) 
+[  27334]   WARN - dea.updater.SdkComponentSource - java.io.FileNotFoundException: /tmp/StudioDownloadersys-img2-1.xml (No such file or directory) 
+[  41511]   WARN - roid.tools.ndk.GradleWorkspace - NDK support for project 'UserUI' is disabled because the project doesn't contain any valid native configurations. 

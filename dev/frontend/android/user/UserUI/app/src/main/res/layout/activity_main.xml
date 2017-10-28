@@ -7,9 +7,20 @@
     android:layout_height="match_parent"
     tools:context="com.unicorn.userui.activity.MainActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_main"
+    <include layout="@layout/toolbar" />
+
+    <RelativeLayout
+        android:id="@+id/rv_container"
+        android:layout_above="@id/bottom"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
+    <include layout="@layout/bottom_nav" />
 
 </android.support.constraint.ConstraintLayout>

@@ -714,3 +714,510 @@ com.intellij.openapi.diagnostic.Logger$EmptyThrowable
 [193038143]  ERROR - impl.file.impl.FileManagerImpl - Vendor: JetBrains s.r.o 
 [193038143]  ERROR - impl.file.impl.FileManagerImpl - OS: Linux 
 [193038143]  ERROR - impl.file.impl.FileManagerImpl - Last Action: SaveAll 
+[270483093]   WARN - .tools.idea.model.ManifestInfo - getMergedManifest failed Manifest merger failed : Attribute meta-data#android.support.VERSION@value value=(26.0.0-alpha1) from AndroidManifest.xml:27:9-38
+	is also present at AndroidManifest.xml:27:9-31 value=(25.3.1).
+	Suggestion: add 'tools:replace="android:value"' to <meta-data> element at AndroidManifest.xml:25:5-27:41 to override. 
+[270490048]   WARN - .tools.idea.model.ManifestInfo - getMergedManifest failed Manifest merger failed : Attribute meta-data#android.support.VERSION@value value=(26.0.0-alpha1) from AndroidManifest.xml:27:9-38
+	is also present at AndroidManifest.xml:27:9-31 value=(25.3.1).
+	Suggestion: add 'tools:replace="android:value"' to <meta-data> element at AndroidManifest.xml:25:5-27:41 to override. 
+[270491058]   WARN - .tools.idea.model.ManifestInfo - getMergedManifest failed Manifest merger failed : Attribute meta-data#android.support.VERSION@value value=(26.0.0-alpha1) from AndroidManifest.xml:27:9-38
+	is also present at AndroidManifest.xml:27:9-31 value=(25.3.1).
+	Suggestion: add 'tools:replace="android:value"' to <meta-data> element at AndroidManifest.xml:25:5-27:41 to override. 
+[270823255]  ERROR - i.command.impl.UndoManagerImpl - Must be called inside command 
+com.intellij.openapi.diagnostic.Logger$EmptyThrowable
+	at com.intellij.openapi.diagnostic.Logger.error(Logger.java:129)
+	at com.intellij.openapi.command.impl.UndoManagerImpl.addAffectedDocuments(UndoManagerImpl.java:367)
+	at com.intellij.openapi.command.impl.CommandProcessorImpl.addAffectedDocuments(CommandProcessorImpl.java:79)
+	at com.intellij.openapi.command.undo.UndoUtil.markPsiFileForUndo(UndoUtil.java:43)
+	at org.jetbrains.android.inspections.CreateFileResourceQuickFix.lambda$invoke$0(CreateFileResourceQuickFix.java:88)
+	at com.intellij.openapi.util.AsyncResult$2.run(AsyncResult.java:100)
+	at com.intellij.openapi.util.ExecutionCallback.setExecuted(ExecutionCallback.java:58)
+	at com.intellij.openapi.util.ActionCallback.setDone(ActionCallback.java:72)
+	at com.intellij.openapi.util.AsyncResult.setDone(AsyncResult.java:45)
+	at com.intellij.ide.impl.DataManagerImpl.lambda$getDataContextFromFocus$0(DataManagerImpl.java:214)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.flushRequest(FocusManagerImpl.java:634)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.flushNow(FocusManagerImpl.java:615)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.flushIdleRequests(FocusManagerImpl.java:585)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.lambda$doWhenFocusSettlesDown$9(FocusManagerImpl.java:481)
+	at com.intellij.util.ui.UIUtil.invokeLaterIfNeeded(UIUtil.java:2432)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.doWhenFocusSettlesDown(FocusManagerImpl.java:461)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.doWhenFocusSettlesDown(FocusManagerImpl.java:456)
+	at com.intellij.openapi.wm.impl.ToolWindowManagerImpl.updateToolWindowHeaders(ToolWindowManagerImpl.java:237)
+	at com.intellij.openapi.wm.impl.ToolWindowManagerImpl.lambda$new$1(ToolWindowManagerImpl.java:151)
+	at com.intellij.util.concurrency.QueueProcessor.runSafely(QueueProcessor.java:222)
+	at com.intellij.util.Alarm$Request$1.run(Alarm.java:378)
+	at com.intellij.openapi.application.TransactionGuardImpl$6.run(TransactionGuardImpl.java:291)
+	at com.intellij.openapi.application.impl.LaterInvocator$FlushQueue.runNextEvent(LaterInvocator.java:326)
+	at com.intellij.openapi.application.impl.LaterInvocator$FlushQueue.run(LaterInvocator.java:310)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at com.intellij.ide.IdeEventQueue.defaultDispatchEvent(IdeEventQueue.java:795)
+	at com.intellij.ide.IdeEventQueue._dispatchEvent(IdeEventQueue.java:631)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent(IdeEventQueue.java:387)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+[270823255]  ERROR - i.command.impl.UndoManagerImpl - Android Studio 2.3.3  Build #AI-162.4069837 
+[270823255]  ERROR - i.command.impl.UndoManagerImpl - JDK: 1.8.0_112-release 
+[270823255]  ERROR - i.command.impl.UndoManagerImpl - VM: OpenJDK 64-Bit Server VM 
+[270823255]  ERROR - i.command.impl.UndoManagerImpl - Vendor: JetBrains s.r.o 
+[270823255]  ERROR - i.command.impl.UndoManagerImpl - OS: Linux 
+[270823255]  ERROR - i.command.impl.UndoManagerImpl - Last Action: ShowIntentionActions 
+[271058514]  ERROR - i.command.impl.UndoManagerImpl - Must be called inside command 
+com.intellij.openapi.diagnostic.Logger$EmptyThrowable
+	at com.intellij.openapi.diagnostic.Logger.error(Logger.java:129)
+	at com.intellij.openapi.command.impl.UndoManagerImpl.addAffectedDocuments(UndoManagerImpl.java:367)
+	at com.intellij.openapi.command.impl.CommandProcessorImpl.addAffectedDocuments(CommandProcessorImpl.java:79)
+	at com.intellij.openapi.command.undo.UndoUtil.markPsiFileForUndo(UndoUtil.java:43)
+	at org.jetbrains.android.inspections.CreateFileResourceQuickFix.lambda$invoke$0(CreateFileResourceQuickFix.java:88)
+	at com.intellij.openapi.util.AsyncResult$2.run(AsyncResult.java:100)
+	at com.intellij.openapi.util.ExecutionCallback.setExecuted(ExecutionCallback.java:58)
+	at com.intellij.openapi.util.ActionCallback.setDone(ActionCallback.java:72)
+	at com.intellij.openapi.util.AsyncResult.setDone(AsyncResult.java:45)
+	at com.intellij.ide.impl.DataManagerImpl.lambda$getDataContextFromFocus$0(DataManagerImpl.java:214)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.flushRequest(FocusManagerImpl.java:634)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.flushNow(FocusManagerImpl.java:615)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.flushIdleRequests(FocusManagerImpl.java:585)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.lambda$doWhenFocusSettlesDown$9(FocusManagerImpl.java:481)
+	at com.intellij.util.ui.UIUtil.invokeLaterIfNeeded(UIUtil.java:2432)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.doWhenFocusSettlesDown(FocusManagerImpl.java:461)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.doWhenFocusSettlesDown(FocusManagerImpl.java:456)
+	at com.intellij.openapi.wm.impl.ToolWindowManagerImpl.updateToolWindowHeaders(ToolWindowManagerImpl.java:237)
+	at com.intellij.openapi.wm.impl.ToolWindowManagerImpl.lambda$new$1(ToolWindowManagerImpl.java:151)
+	at com.intellij.util.concurrency.QueueProcessor.runSafely(QueueProcessor.java:222)
+	at com.intellij.util.Alarm$Request$1.run(Alarm.java:378)
+	at com.intellij.openapi.application.TransactionGuardImpl$6.run(TransactionGuardImpl.java:291)
+	at com.intellij.openapi.application.impl.LaterInvocator$FlushQueue.runNextEvent(LaterInvocator.java:326)
+	at com.intellij.openapi.application.impl.LaterInvocator$FlushQueue.run(LaterInvocator.java:310)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at com.intellij.ide.IdeEventQueue.defaultDispatchEvent(IdeEventQueue.java:795)
+	at com.intellij.ide.IdeEventQueue._dispatchEvent(IdeEventQueue.java:631)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent(IdeEventQueue.java:387)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+[271058516]  ERROR - i.command.impl.UndoManagerImpl - Android Studio 2.3.3  Build #AI-162.4069837 
+[271058517]  ERROR - i.command.impl.UndoManagerImpl - JDK: 1.8.0_112-release 
+[271058517]  ERROR - i.command.impl.UndoManagerImpl - VM: OpenJDK 64-Bit Server VM 
+[271058517]  ERROR - i.command.impl.UndoManagerImpl - Vendor: JetBrains s.r.o 
+[271058517]  ERROR - i.command.impl.UndoManagerImpl - OS: Linux 
+[271058517]  ERROR - i.command.impl.UndoManagerImpl - Last Action: ShowIntentionActions 
+[271125770]  ERROR - i.command.impl.UndoManagerImpl - Must be called inside command 
+com.intellij.openapi.diagnostic.Logger$EmptyThrowable
+	at com.intellij.openapi.diagnostic.Logger.error(Logger.java:129)
+	at com.intellij.openapi.command.impl.UndoManagerImpl.addAffectedDocuments(UndoManagerImpl.java:367)
+	at com.intellij.openapi.command.impl.CommandProcessorImpl.addAffectedDocuments(CommandProcessorImpl.java:79)
+	at com.intellij.openapi.command.undo.UndoUtil.markPsiFileForUndo(UndoUtil.java:43)
+	at org.jetbrains.android.inspections.CreateFileResourceQuickFix.lambda$invoke$0(CreateFileResourceQuickFix.java:88)
+	at com.intellij.openapi.util.AsyncResult$2.run(AsyncResult.java:100)
+	at com.intellij.openapi.util.ExecutionCallback.setExecuted(ExecutionCallback.java:58)
+	at com.intellij.openapi.util.ActionCallback.setDone(ActionCallback.java:72)
+	at com.intellij.openapi.util.AsyncResult.setDone(AsyncResult.java:45)
+	at com.intellij.ide.impl.DataManagerImpl.lambda$getDataContextFromFocus$0(DataManagerImpl.java:214)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.flushRequest(FocusManagerImpl.java:634)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.flushNow(FocusManagerImpl.java:615)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.flushIdleRequests(FocusManagerImpl.java:585)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.lambda$doWhenFocusSettlesDown$9(FocusManagerImpl.java:481)
+	at com.intellij.util.ui.UIUtil.invokeLaterIfNeeded(UIUtil.java:2432)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.doWhenFocusSettlesDown(FocusManagerImpl.java:461)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.doWhenFocusSettlesDown(FocusManagerImpl.java:456)
+	at com.intellij.openapi.wm.impl.ToolWindowManagerImpl.updateToolWindowHeaders(ToolWindowManagerImpl.java:237)
+	at com.intellij.openapi.wm.impl.ToolWindowManagerImpl.lambda$new$1(ToolWindowManagerImpl.java:151)
+	at com.intellij.util.concurrency.QueueProcessor.runSafely(QueueProcessor.java:222)
+	at com.intellij.util.Alarm$Request$1.run(Alarm.java:378)
+	at com.intellij.openapi.application.TransactionGuardImpl$6.run(TransactionGuardImpl.java:291)
+	at com.intellij.openapi.application.impl.LaterInvocator$FlushQueue.runNextEvent(LaterInvocator.java:326)
+	at com.intellij.openapi.application.impl.LaterInvocator$FlushQueue.run(LaterInvocator.java:310)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at com.intellij.ide.IdeEventQueue.defaultDispatchEvent(IdeEventQueue.java:795)
+	at com.intellij.ide.IdeEventQueue._dispatchEvent(IdeEventQueue.java:631)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent(IdeEventQueue.java:387)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+[271125770]  ERROR - i.command.impl.UndoManagerImpl - Android Studio 2.3.3  Build #AI-162.4069837 
+[271125770]  ERROR - i.command.impl.UndoManagerImpl - JDK: 1.8.0_112-release 
+[271125770]  ERROR - i.command.impl.UndoManagerImpl - VM: OpenJDK 64-Bit Server VM 
+[271125770]  ERROR - i.command.impl.UndoManagerImpl - Vendor: JetBrains s.r.o 
+[271125770]  ERROR - i.command.impl.UndoManagerImpl - OS: Linux 
+[271125770]  ERROR - i.command.impl.UndoManagerImpl - Last Action: ShowIntentionActions 
+[271172335]  ERROR - i.command.impl.UndoManagerImpl - Must be called inside command 
+com.intellij.openapi.diagnostic.Logger$EmptyThrowable
+	at com.intellij.openapi.diagnostic.Logger.error(Logger.java:129)
+	at com.intellij.openapi.command.impl.UndoManagerImpl.addAffectedDocuments(UndoManagerImpl.java:367)
+	at com.intellij.openapi.command.impl.CommandProcessorImpl.addAffectedDocuments(CommandProcessorImpl.java:79)
+	at com.intellij.openapi.command.undo.UndoUtil.markPsiFileForUndo(UndoUtil.java:43)
+	at org.jetbrains.android.inspections.CreateFileResourceQuickFix.lambda$invoke$0(CreateFileResourceQuickFix.java:88)
+	at com.intellij.openapi.util.AsyncResult$2.run(AsyncResult.java:100)
+	at com.intellij.openapi.util.ExecutionCallback.setExecuted(ExecutionCallback.java:58)
+	at com.intellij.openapi.util.ActionCallback.setDone(ActionCallback.java:72)
+	at com.intellij.openapi.util.AsyncResult.setDone(AsyncResult.java:45)
+	at com.intellij.ide.impl.DataManagerImpl.lambda$getDataContextFromFocus$0(DataManagerImpl.java:214)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.flushRequest(FocusManagerImpl.java:634)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.flushNow(FocusManagerImpl.java:615)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.flushIdleRequests(FocusManagerImpl.java:585)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.lambda$doWhenFocusSettlesDown$9(FocusManagerImpl.java:481)
+	at com.intellij.util.ui.UIUtil.invokeLaterIfNeeded(UIUtil.java:2432)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.doWhenFocusSettlesDown(FocusManagerImpl.java:461)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.doWhenFocusSettlesDown(FocusManagerImpl.java:456)
+	at com.intellij.openapi.wm.impl.ToolWindowManagerImpl.updateToolWindowHeaders(ToolWindowManagerImpl.java:237)
+	at com.intellij.openapi.wm.impl.ToolWindowManagerImpl.lambda$new$1(ToolWindowManagerImpl.java:151)
+	at com.intellij.util.concurrency.QueueProcessor.runSafely(QueueProcessor.java:222)
+	at com.intellij.util.Alarm$Request$1.run(Alarm.java:378)
+	at com.intellij.openapi.application.TransactionGuardImpl$6.run(TransactionGuardImpl.java:291)
+	at com.intellij.openapi.application.impl.LaterInvocator$FlushQueue.runNextEvent(LaterInvocator.java:326)
+	at com.intellij.openapi.application.impl.LaterInvocator$FlushQueue.run(LaterInvocator.java:310)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at com.intellij.ide.IdeEventQueue.defaultDispatchEvent(IdeEventQueue.java:795)
+	at com.intellij.ide.IdeEventQueue._dispatchEvent(IdeEventQueue.java:631)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent(IdeEventQueue.java:387)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+[271172336]  ERROR - i.command.impl.UndoManagerImpl - Android Studio 2.3.3  Build #AI-162.4069837 
+[271172336]  ERROR - i.command.impl.UndoManagerImpl - JDK: 1.8.0_112-release 
+[271172336]  ERROR - i.command.impl.UndoManagerImpl - VM: OpenJDK 64-Bit Server VM 
+[271172336]  ERROR - i.command.impl.UndoManagerImpl - Vendor: JetBrains s.r.o 
+[271172336]  ERROR - i.command.impl.UndoManagerImpl - OS: Linux 
+[271172336]  ERROR - i.command.impl.UndoManagerImpl - Last Action: ShowIntentionActions 
+[271939522]  ERROR - i.command.impl.UndoManagerImpl - Must be called inside command 
+com.intellij.openapi.diagnostic.Logger$EmptyThrowable
+	at com.intellij.openapi.diagnostic.Logger.error(Logger.java:129)
+	at com.intellij.openapi.command.impl.UndoManagerImpl.addAffectedDocuments(UndoManagerImpl.java:367)
+	at com.intellij.openapi.command.impl.CommandProcessorImpl.addAffectedDocuments(CommandProcessorImpl.java:79)
+	at com.intellij.openapi.command.undo.UndoUtil.markPsiFileForUndo(UndoUtil.java:43)
+	at org.jetbrains.android.inspections.CreateFileResourceQuickFix.lambda$invoke$0(CreateFileResourceQuickFix.java:88)
+	at com.intellij.openapi.util.AsyncResult$2.run(AsyncResult.java:100)
+	at com.intellij.openapi.util.ExecutionCallback.setExecuted(ExecutionCallback.java:58)
+	at com.intellij.openapi.util.ActionCallback.setDone(ActionCallback.java:72)
+	at com.intellij.openapi.util.AsyncResult.setDone(AsyncResult.java:45)
+	at com.intellij.ide.impl.DataManagerImpl.lambda$getDataContextFromFocus$0(DataManagerImpl.java:214)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.flushRequest(FocusManagerImpl.java:634)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.flushNow(FocusManagerImpl.java:615)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.flushIdleRequests(FocusManagerImpl.java:585)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.lambda$doWhenFocusSettlesDown$9(FocusManagerImpl.java:481)
+	at com.intellij.util.ui.UIUtil.invokeLaterIfNeeded(UIUtil.java:2432)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.doWhenFocusSettlesDown(FocusManagerImpl.java:461)
+	at com.intellij.openapi.wm.impl.FocusManagerImpl.doWhenFocusSettlesDown(FocusManagerImpl.java:456)
+	at com.intellij.openapi.wm.impl.IdeFocusManagerImpl.doWhenFocusSettlesDown(IdeFocusManagerImpl.java:64)
+	at com.intellij.openapi.wm.impl.ToolWindowManagerImpl.updateToolWindowHeaders(ToolWindowManagerImpl.java:237)
+	at com.intellij.openapi.wm.impl.ToolWindowManagerImpl.lambda$new$1(ToolWindowManagerImpl.java:151)
+	at com.intellij.util.concurrency.QueueProcessor.runSafely(QueueProcessor.java:222)
+	at com.intellij.util.Alarm$Request$1.run(Alarm.java:378)
+	at com.intellij.openapi.application.TransactionGuardImpl$6.run(TransactionGuardImpl.java:291)
+	at com.intellij.openapi.application.impl.LaterInvocator$FlushQueue.runNextEvent(LaterInvocator.java:326)
+	at com.intellij.openapi.application.impl.LaterInvocator$FlushQueue.run(LaterInvocator.java:310)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at com.intellij.ide.IdeEventQueue.defaultDispatchEvent(IdeEventQueue.java:795)
+	at com.intellij.ide.IdeEventQueue._dispatchEvent(IdeEventQueue.java:631)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent(IdeEventQueue.java:387)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+[271939531]  ERROR - i.command.impl.UndoManagerImpl - Android Studio 2.3.3  Build #AI-162.4069837 
+[271939531]  ERROR - i.command.impl.UndoManagerImpl - JDK: 1.8.0_112-release 
+[271939531]  ERROR - i.command.impl.UndoManagerImpl - VM: OpenJDK 64-Bit Server VM 
+[271939531]  ERROR - i.command.impl.UndoManagerImpl - Vendor: JetBrains s.r.o 
+[271939531]  ERROR - i.command.impl.UndoManagerImpl - OS: Linux 
+[271939531]  ERROR - i.command.impl.UndoManagerImpl - Last Action: ShowIntentionActions 
+[271996843]   WARN - rendering.ConfigurationMatcher - 'default' is not a best match for any device/locale combination for file:///home/jonathan/git/unicorn/dev/frontend/android/user/UserUI/app/src/main/res/values/styles.xml.
+Displaying it with
+  , , , Left To Right, sw384dp, w384dp, h640dp, Normal Screen, Short screen aspect ratio, Not Round screen, Portrait Orientation, Normal, Day time, X-High Density, Finger-based touchscreen, Soft keyboard, No keyboard, Hidden navigation, No navigation, Screen resolution 1280x768, API Level 26
+which is compatible, but will actually be displayed with another more specific version of the layout. 
+[272015525]   WARN - rendering.ConfigurationMatcher - 'default' is not a best match for any device/locale combination for file:///home/jonathan/git/unicorn_master/dev/frontend/android/user/UserUI/app/src/main/res/values/styles.xml.
+Displaying it with
+  , , , Left To Right, sw384dp, w384dp, h640dp, Normal Screen, Short screen aspect ratio, Not Round screen, Portrait Orientation, Normal, Day time, X-High Density, Finger-based touchscreen, Soft keyboard, No keyboard, Hidden navigation, No navigation, Screen resolution 1280x768, API Level 26
+which is compatible, but will actually be displayed with another more specific version of the layout. 
+[272214035]   WARN - .workspace.NdkWorkspaceManager - NDK support for project 'My Application' is disabled because it's not a valid Android project 
+[276344977]  ERROR - aemon.impl.PassExecutorService - Element: class com.intellij.psi.impl.source.xml.XmlTagImpl because: parent is null
+invalidated at: see attachment; Invalid element returned from PsiElement(XML_ATTRIBUTE_VALUE):(1,22) of class org.jetbrains.android.dom.converters.AndroidResourceReference; editor=com.intellij.openapi.editor.impl.EditorImpl@387c2b2f 
+com.intellij.psi.PsiInvalidElementAccessException: Element: class com.intellij.psi.impl.source.xml.XmlTagImpl because: parent is null
+invalidated at: see attachment; Invalid element returned from PsiElement(XML_ATTRIBUTE_VALUE):(1,22) of class org.jetbrains.android.dom.converters.AndroidResourceReference; editor=com.intellij.openapi.editor.impl.EditorImpl@387c2b2f
+	at com.intellij.codeInsight.daemon.impl.IdentifierHighlighterPass.doCollectInformation(IdentifierHighlighterPass.java:119)
+	at com.intellij.codeHighlighting.TextEditorHighlightingPass.collectInformation(TextEditorHighlightingPass.java:70)
+	at com.intellij.codeInsight.daemon.impl.PassExecutorService$ScheduledPass.lambda$null$0(PassExecutorService.java:434)
+	at com.intellij.openapi.application.impl.ApplicationImpl.tryRunReadAction(ApplicationImpl.java:1029)
+	at com.intellij.codeInsight.daemon.impl.PassExecutorService$ScheduledPass.lambda$doRun$1(PassExecutorService.java:427)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.registerIndicatorAndRun(CoreProgressManager.java:494)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.executeProcessUnderProgress(CoreProgressManager.java:443)
+	at com.intellij.openapi.progress.impl.ProgressManagerImpl.executeProcessUnderProgress(ProgressManagerImpl.java:54)
+	at com.intellij.codeInsight.daemon.impl.PassExecutorService$ScheduledPass.doRun(PassExecutorService.java:426)
+	at com.intellij.codeInsight.daemon.impl.PassExecutorService$ScheduledPass.run(PassExecutorService.java:402)
+	at com.intellij.concurrency.JobLauncherImpl$VoidForkJoinTask$1.exec(JobLauncherImpl.java:154)
+	at java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
+	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
+	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)
+[276345004]  ERROR - aemon.impl.PassExecutorService - Android Studio 2.3.3  Build #AI-162.4069837 
+[276345004]  ERROR - aemon.impl.PassExecutorService - JDK: 1.8.0_112-release 
+[276345004]  ERROR - aemon.impl.PassExecutorService - VM: OpenJDK 64-Bit Server VM 
+[276345004]  ERROR - aemon.impl.PassExecutorService - Vendor: JetBrains s.r.o 
+[276345004]  ERROR - aemon.impl.PassExecutorService - OS: Linux 
+[276345004]  ERROR - aemon.impl.PassExecutorService - Last Action: CommentByLineComment 
+[276345005]  ERROR - aemon.impl.PassExecutorService - Element: class com.intellij.psi.impl.source.xml.XmlTagImpl because: parent is null
+invalidated at: see attachment; Invalid element returned from PsiElement(XML_ATTRIBUTE_VALUE):(1,22) of class org.jetbrains.android.dom.converters.AndroidResourceReference; editor=com.intellij.openapi.editor.impl.EditorImpl@387c2b2f 
+com.intellij.psi.PsiInvalidElementAccessException: Element: class com.intellij.psi.impl.source.xml.XmlTagImpl because: parent is null
+invalidated at: see attachment; Invalid element returned from PsiElement(XML_ATTRIBUTE_VALUE):(1,22) of class org.jetbrains.android.dom.converters.AndroidResourceReference; editor=com.intellij.openapi.editor.impl.EditorImpl@387c2b2f
+	at com.intellij.codeInsight.daemon.impl.IdentifierHighlighterPass.doCollectInformation(IdentifierHighlighterPass.java:119)
+	at com.intellij.codeHighlighting.TextEditorHighlightingPass.collectInformation(TextEditorHighlightingPass.java:70)
+	at com.intellij.codeInsight.daemon.impl.PassExecutorService$ScheduledPass.lambda$null$0(PassExecutorService.java:434)
+	at com.intellij.openapi.application.impl.ApplicationImpl.tryRunReadAction(ApplicationImpl.java:1029)
+	at com.intellij.codeInsight.daemon.impl.PassExecutorService$ScheduledPass.lambda$doRun$1(PassExecutorService.java:427)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.registerIndicatorAndRun(CoreProgressManager.java:494)
+	at com.intellij.openapi.progress.impl.CoreProgressManager.executeProcessUnderProgress(CoreProgressManager.java:443)
+	at com.intellij.openapi.progress.impl.ProgressManagerImpl.executeProcessUnderProgress(ProgressManagerImpl.java:54)
+	at com.intellij.codeInsight.daemon.impl.PassExecutorService$ScheduledPass.doRun(PassExecutorService.java:426)
+	at com.intellij.codeInsight.daemon.impl.PassExecutorService$ScheduledPass.run(PassExecutorService.java:402)
+	at com.intellij.concurrency.JobLauncherImpl$VoidForkJoinTask$1.exec(JobLauncherImpl.java:154)
+	at java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
+	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
+	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)
+[276345005]  ERROR - aemon.impl.PassExecutorService - Android Studio 2.3.3  Build #AI-162.4069837 
+[276345005]  ERROR - aemon.impl.PassExecutorService - JDK: 1.8.0_112-release 
+[276345005]  ERROR - aemon.impl.PassExecutorService - VM: OpenJDK 64-Bit Server VM 
+[276345005]  ERROR - aemon.impl.PassExecutorService - Vendor: JetBrains s.r.o 
+[276345005]  ERROR - aemon.impl.PassExecutorService - OS: Linux 
+[276345005]  ERROR - aemon.impl.PassExecutorService - Last Action: CommentByLineComment 
+[589420036]  ERROR - ij.components.ComponentManager - Not disposed pointer: file:///home/jonathan/git/unicorn/dev/frontend/android/user/UserUI 
+com.intellij.openapi.util.TraceableDisposable$DisposalException: Not disposed pointer: file:///home/jonathan/git/unicorn/dev/frontend/android/user/UserUI
+	at com.intellij.openapi.util.TraceableDisposable.throwDisposalError(TraceableDisposable.java:94)
+	at com.intellij.openapi.vfs.impl.VirtualFilePointerManagerImpl.assertAllPointersDisposed(VirtualFilePointerManagerImpl.java:285)
+	at com.intellij.openapi.vfs.impl.VirtualFilePointerManagerImpl.disposeComponent(VirtualFilePointerManagerImpl.java:84)
+	at com.intellij.openapi.components.impl.ComponentManagerImpl.disposeComponents(ComponentManagerImpl.java:150)
+	at com.intellij.openapi.application.impl.ApplicationImpl.dispose(ApplicationImpl.java:471)
+	at com.intellij.openapi.util.Disposer$1.execute(Disposer.java:48)
+	at com.intellij.openapi.util.Disposer$1.execute(Disposer.java:44)
+	at com.intellij.openapi.util.objectTree.ObjectNode$1.execute(ObjectNode.java:132)
+	at com.intellij.openapi.util.objectTree.ObjectNode$1.execute(ObjectNode.java:106)
+	at com.intellij.openapi.util.objectTree.ObjectTree.executeActionWithRecursiveGuard(ObjectTree.java:150)
+	at com.intellij.openapi.util.objectTree.ObjectNode.execute(ObjectNode.java:106)
+	at com.intellij.openapi.util.objectTree.ObjectTree.executeAll(ObjectTree.java:136)
+	at com.intellij.openapi.util.Disposer.dispose(Disposer.java:119)
+	at com.intellij.openapi.util.Disposer.dispose(Disposer.java:115)
+	at com.intellij.openapi.application.impl.ApplicationImpl.lambda$disposeSelf$6(ApplicationImpl.java:240)
+	at com.intellij.openapi.application.impl.ApplicationImpl.runWriteAction(ApplicationImpl.java:898)
+	at com.intellij.openapi.application.impl.ApplicationImpl.disposeSelf(ApplicationImpl.java:240)
+	at com.intellij.openapi.application.impl.ApplicationImpl.doExit(ApplicationImpl.java:757)
+	at com.intellij.openapi.application.impl.ApplicationImpl.lambda$exit$13(ApplicationImpl.java:734)
+	at com.intellij.openapi.application.impl.ApplicationImpl.exit(ApplicationImpl.java:739)
+	at com.intellij.openapi.application.impl.ApplicationImpl.exit(ApplicationImpl.java:691)
+	at com.intellij.openapi.application.impl.ApplicationImpl.exit(ApplicationImpl.java:686)
+	at com.intellij.openapi.wm.impl.IdeFrameImpl$4.windowClosing(IdeFrameImpl.java:261)
+	at java.awt.AWTEventMulticaster.windowClosing(AWTEventMulticaster.java:349)
+	at java.awt.AWTEventMulticaster.windowClosing(AWTEventMulticaster.java:349)
+	at java.awt.AWTEventMulticaster.windowClosing(AWTEventMulticaster.java:349)
+	at java.awt.Window.processWindowEvent(Window.java:2054)
+	at javax.swing.JFrame.processWindowEvent(JFrame.java:305)
+	at java.awt.Window.processEvent(Window.java:2013)
+	at java.awt.Component.dispatchEventImpl(Component.java:4889)
+	at java.awt.Container.dispatchEventImpl(Container.java:2294)
+	at java.awt.Window.dispatchEventImpl(Window.java:2746)
+	at java.awt.Component.dispatchEvent(Component.java:4711)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:90)
+	at java.awt.EventQueue$4.run(EventQueue.java:731)
+	at java.awt.EventQueue$4.run(EventQueue.java:729)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at com.intellij.ide.IdeEventQueue.defaultDispatchEvent(IdeEventQueue.java:795)
+	at com.intellij.ide.IdeEventQueue._dispatchEvent(IdeEventQueue.java:631)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent(IdeEventQueue.java:387)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+[589420121]  ERROR - ij.components.ComponentManager - Android Studio 2.3.3  Build #AI-162.4069837 
+[589420121]  ERROR - ij.components.ComponentManager - JDK: 1.8.0_112-release 
+[589420122]  ERROR - ij.components.ComponentManager - VM: OpenJDK 64-Bit Server VM 
+[589420122]  ERROR - ij.components.ComponentManager - Vendor: JetBrains s.r.o 
+[589420122]  ERROR - ij.components.ComponentManager - OS: Linux 
+[589420221]  ERROR - l.messages.impl.MessageBusImpl - Already disposed: com.intellij.util.messages.impl.MessageBusImpl$RootBus@227eedaf; owner=Application of class java.lang.String; disposed 
+com.intellij.openapi.diagnostic.Logger$EmptyThrowable
+	at com.intellij.openapi.diagnostic.Logger.error(Logger.java:129)
+	at com.intellij.util.messages.impl.MessageBusImpl.checkNotDisposed(MessageBusImpl.java:278)
+	at com.intellij.util.messages.impl.MessageBusImpl.pumpMessages(MessageBusImpl.java:347)
+	at com.intellij.util.messages.impl.MessageBusImpl.pumpMessages(MessageBusImpl.java:350)
+	at com.intellij.util.messages.impl.MessageBusImpl.sendMessage(MessageBusImpl.java:341)
+	at com.intellij.util.messages.impl.MessageBusImpl.access$200(MessageBusImpl.java:42)
+	at com.intellij.util.messages.impl.MessageBusImpl$2.invoke(MessageBusImpl.java:226)
+	at com.sun.proxy.$Proxy85.daemonCancelEventOccurred(Unknown Source)
+	at com.intellij.codeInsight.daemon.impl.DaemonListeners.stopDaemon(DaemonListeners.java:603)
+	at com.intellij.codeInsight.daemon.impl.DaemonListeners.access$000(DaemonListeners.java:95)
+	at com.intellij.codeInsight.daemon.impl.DaemonListeners$MyApplicationListener.writeActionFinished(DaemonListeners.java:418)
+	at sun.reflect.GeneratedMethodAccessor43.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at com.intellij.util.EventDispatcher.dispatch(EventDispatcher.java:99)
+	at com.intellij.util.EventDispatcher.access$200(EventDispatcher.java:35)
+	at com.intellij.util.EventDispatcher$2.invoke(EventDispatcher.java:79)
+	at com.sun.proxy.$Proxy5.writeActionFinished(Unknown Source)
+	at com.intellij.openapi.application.impl.ApplicationImpl.fireWriteActionFinished(ApplicationImpl.java:1256)
+	at com.intellij.openapi.application.impl.ApplicationImpl.endWrite(ApplicationImpl.java:1107)
+	at com.intellij.openapi.application.impl.ApplicationImpl.runWriteAction(ApplicationImpl.java:901)
+	at com.intellij.openapi.application.impl.ApplicationImpl.disposeSelf(ApplicationImpl.java:240)
+	at com.intellij.openapi.application.impl.ApplicationImpl.doExit(ApplicationImpl.java:757)
+	at com.intellij.openapi.application.impl.ApplicationImpl.lambda$exit$13(ApplicationImpl.java:734)
+	at com.intellij.openapi.application.impl.ApplicationImpl.exit(ApplicationImpl.java:739)
+	at com.intellij.openapi.application.impl.ApplicationImpl.exit(ApplicationImpl.java:691)
+	at com.intellij.openapi.application.impl.ApplicationImpl.exit(ApplicationImpl.java:686)
+	at com.intellij.openapi.wm.impl.IdeFrameImpl$4.windowClosing(IdeFrameImpl.java:261)
+	at java.awt.AWTEventMulticaster.windowClosing(AWTEventMulticaster.java:349)
+	at java.awt.AWTEventMulticaster.windowClosing(AWTEventMulticaster.java:349)
+	at java.awt.AWTEventMulticaster.windowClosing(AWTEventMulticaster.java:349)
+	at java.awt.Window.processWindowEvent(Window.java:2054)
+	at javax.swing.JFrame.processWindowEvent(JFrame.java:305)
+	at java.awt.Window.processEvent(Window.java:2013)
+	at java.awt.Component.dispatchEventImpl(Component.java:4889)
+	at java.awt.Container.dispatchEventImpl(Container.java:2294)
+	at java.awt.Window.dispatchEventImpl(Window.java:2746)
+	at java.awt.Component.dispatchEvent(Component.java:4711)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:90)
+	at java.awt.EventQueue$4.run(EventQueue.java:731)
+	at java.awt.EventQueue$4.run(EventQueue.java:729)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at com.intellij.ide.IdeEventQueue.defaultDispatchEvent(IdeEventQueue.java:795)
+	at com.intellij.ide.IdeEventQueue._dispatchEvent(IdeEventQueue.java:631)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent(IdeEventQueue.java:387)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+[589420222]  ERROR - l.messages.impl.MessageBusImpl - Android Studio 2.3.3  Build #AI-162.4069837 
+[589420222]  ERROR - l.messages.impl.MessageBusImpl - JDK: 1.8.0_112-release 
+[589420222]  ERROR - l.messages.impl.MessageBusImpl - VM: OpenJDK 64-Bit Server VM 
+[589420222]  ERROR - l.messages.impl.MessageBusImpl - Vendor: JetBrains s.r.o 
+[589420222]  ERROR - l.messages.impl.MessageBusImpl - OS: Linux 
+[589420223]  ERROR - l.messages.impl.MessageBusImpl - Already disposed: com.intellij.util.messages.impl.MessageBusImpl$RootBus@227eedaf; owner=Application of class java.lang.String; disposed 
+com.intellij.openapi.diagnostic.Logger$EmptyThrowable
+	at com.intellij.openapi.diagnostic.Logger.error(Logger.java:129)
+	at com.intellij.util.messages.impl.MessageBusImpl.checkNotDisposed(MessageBusImpl.java:278)
+	at com.intellij.util.messages.impl.MessageBusImpl.pumpMessages(MessageBusImpl.java:347)
+	at com.intellij.util.messages.impl.MessageBusImpl.pumpMessages(MessageBusImpl.java:350)
+	at com.intellij.util.messages.impl.MessageBusImpl.sendMessage(MessageBusImpl.java:343)
+	at com.intellij.util.messages.impl.MessageBusImpl.access$200(MessageBusImpl.java:42)
+	at com.intellij.util.messages.impl.MessageBusImpl$2.invoke(MessageBusImpl.java:226)
+	at com.sun.proxy.$Proxy85.daemonCancelEventOccurred(Unknown Source)
+	at com.intellij.codeInsight.daemon.impl.DaemonListeners.stopDaemon(DaemonListeners.java:603)
+	at com.intellij.codeInsight.daemon.impl.DaemonListeners.access$000(DaemonListeners.java:95)
+	at com.intellij.codeInsight.daemon.impl.DaemonListeners$MyApplicationListener.writeActionFinished(DaemonListeners.java:418)
+	at sun.reflect.GeneratedMethodAccessor43.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at com.intellij.util.EventDispatcher.dispatch(EventDispatcher.java:99)
+	at com.intellij.util.EventDispatcher.access$200(EventDispatcher.java:35)
+	at com.intellij.util.EventDispatcher$2.invoke(EventDispatcher.java:79)
+	at com.sun.proxy.$Proxy5.writeActionFinished(Unknown Source)
+	at com.intellij.openapi.application.impl.ApplicationImpl.fireWriteActionFinished(ApplicationImpl.java:1256)
+	at com.intellij.openapi.application.impl.ApplicationImpl.endWrite(ApplicationImpl.java:1107)
+	at com.intellij.openapi.application.impl.ApplicationImpl.runWriteAction(ApplicationImpl.java:901)
+	at com.intellij.openapi.application.impl.ApplicationImpl.disposeSelf(ApplicationImpl.java:240)
+	at com.intellij.openapi.application.impl.ApplicationImpl.doExit(ApplicationImpl.java:757)
+	at com.intellij.openapi.application.impl.ApplicationImpl.lambda$exit$13(ApplicationImpl.java:734)
+	at com.intellij.openapi.application.impl.ApplicationImpl.exit(ApplicationImpl.java:739)
+	at com.intellij.openapi.application.impl.ApplicationImpl.exit(ApplicationImpl.java:691)
+	at com.intellij.openapi.application.impl.ApplicationImpl.exit(ApplicationImpl.java:686)
+	at com.intellij.openapi.wm.impl.IdeFrameImpl$4.windowClosing(IdeFrameImpl.java:261)
+	at java.awt.AWTEventMulticaster.windowClosing(AWTEventMulticaster.java:349)
+	at java.awt.AWTEventMulticaster.windowClosing(AWTEventMulticaster.java:349)
+	at java.awt.AWTEventMulticaster.windowClosing(AWTEventMulticaster.java:349)
+	at java.awt.Window.processWindowEvent(Window.java:2054)
+	at javax.swing.JFrame.processWindowEvent(JFrame.java:305)
+	at java.awt.Window.processEvent(Window.java:2013)
+	at java.awt.Component.dispatchEventImpl(Component.java:4889)
+	at java.awt.Container.dispatchEventImpl(Container.java:2294)
+	at java.awt.Window.dispatchEventImpl(Window.java:2746)
+	at java.awt.Component.dispatchEvent(Component.java:4711)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:90)
+	at java.awt.EventQueue$4.run(EventQueue.java:731)
+	at java.awt.EventQueue$4.run(EventQueue.java:729)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at com.intellij.ide.IdeEventQueue.defaultDispatchEvent(IdeEventQueue.java:795)
+	at com.intellij.ide.IdeEventQueue._dispatchEvent(IdeEventQueue.java:631)
+	at com.intellij.ide.IdeEventQueue.dispatchEvent(IdeEventQueue.java:387)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+[589420223]  ERROR - l.messages.impl.MessageBusImpl - Android Studio 2.3.3  Build #AI-162.4069837 
+[589420224]  ERROR - l.messages.impl.MessageBusImpl - JDK: 1.8.0_112-release 
+[589420224]  ERROR - l.messages.impl.MessageBusImpl - VM: OpenJDK 64-Bit Server VM 
+[589420224]  ERROR - l.messages.impl.MessageBusImpl - Vendor: JetBrains s.r.o 
+[589420224]  ERROR - l.messages.impl.MessageBusImpl - OS: Linux 

@@ -26,7 +26,7 @@ public class OrderBookAdapter extends RecyclerView.Adapter<OrderBookAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View v = inflater.inflate(R.layout.rv_main_order, parent, false);
+        View v = inflater.inflate(R.layout.rv_orderbook_order, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
@@ -35,7 +35,7 @@ public class OrderBookAdapter extends RecyclerView.Adapter<OrderBookAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final String name = orders.get(position).getName();
-        final String description = orders.get(position).getDescription();
+//        final String description = orders.get(position).getDescription();
 
 
         holder.tvOrderName.setText(name);
@@ -46,7 +46,7 @@ public class OrderBookAdapter extends RecyclerView.Adapter<OrderBookAdapter.View
 //            }
 //        });
 //
-        holder.tvOrderDescription.setText(description);
+//        holder.tvOrderDescription.setText(description);
 
     }
 
@@ -57,12 +57,12 @@ public class OrderBookAdapter extends RecyclerView.Adapter<OrderBookAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tvOrderName;
-        public TextView tvOrderDescription;
+//        public TextView tvOrderDescription;
 
         public ViewHolder(View itemView) {
             super(itemView);
             tvOrderName = (TextView) itemView.findViewById(R.id.order_name);
-            tvOrderDescription = (TextView) itemView.findViewById(R.id.order_description);
+//            tvOrderDescription = (TextView) itemView.findViewById(R.id.order_description);
         }
     }
 }
