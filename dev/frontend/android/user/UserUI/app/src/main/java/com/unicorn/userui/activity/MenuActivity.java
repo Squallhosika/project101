@@ -12,10 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.unicorn.apigateway.ApiGateway;
-import com.unicorn.apigateway.model.Client;
 import com.unicorn.apigateway.model.Item;
 import com.unicorn.userui.R;
-import com.unicorn.userui.adapter.MainAdapter;
 import com.unicorn.userui.adapter.MenuAdapter;
 
 import java.util.List;
@@ -53,6 +51,7 @@ public class MenuActivity extends AppCompatActivity {
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(getBottomNavigationListener());
@@ -107,7 +106,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void openMain() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, ClientBookActivity.class);
         startActivity(intent);
     }
 }

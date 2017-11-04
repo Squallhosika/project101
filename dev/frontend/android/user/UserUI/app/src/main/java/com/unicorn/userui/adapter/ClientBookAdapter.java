@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.unicorn.apigateway.model.Client;
 import com.unicorn.userui.R;
-import com.unicorn.userui.activity.MainActivity;
 import com.unicorn.userui.activity.MenuActivity;
 
 import java.util.List;
@@ -20,12 +19,12 @@ import java.util.List;
  * Created by jonathan on 23/10/17.
  */
 
-public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
+public class ClientBookAdapter extends RecyclerView.Adapter<ClientBookAdapter.ViewHolder> {
 
     private Context mContext;
     private List<Client> clients;
 
-    public MainAdapter(List<Client> clients) {
+    public ClientBookAdapter(List<Client> clients) {
         this.clients = clients;
     }
 

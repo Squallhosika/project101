@@ -24,8 +24,8 @@
 ////        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //        switch (item.getItemId()) {
 //            case R.id.navigation_home:
-//                inflater.inflate(R.layout.activity_main, parent, false);
-//                    setContentView(R.layout.activity_main);
+//                inflater.inflate(R.layout.activity_clientbook, parent, false);
+//                    setContentView(R.layout.activity_clientbook);
 //                break;
 //
 //            case R.id.navigation_dashboard:

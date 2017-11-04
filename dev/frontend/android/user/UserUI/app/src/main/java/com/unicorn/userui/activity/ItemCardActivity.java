@@ -10,11 +10,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.unicorn.apigateway.ApiGateway;
-import com.unicorn.apigateway.model.Order;
+import com.unicorn.apigateway.model.Item;
 import com.unicorn.userui.R;
-import com.unicorn.userui.adapter.OrderBookAdapter;
+import com.unicorn.userui.adapter.MenuAdapter;
 
 import java.util.List;
 
@@ -22,26 +24,29 @@ import java.util.List;
  * Created by jonathan on 23/10/17.
  */
 
-public class OrderBookActivity extends AppCompatActivity {
+public class ItemCardActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_orderbook);
+        setContentView(R.layout.activity_itemcard);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_orderbook);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setHasFixedSize(true);
+        Intent intent = getIntent();
+        String id = intent.getStringExtra("itemId");
 
-        List<Order> orders = (List<Order>) ApiGateway.call("getOrders", null);
-        mAdapter = new OrderBookAdapter(orders);
-        mRecyclerView.setAdapter(mAdapter);
+        Item item = (Item) ApiGateway.call("getItem", id);
+
+        TextView tvName = (TextView) findViewById(R.id.tv_itemcard_name);
+        TextView tvDesc = (TextView) findViewById(R.id.tv_itemcard_desc);
+
+        tvName.setText(item.getName());
+        tvDesc.setText(item.getDescription());
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -50,7 +55,6 @@ public class OrderBookActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(getBottomNavigationListener());
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -86,14 +90,9 @@ public class OrderBookActivity extends AppCompatActivity {
         };
     }
 
-    private void openOrderCard(){
-        Intent intent = new Intent(this, OrderCardActivity.class);
-        int id = 10;
-        intent.putExtra("orderId", id);
-        startActivity(intent);
-    }
-
     private void openOrderBook() {
+        Intent intent = new Intent(this, OrderBookActivity.class);
+        startActivity(intent);
     }
 
     private void openMain() {
@@ -101,4 +100,6 @@ public class OrderBookActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void openOrderCard() {
+    }
 }

@@ -6,7 +6,6 @@ import com.unicorn.apigateway.model.Order;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by jonathan on 23/10/17.
@@ -29,6 +28,9 @@ public class ApiGateway {
 
         } else if (function.equals("getOrder")) {
             return getOrder(data);
+
+        } else if (function.equals("getItem")) {
+            return getItem(data);
         }
 
         return null;
@@ -96,6 +98,12 @@ public class ApiGateway {
 
         return items;
     }
+
+
+    private static Item getItem(Object itemId){
+        return new Item(""+itemId, "Item " + itemId, "Description item " + itemId);
+    }
+
 
 
     public static void main(String[] args) {
