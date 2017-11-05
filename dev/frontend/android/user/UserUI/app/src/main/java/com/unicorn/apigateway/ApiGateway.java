@@ -1,11 +1,15 @@
 package com.unicorn.apigateway;
 
+import com.unicorn.apigateway.model.Basket;
 import com.unicorn.apigateway.model.Client;
 import com.unicorn.apigateway.model.Item;
 import com.unicorn.apigateway.model.Order;
+import com.unicorn.apigateway.model.OrderLine;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by jonathan on 23/10/17.
@@ -16,22 +20,20 @@ public class ApiGateway {
     public static Object  call(String function, Object data){
         if (function.equals("getClients")) {
             return getClients();
-
         } else if (function.equals("getItems")) {
             return getItems();
-
         } else if (function.equals("getOrders")) {
             return getOrders();
-
         } else if (function.equals("getMenu")) {
             return getMenu(data);
-
         } else if (function.equals("getOrder")) {
             return getOrder(data);
-
         } else if (function.equals("getItem")) {
             return getItem(data);
+        } else if (function.equals("getBasket")) {
+            return getBasket(data);
         }
+
 
         return null;
     }
@@ -99,11 +101,21 @@ public class ApiGateway {
         return items;
     }
 
+    private static Basket getBasket(Object menuId){
+        List<OrderLine> orderLines = new ArrayList<OrderLine>();
+
+        Item item = null;
+        for (int k=0; k<4; k++){
+            item = new Item(""+k, "Item " + k, "Description item " + k);
+            orderLines.add(new OrderLine(item, 1.2 * k + 0.5, k + 1));
+        }
+
+        return new Basket((String) menuId, orderLines);
+    }
 
     private static Item getItem(Object itemId){
         return new Item(""+itemId, "Item " + itemId, "Description item " + itemId);
     }
-
 
 
     public static void main(String[] args) {

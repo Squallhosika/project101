@@ -48,6 +48,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.unicorn.userui.activity.MenuActivity" />
         </activity>
+
+        <activity
+            android:name="com.unicorn.userui.activity.CheckoutActivity"
+            android:parentActivityName="com.unicorn.userui.activity.MenuActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.unicorn.userui.activity.MenuActivity" />
+        </activity>
     </application>
 
 </manifest>
