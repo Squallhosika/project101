@@ -51,10 +51,21 @@
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
         android:layout_toRightOf="@id/item_description"
         android:layout_marginRight="6dip"
         android:contentDescription="TODO"
         android:src="@drawable/ic_home_black_24dp" />
+
+    <ImageView
+        android:id="@+id/btn_minus"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@id/btn_plus"
+        android:layout_marginRight="6dip"
+        android:contentDescription="TODO"
+        android:src="@drawable/ic_dashboard_black_24dp" />
 
 </RelativeLayout>

@@ -8,9 +8,24 @@
     <include layout="@layout/toolbar"
         android:id="@+id/toolbar"/>
 
+    <ImageButton
+        android:id="@+id/btn_order"
+        android:layout_below="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher"
+        android:background="@color/colorYellow"
+        android:contentDescription="This is an image" />
+
+    <TextView
+        android:id="@+id/tv_totalprice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_order"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_checkout"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/tv_totalprice"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

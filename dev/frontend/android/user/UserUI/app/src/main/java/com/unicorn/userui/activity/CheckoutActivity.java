@@ -10,12 +10,15 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.unicorn.apigateway.ApiGateway;
 import com.unicorn.apigateway.model.Basket;
 import com.unicorn.apigateway.model.Client;
 import com.unicorn.apigateway.model.Item;
+import com.unicorn.apigateway.model.Order;
 import com.unicorn.userui.R;
 import com.unicorn.userui.adapter.CheckoutAdapter;
 import com.unicorn.userui.adapter.ClientBookAdapter;
@@ -32,7 +35,10 @@ public class CheckoutActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
+    private TextView mTvTotalPrice;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener;
+    private ImageButton mButtonOrder;
+    private Basket basket;
 
 
     @Override
@@ -47,7 +53,7 @@ public class CheckoutActivity extends AppCompatActivity {
 //
         Intent intent = getIntent();
         String id = intent.getStringExtra("menuId");
-        Basket basket = (Basket) intent.getSerializableExtra("basket");
+        basket = (Basket) intent.getSerializableExtra("basket");
 
 //        Basket basket = (Basket) ApiGateway.call("getBasket", id);
         mAdapter = new CheckoutAdapter(basket);
@@ -56,6 +62,18 @@ public class CheckoutActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar_widget);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mTvTotalPrice = (TextView)  findViewById(R.id.tv_totalprice);
+        mTvTotalPrice.setText("Total Price is: " + Double.toString(basket.price()));
+
+
+        mButtonOrder = (ImageButton) findViewById(R.id.btn_order);
+        mButtonOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createOrder(basket);
+            }
+        });
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(getBottomNavigationListener());
@@ -94,6 +112,14 @@ public class CheckoutActivity extends AppCompatActivity {
             }
 
         };
+    }
+
+    private void createOrder(Basket basket){
+        Intent intent = new Intent(this, OrderBookActivity.class);
+        intent.putExtra("menuId", "10");
+         Order order = (Order) ApiGateway.call("createOrder", basket);
+        intent.putExtra("order", order);
+        startActivity(intent);
     }
 
     private void openOrderBook() {

@@ -69,6 +69,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView ivItemImage;
         public ImageView ivAddItem;
+        public ImageView ivRemoveItem;
         public TextView tvItemId;
         public TextView tvItemName;
         public TextView tvItemDescription;
@@ -80,7 +81,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
             tvItemName = (TextView) itemView.findViewById(R.id.item_name);
             tvItemDescription = (TextView) itemView.findViewById(R.id.item_description);
             ivAddItem = (ImageView) itemView.findViewById(R.id.btn_plus);
-
+            ivRemoveItem = (ImageView) itemView.findViewById(R.id.btn_minus);
             mContext = itemView.getContext();
 
             ivItemImage.setOnClickListener(new View.OnClickListener() {
@@ -101,11 +102,27 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
                     addItemToBasket(item);
                 }
             });
+
+            ivRemoveItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String itemId = tvItemId.getText().toString();
+                    String itemName = tvItemName.getText().toString();
+                    String itemDescription = tvItemDescription.getText().toString();
+
+                    Item item = new Item(itemId, itemName, itemDescription);
+                    removeItemToBasket(item);
+                }
+            });
         }
     }
 
     private void addItemToBasket(Item item) {
         basket.addItem(item);
+    }
+
+    private void removeItemToBasket(Item item) {
+        basket.removeItem(item);
     }
 
     private void openItemCard(String itemId) {

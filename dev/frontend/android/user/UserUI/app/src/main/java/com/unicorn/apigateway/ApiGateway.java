@@ -7,9 +7,7 @@ import com.unicorn.apigateway.model.Order;
 import com.unicorn.apigateway.model.OrderLine;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by jonathan on 23/10/17.
@@ -17,13 +15,16 @@ import java.util.Map;
 
 public class ApiGateway {
 
+    private static int orderCounter = 0;
+    private static List<Order> orders = new ArrayList<>();
+
     public static Object  call(String function, Object data){
         if (function.equals("getClients")) {
             return getClients();
         } else if (function.equals("getItems")) {
             return getItems();
         } else if (function.equals("getOrders")) {
-            return getOrders();
+            return getOrders(data);
         } else if (function.equals("getMenu")) {
             return getMenu(data);
         } else if (function.equals("getOrder")) {
@@ -32,6 +33,8 @@ public class ApiGateway {
             return getItem(data);
         } else if (function.equals("getBasket")) {
             return getBasket(data);
+        } else if (function.equals("createOrder")) {
+            return createOrder(data);
         }
 
 
@@ -77,15 +80,7 @@ public class ApiGateway {
         return items;
     }
 
-    private static List<Order> getOrders(){
-
-        List<Order> orders = new ArrayList<>();
-        Order order = null;
-        for (int k=0; k<100; k++){
-            order = new Order(""+k, "Order " + k, "Description order " + k);
-            orders.add(order);
-        }
-
+    private static List<Order> getOrders(Object data){
         return orders;
     }
 
@@ -111,6 +106,12 @@ public class ApiGateway {
         }
 
         return new Basket((String) menuId, orderLines);
+    }
+
+    private static Order createOrder(Object basket){
+        Order order = new Order(Integer.toString(++orderCounter), (Basket) basket);
+        orders.add(order);
+        return order;
     }
 
     private static Item getItem(Object itemId){

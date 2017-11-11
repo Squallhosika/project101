@@ -9,25 +9,18 @@ import java.io.Serializable;
 public class Order implements Serializable {
 
     private final String id;
-    private final String name;
-    private final String description;
+    private final Basket basket;
 
-    public Order(String id, String name, String description) {
+    public Order(String id, Basket basket) {
         this.id = id;
-        this.name = name;
-        this.description = description;
+        this.basket = basket;
     }
 
     public String getId() {
         return this.id;
     }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public String getDescription() {
-        return description;
+    public Basket getBasket() {
+        return basket;
     }
 }
 

@@ -16,6 +16,8 @@ import com.unicorn.apigateway.model.Order;
 import com.unicorn.userui.R;
 import com.unicorn.userui.adapter.OrderBookAdapter;
 
+import org.w3c.dom.ls.LSInput;
+
 import java.util.List;
 
 /**
@@ -28,6 +30,8 @@ public class OrderBookActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener;
+
+    private List<Order> orders;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

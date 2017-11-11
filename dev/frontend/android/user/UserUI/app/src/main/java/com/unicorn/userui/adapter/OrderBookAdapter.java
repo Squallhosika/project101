@@ -34,11 +34,11 @@ public class OrderBookAdapter extends RecyclerView.Adapter<OrderBookAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final String name = orders.get(position).getName();
+        final String orderId = orders.get(position).getId();
 //        final String description = orders.get(position).getDescription();
 
 
-        holder.tvOrderName.setText(name);
+        holder.tvOrderName.setText(orderId);
 //        holder.tvOrderName.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
