@@ -1,67 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.unicorn.userui.activity.ClientBookActivity">
+    android:layout_height="match_parent" >
 
     <include layout="@layout/toolbar"
         android:id="@+id/toolbar"/>
 
-
     <RelativeLayout
         android:id="@+id/rv_container"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_above="@id/bottom"
         android:layout_below="@id/toolbar"
-        tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="8dp">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <android.support.v7.widget.LinearLayoutCompat
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_itemcard_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:textSize="40sp" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_itemcard_desc"
+            android:layout_below="@id/tv_itemcard_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="40sp" />
 
 
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/tv_itemcard_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="40sp" />
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_itemcard_addremove"
+            android:layout_below="@id/tv_itemcard_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="addremove"
+            android:textSize="40sp" />
 
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/tv_itemcard_desc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="40sp" />
-
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/tv_itemcard_addremove"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="addremove"
-                android:textSize="40sp" />
-
-            <ImageView
-                android:id="@+id/icon"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="6dip"
-                android:contentDescription="TODO"
-                android:src="@mipmap/ic_launcher" />
-
-        </android.support.v7.widget.LinearLayoutCompat>
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_below="@id/tv_itemcard_addremove"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="6dip"
+            android:contentDescription="TODO"
+            android:src="@mipmap/ic_launcher" />
 
     </RelativeLayout>
 
-
     <include layout="@layout/bottom_nav"
-        android:layout_height="0dp"
-        android:layout_width="0dp"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="0dp" />
+        android:id="@+id/bottom_nav"/>
 
-</android.support.constraint.ConstraintLayout>
+
+</RelativeLayout>

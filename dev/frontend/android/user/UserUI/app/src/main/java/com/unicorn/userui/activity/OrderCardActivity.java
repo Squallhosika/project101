@@ -38,19 +38,19 @@ public class OrderCardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ordercard);
 
         Intent intent = getIntent();
-        int id = intent.getIntExtra("orderId", -1);
+        String orderId = intent.getStringExtra("orderId");
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_ordercard);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        List<Item> items = (List<Item>) ApiGateway.call("getOrder", id);
+        List<Item> items = (List<Item>) ApiGateway.call("getOrder", orderId);
         mAdapter = new OrderCardAdapter(items);
         mRecyclerView.setAdapter(mAdapter);
 
         TextView textView = (TextView) findViewById(R.id.tv_ordercard);
-        textView.setText("Order id:" + id);
+        textView.setText("Order id:" + orderId);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar_widget);
         setSupportActionBar(mToolbar);

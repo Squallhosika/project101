@@ -1,13 +1,16 @@
 package com.unicorn.userui.adapter;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.content.Context;
 
 import com.unicorn.apigateway.model.Order;
 import com.unicorn.userui.R;
+import com.unicorn.userui.activity.OrderCardActivity;
 
 import java.util.List;
 
@@ -18,6 +21,7 @@ import java.util.List;
 public class OrderBookAdapter extends RecyclerView.Adapter<OrderBookAdapter.ViewHolder>{
 
     private List<Order> orders;
+    private Context mContext;
 
     public OrderBookAdapter(List<Order> orders) {
         this.orders = orders;
@@ -38,11 +42,11 @@ public class OrderBookAdapter extends RecyclerView.Adapter<OrderBookAdapter.View
 //        final String description = orders.get(position).getDescription();
 
 
-        holder.tvOrderName.setText(orderId);
+//        holder.tvOrderName.setText(orderId);
 //        holder.tvOrderName.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                System.out.println("test");
+//                openOrderCard()
 //            }
 //        });
 //
@@ -56,13 +60,29 @@ public class OrderBookAdapter extends RecyclerView.Adapter<OrderBookAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvOrderName;
+        public TextView tvOrderId;
 //        public TextView tvOrderDescription;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            tvOrderName = (TextView) itemView.findViewById(R.id.order_name);
+            tvOrderId = (TextView) itemView.findViewById(R.id.order_name);
+
+            tvOrderId.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String orderId = tvOrderId.getText().toString();
+                    openOrderCard(orderId);
+                }
+            });
 //            tvOrderDescription = (TextView) itemView.findViewById(R.id.order_description);
         }
     }
+
+    private void openOrderCard(String orderId) {
+        Intent intent = new Intent(mContext, OrderCardActivity.class);
+        intent.putExtra("orderId", orderId);
+        mContext.startActivity(intent);
+    }
+
+
 }
