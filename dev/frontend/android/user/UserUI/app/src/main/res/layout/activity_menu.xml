@@ -1,30 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.unicorn.userui.activity.ClientBookActivity">
+    android:layout_height="match_parent" >
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"
+        android:id="@+id/toolbar"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_menu"
+
+
+    <ImageButton
+        android:id="@+id/btn_basket"
+        android:layout_below="@id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher"
+        android:background="@color/colorPrimaryDark"
+        android:contentDescription="This is an image" />
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/rl_dyn"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
-
-        <include layout="@layout/bottom_basket"/>
-        <!--<include layout="@layout/bottom_nav" />-->
-
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_basket">
 
 
-</android.support.constraint.ConstraintLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true" />
+
+
+    </RelativeLayout>
+
+    <!--android:layout_below="@id/btn_basket"-->
+
+    <!--android:layout_above="@id/menu_bottom"-->
+    <!--android:layout_alignEnd="@id/menu_bottom"-->
+
+    <include layout="@layout/bottom_nav"
+        android:id="@+id/menu_bottom"
+        android:layout_below="@id/btn_basket"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorGreen"/>
+
+</RelativeLayout>
+
+
+    <!--</android.support.constraint.ConstraintLayout>-->

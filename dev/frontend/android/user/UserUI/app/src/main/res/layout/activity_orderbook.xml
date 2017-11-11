@@ -7,7 +7,9 @@
     android:layout_height="match_parent"
     tools:context="com.unicorn.userui.activity.ClientBookActivity">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"
+        android:id="@+id/toolbar"/>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_orderbook"

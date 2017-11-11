@@ -47,14 +47,13 @@ public class CheckoutActivity extends AppCompatActivity {
 //
         Intent intent = getIntent();
         String id = intent.getStringExtra("menuId");
+        Basket basket = (Basket) intent.getSerializableExtra("basket");
 
-        List<Client> clients = (List<Client>) ApiGateway.call("getClients", null);
-        Basket basket = (Basket) ApiGateway.call("getBasket", id);
-        mAdapter = new ClientBookAdapter(clients);
+//        Basket basket = (Basket) ApiGateway.call("getBasket", id);
         mAdapter = new CheckoutAdapter(basket);
         mRecyclerView.setAdapter(mAdapter);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_widget);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

@@ -10,8 +10,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 
 import com.unicorn.apigateway.ApiGateway;
+import com.unicorn.apigateway.model.Basket;
 import com.unicorn.apigateway.model.Item;
 import com.unicorn.userui.R;
 import com.unicorn.userui.adapter.MenuAdapter;
@@ -28,11 +31,15 @@ public class MenuActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener;
+    private ImageButton mButtonBasket;
+
+    private Basket basket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_menu);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -42,20 +49,28 @@ public class MenuActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String id = intent.getStringExtra("clientId");
 
+
+        basket = new Basket(id);
+
         List<Item> items = (List<Item>) ApiGateway.call("getMenu", id);
         System.out.println(items);
-        mAdapter = new MenuAdapter(items);
+        mAdapter = new MenuAdapter(items, basket);
         mRecyclerView.setAdapter(mAdapter);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_widget);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        
+        mButtonBasket = (ImageButton) findViewById(R.id.btn_basket);
+        mButtonBasket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openCheckout(basket);
+            }
+        });
 
-        BottomNavigationView bottomNavigationBasketView = (BottomNavigationView) findViewById(R.id.bottom_navigation_basket);
-        bottomNavigationBasketView.setOnNavigationItemSelectedListener(getBottomNavigationBasketListener());
-
-//        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-//        bottomNavigationView.setOnNavigationItemSelectedListener(getBottomNavigationListener());
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(getBottomNavigationListener());
     }
 
 
@@ -64,24 +79,6 @@ public class MenuActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_toolbar, menu);
         return true;
-    }
-
-    private BottomNavigationView.OnNavigationItemSelectedListener getBottomNavigationBasketListener(){
-        return new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-
-                    case R.id.menu_basket_nav_basket:
-                        openCheckout();
-                        break;
-
-                }
-                return true;
-            }
-
-        };
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener getBottomNavigationListener(){
@@ -110,9 +107,10 @@ public class MenuActivity extends AppCompatActivity {
         };
     }
 
-    private void openCheckout(){
+    private void openCheckout(Basket basket){
         Intent intent = new Intent(this, CheckoutActivity.class);
         intent.putExtra("menuId", "10");
+        intent.putExtra("basket", basket);
         startActivity(intent);
     }
 

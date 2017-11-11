@@ -16,6 +16,7 @@ import com.unicorn.apigateway.ApiGateway;
 import com.unicorn.apigateway.model.Item;
 import com.unicorn.userui.R;
 import com.unicorn.userui.adapter.MenuAdapter;
+import com.unicorn.userui.adapter.OrderCardAdapter;
 
 import java.util.List;
 
@@ -45,13 +46,13 @@ public class OrderCardActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
 
         List<Item> items = (List<Item>) ApiGateway.call("getOrder", id);
-        mAdapter = new MenuAdapter(items);
+        mAdapter = new OrderCardAdapter(items);
         mRecyclerView.setAdapter(mAdapter);
 
         TextView textView = (TextView) findViewById(R.id.tv_ordercard);
         textView.setText("Order id:" + id);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_widget);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

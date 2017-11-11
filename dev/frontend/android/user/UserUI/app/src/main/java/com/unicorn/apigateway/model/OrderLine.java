@@ -1,10 +1,12 @@
 package com.unicorn.apigateway.model;
 
+import java.io.Serializable;
+
 /**
  * Created by jonathan on 04/11/17.
  */
 
-public class OrderLine {
+public class OrderLine implements Serializable {
 
     private final Item item;
     private final double price;
@@ -27,4 +29,6 @@ public class OrderLine {
     public int getQuantity() {
         return quantity;
     }
+
+
 }

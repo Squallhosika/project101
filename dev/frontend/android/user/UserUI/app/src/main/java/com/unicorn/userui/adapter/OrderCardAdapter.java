@@ -13,7 +13,6 @@ import com.unicorn.apigateway.model.Basket;
 import com.unicorn.apigateway.model.Item;
 import com.unicorn.userui.R;
 import com.unicorn.userui.activity.ItemCardActivity;
-import com.unicorn.userui.activity.MenuActivity;
 
 import java.util.List;
 
@@ -21,15 +20,13 @@ import java.util.List;
  * Created by jonathan on 23/10/17.
  */
 
-public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
+public class OrderCardAdapter extends RecyclerView.Adapter<OrderCardAdapter.ViewHolder> {
 
     private Context mContext;
     private List<Item> items;
-    private Basket basket;
 
-    public MenuAdapter(List<Item> items, Basket basket) {
+    public OrderCardAdapter(List<Item> items) {
         this.items = items;
-        this.basket = basket;
     }
 
     @Override
@@ -98,15 +95,12 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
                     String itemDescription = tvItemDescription.getText().toString();
 
                     Item item = new Item(itemId, itemName, itemDescription);
-                    addItemToBasket(item);
                 }
             });
         }
     }
 
-    private void addItemToBasket(Item item) {
-        basket.addItem(item);
-    }
+
 
     private void openItemCard(String itemId) {
         Intent intent = new Intent(mContext, ItemCardActivity.class);

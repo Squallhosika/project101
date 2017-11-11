@@ -2,9 +2,7 @@ package com.unicorn.apigateway.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by jonathan on 23/10/17.
@@ -20,6 +18,11 @@ public class Basket implements Serializable {
         this.orderLines = orderLines;
     }
 
+    public Basket(String menuId) {
+        this.menuId = menuId;
+        this.orderLines = new ArrayList<>();
+    }
+
     public String getMenuId() {
         return menuId;
     }
@@ -27,5 +30,13 @@ public class Basket implements Serializable {
     public List<OrderLine> getOrderLines() {
         return orderLines;
     }
+
+    public void addItem(Item item) {
+        OrderLine orderLine = new OrderLine(item, 1, 1);
+        orderLines.add(orderLine);
+    }
+
+
+
 }
 

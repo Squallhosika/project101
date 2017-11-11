@@ -48,7 +48,7 @@ public class ItemCardActivity extends AppCompatActivity {
         tvName.setText(item.getName());
         tvDesc.setText(item.getDescription());
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_widget);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

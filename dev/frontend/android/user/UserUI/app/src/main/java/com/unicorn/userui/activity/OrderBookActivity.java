@@ -43,7 +43,7 @@ public class OrderBookActivity extends AppCompatActivity {
         mAdapter = new OrderBookAdapter(orders);
         mRecyclerView.setAdapter(mAdapter);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_widget);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
