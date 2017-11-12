@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.unicorn.apigateway.ApiGateway;
 import com.unicorn.apigateway.model.Item;
+import com.unicorn.apigateway.model.Order;
 import com.unicorn.userui.R;
 import com.unicorn.userui.adapter.MenuAdapter;
 import com.unicorn.userui.adapter.OrderCardAdapter;
@@ -45,8 +46,8 @@ public class OrderCardActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        List<Item> items = (List<Item>) ApiGateway.call("getOrder", orderId);
-        mAdapter = new OrderCardAdapter(items);
+        Order order =  (Order) ApiGateway.call("getOrder", orderId);
+        mAdapter = new OrderCardAdapter(order);
         mRecyclerView.setAdapter(mAdapter);
 
         TextView textView = (TextView) findViewById(R.id.tv_ordercard);

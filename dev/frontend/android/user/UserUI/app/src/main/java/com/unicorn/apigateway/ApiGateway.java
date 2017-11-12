@@ -84,16 +84,14 @@ public class ApiGateway {
         return orders;
     }
 
-    private static List<Item> getOrder(Object data){
-
-        List<Item> items = new ArrayList<>();
-        Item item = null;
-        for (int k=0; k<20; k++){
-            item = new Item(""+k, "Item " + k, "Description item " + k);
-            items.add(item);
+    private static Order getOrder(Object orderId){
+        String strId = (String) orderId;
+        for (Order order: orders) {
+            if ( strId.equals(order.getId())){
+                return order;
+            }
         }
-
-        return items;
+        return null;
     }
 
     private static Basket getBasket(Object menuId){

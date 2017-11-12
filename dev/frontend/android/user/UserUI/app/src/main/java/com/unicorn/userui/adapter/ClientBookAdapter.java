@@ -37,17 +37,15 @@ public class ClientBookAdapter extends RecyclerView.Adapter<ClientBookAdapter.Vi
         return viewHolder;
     }
 
-
-
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final String id = clients.get(position).getId();
         final String name = clients.get(position).getName();
         final String description = clients.get(position).getDescription();
-
         holder.tvClientId.setText(id);
-
         holder.tvClientName.setText(name);
+        holder.tvClientDescription.setText(description);
+
 //        holder.tvOrderName.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -55,8 +53,6 @@ public class ClientBookAdapter extends RecyclerView.Adapter<ClientBookAdapter.Vi
 //            }
 //        });
 //
-        holder.tvClientDescription.setText(description);
-
     }
 
     @Override
@@ -64,14 +60,11 @@ public class ClientBookAdapter extends RecyclerView.Adapter<ClientBookAdapter.Vi
         return clients.size();
     }
 
-
     private void openMenu(String clientId) {
         Intent intent = new Intent(mContext, MenuActivity.class);
         intent.putExtra("clientId", clientId);
         mContext.startActivity(intent);
     }
-
-
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tvClientId;

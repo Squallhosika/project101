@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.content.Context;
 
@@ -32,26 +33,13 @@ public class OrderBookAdapter extends RecyclerView.Adapter<OrderBookAdapter.View
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View v = inflater.inflate(R.layout.rv_orderbook_order, parent, false);
 
-        ViewHolder viewHolder = new ViewHolder(v);
-        return viewHolder;
+        return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final String orderId = orders.get(position).getId();
-//        final String description = orders.get(position).getDescription();
-
-
-//        holder.tvOrderName.setText(orderId);
-//        holder.tvOrderName.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                openOrderCard()
-//            }
-//        });
-//
-//        holder.tvOrderDescription.setText(description);
-
+         holder.tvOrderId.setText(orderId);
     }
 
     @Override
@@ -61,20 +49,22 @@ public class OrderBookAdapter extends RecyclerView.Adapter<OrderBookAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tvOrderId;
-//        public TextView tvOrderDescription;
+        public ImageView ivOrderImage;
 
         public ViewHolder(View itemView) {
             super(itemView);
             tvOrderId = (TextView) itemView.findViewById(R.id.order_name);
+            ivOrderImage = (ImageView) itemView.findViewById(R.id.order_image);
 
-            tvOrderId.setOnClickListener(new View.OnClickListener() {
+            mContext = itemView.getContext();
+
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     String orderId = tvOrderId.getText().toString();
                     openOrderCard(orderId);
                 }
             });
-//            tvOrderDescription = (TextView) itemView.findViewById(R.id.order_description);
         }
     }
 

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.unicorn.apigateway.model.Basket;
 import com.unicorn.apigateway.model.Item;
+import com.unicorn.apigateway.model.Order;
 import com.unicorn.userui.R;
 import com.unicorn.userui.activity.ItemCardActivity;
 
@@ -23,16 +24,16 @@ import java.util.List;
 public class OrderCardAdapter extends RecyclerView.Adapter<OrderCardAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<Item> items;
+    private Order order;
 
-    public OrderCardAdapter(List<Item> items) {
-        this.items = items;
+    public OrderCardAdapter(Order order) {
+        this.order = order;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View v = inflater.inflate(R.layout.rv_menu_item, parent, false);
+        View v = inflater.inflate(R.layout.rv_ordercard_item, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
@@ -40,67 +41,51 @@ public class OrderCardAdapter extends RecyclerView.Adapter<OrderCardAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final String id = items.get(position).getId();
-        final String name = items.get(position).getName();
-        final String description = items.get(position).getDescription();
+        final String id = order.getBasket().getOrderLines().get(position).getItem().getId();
+        final String name = order.getBasket().getOrderLines().get(position).getItem().getName();
+        final String description = order.getBasket().getOrderLines().get(position).getItem().getDescription();
+        final double unitPrice = order.getBasket().getOrderLines().get(position).getPrice();
+        final int quantity = order.getBasket().getOrderLines().get(position).getQuantity();
 
-
-        holder.tvItemId.setText(id);
+        holder.itemId = id;
         holder.tvItemName.setText(name);
-//        holder.tvOrderName.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                System.out.println("test");
-//            }
-//        });
-//
         holder.tvItemDescription.setText(description);
-
+        holder.tvUnitPrice.setText(String.format("Price:£%1$,.2f", unitPrice));
+        holder.tvQuantity.setText("Quantity:" +  Integer.toString(quantity));
     }
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return order.getBasket().getOrderLines().size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        public String itemId;
         public ImageView ivItemImage;
-        public ImageView ivAddItem;
-        public TextView tvItemId;
         public TextView tvItemName;
         public TextView tvItemDescription;
+        public TextView tvUnitPrice;
+        public TextView tvQuantity;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            ivItemImage = (ImageView) itemView.findViewById(R.id.item_image);
-            tvItemId = (TextView) itemView.findViewById(R.id.item_id);
-            tvItemName = (TextView) itemView.findViewById(R.id.item_name);
-            tvItemDescription = (TextView) itemView.findViewById(R.id.item_description);
-            ivAddItem = (ImageView) itemView.findViewById(R.id.btn_plus);
+            ivItemImage = (ImageView) itemView.findViewById(R.id.iv_ordercard_itemimg);
+            tvItemName = (TextView) itemView.findViewById(R.id.tv_ordercard_itemname);
+            tvItemDescription = (TextView) itemView.findViewById(R.id.tv_ordercard_itemdesc);
+            tvUnitPrice = (TextView) itemView.findViewById(R.id.tv_ordercard_itemprice);
+            tvQuantity = (TextView) itemView.findViewById(R.id.tv_ordercard_itemqty);
 
             mContext = itemView.getContext();
 
-            ivItemImage.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    openItemCard(tvItemId.getText().toString());
+                    openItemCard(itemId);
                 }
             });
 
-            ivAddItem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String itemId = tvItemId.getText().toString();
-                    String itemName = tvItemName.getText().toString();
-                    String itemDescription = tvItemDescription.getText().toString();
-
-                    Item item = new Item(itemId, itemName, itemDescription);
-                }
-            });
         }
     }
-
-
 
     private void openItemCard(String itemId) {
         Intent intent = new Intent(mContext, ItemCardActivity.class);
