@@ -1,5 +1,6 @@
 package com.unicorn.userui;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,19 +9,23 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+
+import com.unicorn.userui.api.HttpRequestTask;
+import com.unicorn.userui.api.HttpRequestTaskAPI;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemSelectedListener {
@@ -35,8 +40,16 @@ public class MainActivity extends AppCompatActivity
             FragmentManager fragmentManager = getSupportFragmentManager();
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    HomeFragment newFragment = new HomeFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, newFragment).commit();
+//                    new HttpRequestTaskAPI(this, new HomeFragment()).execute();
+//                    HomeFragment newFragment = new HomeFragment();
+//                    HomeFragment newFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(HomeFragment.class.getName());
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, newFragment).commit();
+//
+//                    HomeFragment newFragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(HomeFragment.class.getName());
+//                    replaceFragment();
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, newFragment).commit();
+//                    getSupportFragmentManager().findFragmentById(R.id.)
+
 
 //                    inflater.inflate(R.layout.activity_main, parent, false);
 //                    setContentView(R.layout.activity_main);
@@ -44,6 +57,8 @@ public class MainActivity extends AppCompatActivity
                     break;
 //                    return true;
                 case R.id.navigation_dashboard:
+//                    Intent intent = new Intent(MainActivity.this, OrderFragment.class);
+//                    startActivityFro(intent);
                     Fragment navFragment = new OrderFragment();
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, navFragment).commit();
 //                    setContentView(R.layout.content_main2);
@@ -51,10 +66,10 @@ public class MainActivity extends AppCompatActivity
                     break;
 //                    return true;
                 case R.id.navigation_notifications:
-                    Fragment notFragment = new TestFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, notFragment).commit();
-//                    break;
-                    return true;
+//                    Fragment notFragment = new TestFragment();
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, notFragment).commit();
+                    break;
+//                    return true;
             }
 //            final FragmentTransaction transaction = fragmentManager.beginTransaction();
 //            transaction.replace(R.id.content_main, fragment).commit();
@@ -63,28 +78,31 @@ public class MainActivity extends AppCompatActivity
 
     };
 
+
+    private RecyclerView mRecyclerView;
+    private HomeAdapter mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
 
+        mRecyclerView = (RecyclerView) findViewById(R.id.rv_test);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
+//
+        List<String> values = Arrays.asList("Android","IPhone","WindowsMobile","Blackberry",
+                "WebOS","Ubuntu","Windows7","Max OS X","IPhone","WindowsMobile","Blackberry",
+                "WebOS","Ubuntu","Windows7","Max OS X");
+        mAdapter = new HomeAdapter(values);
+        mRecyclerView.setAdapter(mAdapter);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-//        String pathName = "C:/Users/Keuvin/Downloads/unicorn_logo.jpg";
-//        Drawable unicorn_icon = Drawable.createFromPath(pathName);
-//        getActionBar().setIcon(unicorn_icon);
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -106,19 +124,38 @@ public class MainActivity extends AppCompatActivity
 
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+//
+//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+//        navigationView.setNavigationItemSelectedListener(this);
+//
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
+//
+//        new HttpRequestTaskAPI(this, new HomeFragment()).execute();
 //        OrderFragment firstFragment = new OrderFragment();
-        HomeFragment firstFragment = new HomeFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, firstFragment).commit();
+//        HomeFragment firstFragment = new HomeFragment();
+//        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, firstFragment).commit();
 
 
     }
+
+
+//    public void replaceFragment(){
+//        new HttpRequestTaskAPI(this, new HomeFragment()).execute();
+////        getSupportFragmentManager().popBackStack(HomeFragment.class.getName(), 0);
+//
+////        HomeFragment fragment = (HomeFragment) getSupportFragmentManager().findFragmentByTag(HomeFragment.class.getName());
+////        getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+////        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+////        getSupportFragmentManager().executePendingTransactions();
+//    }
+//
+//    public void addFragment(Fragment fragment) {
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        transaction.add(R.id.fragment_container, fragment, fragment.getClass().getName());
+//        transaction.addToBackStack(fragment.getClass().getName());
+//        transaction.commit();
+//        getSupportFragmentManager().executePendingTransactions();
+//    }
 
     @Override
     public void onBackPressed() {
@@ -146,7 +183,8 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-//            new HttpRequestTask().execute();
+//            new HttpRequestTask(this).execute();
+//            new HttpRequestTaskAPI(this).execute();
             return true;
         }
 
@@ -163,6 +201,7 @@ public class MainActivity extends AppCompatActivity
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
+
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
@@ -177,5 +216,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
 }
