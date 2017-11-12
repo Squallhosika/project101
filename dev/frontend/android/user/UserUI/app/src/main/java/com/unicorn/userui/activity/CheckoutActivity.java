@@ -50,7 +50,7 @@ public class CheckoutActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
-//
+
         Intent intent = getIntent();
         String id = intent.getStringExtra("menuId");
         basket = (Basket) intent.getSerializableExtra("basket");
