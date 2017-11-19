@@ -42,16 +42,15 @@ public class CheckoutAdapter extends RecyclerView.Adapter<CheckoutAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final String id = orderLines.get(position).getItem().getId();
         final String name = orderLines.get(position).getItem().getName();
         final String description = orderLines.get(position).getItem().getDescription();
         final double price = orderLines.get(position).getPrice();
         final int quantity = orderLines.get(position).getQuantity();
 
-        holder.tvItemId.setText(id);
+        holder.itemId = orderLines.get(position).getItem().getId();
         holder.tvItemName.setText(name);
-        holder.tvItemDescription.setText(quantity + " of " + description + " @ " + price);
-        holder.tvPrice.setText(Double.toString(price));
+        holder.tvItemDescription.setText(description);
+        holder.tvPrice.setText(String.format("£%1$,.2f", price));
         holder.tvQuantity.setText(Integer.toString(quantity));
 
 
@@ -63,7 +62,7 @@ public class CheckoutAdapter extends RecyclerView.Adapter<CheckoutAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvItemId;
+        public String itemId;
         public TextView tvItemName;
         public TextView tvItemDescription;
         public TextView tvPrice;
@@ -71,7 +70,6 @@ public class CheckoutAdapter extends RecyclerView.Adapter<CheckoutAdapter.ViewHo
 
         public ViewHolder(View itemView) {
             super(itemView);
-            tvItemId = (TextView) itemView.findViewById(R.id.tv_checkout_item_id);
             tvItemName = (TextView) itemView.findViewById(R.id.tv_checkout_item_name);
             tvItemDescription = (TextView) itemView.findViewById(R.id.tv_checkout_item_description);
             tvPrice = (TextView) itemView.findViewById(R.id.tv_checkout_item_price);
@@ -82,7 +80,7 @@ public class CheckoutAdapter extends RecyclerView.Adapter<CheckoutAdapter.ViewHo
 //            itemView.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View view) {
-//                    openItemCard(tvItemId.getText().toString());
+//                    openItemCard(itemId);
 //                }
 //            });
         }

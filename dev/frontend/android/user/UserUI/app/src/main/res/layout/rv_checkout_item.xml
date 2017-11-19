@@ -1,75 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
-    android:padding="6dip">
-
-    <TextView
-        android:id="@+id/tv_checkout_item_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="invisible" />
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="6dip" >
 
     <ImageView
-        android:id="@+id/icon"
+        android:id="@+id/iv_Checkout_item_image"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="6dip"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="6dip"
+        android:background="@color/colorAccent"
         android:contentDescription="TODO"
         android:src="@mipmap/ic_launcher" />
 
-    <TextView
-        android:id="@+id/tv_checkout_item_name"
-        android:layout_width="fill_parent"
-        android:layout_height="26dip"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/icon"
-        android:ellipsize="marquee"
-        android:maxLines="1"
-        android:text="Client description"
-        android:textSize="12sp" />
+    <LinearLayout
+        android:id="@+id/ll_checkout_item_namedesc"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintStart_toEndOf="@id/iv_Checkout_item_image">
 
-    <TextView
-        android:id="@+id/tv_checkout_item_description"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/tv_checkout_item_name"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@id/icon"
-        android:gravity="center_vertical"
-        android:text="Example of name"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_checkout_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:background="@color/colorGreen"
+            android:text="Example of name"
+            android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_checkout_item_quantity"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/tv_checkout_item_description"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@id/icon"
-        android:gravity="center_vertical"
-        android:text="Example of name"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_checkout_item_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:maxLines="1"
+            android:background="@color/colorYellow"
+            android:text="Client description"
+            android:textSize="12sp" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_checkout_item_price"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/tv_checkout_item_quantity"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@id/icon"
+        app:layout_constraintStart_toEndOf="@id/ll_checkout_item_namedesc"
+        app:layout_constraintEnd_toStartOf="@+id/btn_Checkout_item_minus"
         android:gravity="center_vertical"
-        android:text="Example of name"
-        android:textSize="16sp" />
+        android:background="@color/colorGreen"
+        android:text="£20.50"
+        android:textSize="24sp" />
 
+    <ImageView
+        android:id="@+id/btn_Checkout_item_minus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/tv_checkout_item_price"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="6dip"
+        android:layout_marginEnd="6dip"
+        android:background="@color/colorAccent"
+        android:contentDescription="TODO"
+        android:src="@mipmap/ic_remove" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/tv_checkout_item_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/btn_Checkout_item_minus"
+        app:layout_constraintEnd_toStartOf="@+id/btn_Checkout_item_plus"
+        android:layout_marginStart="6dip"
+        android:layout_marginEnd="6dip"
+        android:background="@color/colorGreen"
+        android:text="0"
+        android:textSize="30sp" />
+
+    <ImageView
+        android:id="@+id/btn_Checkout_item_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/tv_checkout_item_quantity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        android:layout_marginStart="6dip"
+        android:layout_marginEnd="6dip"
+        android:background="@color/colorAccent"
+        android:contentDescription="TODO"
+        android:src="@mipmap/ic_add" />
+
+</android.support.constraint.ConstraintLayout>

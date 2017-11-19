@@ -65,19 +65,17 @@ public class ApiGateway {
         return items;
     }
 
-    private static List<Item> getMenu(Object clientId){
+    private static Basket getMenu(Object clientId){
 
-        List<Item> items = new ArrayList<>();
+        List<OrderLine> items = new ArrayList<>();
         int id = Integer.parseInt((String) clientId);
-        Item item = null;
         for (int k=0; k< 100; k++){
             if (k%10== id ){
-                item = new Item(""+k, "Item " + k, "Description item " + k);
-                items.add(item);
+                items.add(new OrderLine(new Item(""+k, "Item " + k, "Description item " + k), 0.5 + k, 0));
             }
         }
 
-        return items;
+        return new Basket(Integer.toString(id), items);
     }
 
     private static List<Order> getOrders(Object data){

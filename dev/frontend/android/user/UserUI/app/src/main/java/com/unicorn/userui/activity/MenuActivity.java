@@ -49,12 +49,9 @@ public class MenuActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String id = intent.getStringExtra("clientId");
 
+        basket = (Basket) ApiGateway.call("getMenu", id);
 
-        basket = new Basket(id);
-
-        List<Item> items = (List<Item>) ApiGateway.call("getMenu", id);
-        System.out.println(items);
-        mAdapter = new MenuAdapter(items, basket);
+        mAdapter = new MenuAdapter(basket);
         mRecyclerView.setAdapter(mAdapter);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar_widget);
@@ -65,21 +62,21 @@ public class MenuActivity extends AppCompatActivity {
         mButtonBasket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openCheckout(basket);
+                openCheckout(basket.shrink());
             }
         });
 
-//        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-//        bottomNavigationView.setOnNavigationItemSelectedListener(getBottomNavigationListener());
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(getBottomNavigationListener());
     }
 
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
-//        return true;
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
+        return true;
+    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener getBottomNavigationListener(){
         return new BottomNavigationView.OnNavigationItemSelectedListener() {

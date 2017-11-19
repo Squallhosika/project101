@@ -32,29 +32,20 @@ public class Basket implements Serializable {
         return orderLines;
     }
 
-    public void addItem(Item item) {
-        OrderLine orderLine = getOrderLine(item);
-        if (orderLine != null) {
-            orderLine.addOne();
-        }
-        else {
-            orderLine = new OrderLine(item, 1, 1);
-            orderLines.add(orderLine);
-        }
+    public OrderLine addItem(Item item) {
+        OrderLine line = getOrderLine(item);
+        getOrderLine(item).addOne();
+        return line;
     }
 
-    public void removeItem(Item item){
+    public OrderLine removeItem(Item item){
         OrderLine orderLine = getOrderLine(item);
-        if(orderLine != null){
-            if(orderLine.getQuantity() == 1)
-            {
-                orderLines.remove(orderLine);
-            }
-            else
-            {
-                orderLine.removeOne();
-            }
+        if(orderLine.getQuantity() < 1) {
+            orderLine.setQuanityZero();
+        } else {
+            orderLine.removeOne();
         }
+        return orderLine;
     }
 
     private OrderLine getOrderLine(Item item){
@@ -72,6 +63,22 @@ public class Basket implements Serializable {
             res += line.getPrice() * line.getQuantity();
         }
         return res;
+    }
+
+    public void resetQuantity() {
+        for (OrderLine line : orderLines) {
+            line.setQuanityZero();
+        }
+    }
+
+    public Basket shrink() {
+        List<OrderLine> shrinkLines = new ArrayList<OrderLine>();
+        for (OrderLine line : orderLines) {
+            if(line.getQuantity() > 0)
+                shrinkLines.add(line.copy());
+        }
+
+        return new Basket(menuId, shrinkLines);
     }
 
 }

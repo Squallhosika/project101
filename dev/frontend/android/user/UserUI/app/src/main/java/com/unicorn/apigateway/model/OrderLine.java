@@ -38,4 +38,12 @@ public class OrderLine implements Serializable {
         quantity = quantity - 1;
     }
 
+    public void setQuanityZero() {
+        quantity = 0;
+    }
+
+    public OrderLine copy() {
+        return new OrderLine(item, price, quantity);
+    }
+
 }
